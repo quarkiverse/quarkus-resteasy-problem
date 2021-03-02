@@ -1,0 +1,3 @@
+./mvnw clean install -DskipTests
+./mvnw clean verify -Pnative,jackson -pl integration-test
+./mvnw clean verify -Pnative,jsonb -pl integration-test

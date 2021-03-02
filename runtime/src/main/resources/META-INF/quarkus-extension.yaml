@@ -1,0 +1,14 @@
+name: "RESTeasy Problem"
+metadata:
+  keywords:
+  - "rfc7807"
+  - "rest"
+  - "resteasy"
+  - "problem"
+  - "error"
+  - "exception"
+  guide: "https://google.com/todo"
+  categories:
+  - "web"
+  - "serialization"
+  status: "experimental"
