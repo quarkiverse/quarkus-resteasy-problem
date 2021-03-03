@@ -1,11 +1,18 @@
 # Quarkus RESTeasy Problem (RFC7807) Extension
 
+
 [RFC7807 Problem](https://tools.ietf.org/html/rfc7807) extension for Quarkus RESTeasy applications, inspired and based on [Zalando Problem library](https://github.com/zalando/problem) \
 Supports:
-- resteasy-jackson and resteasy-jsonb
+- _resteasy-jackson_ and _resteasy-jsonb_
 - JVM and native mode
 
-## Why you should use it?
+## Table of contents
+* [Why you may want to use it?](#why-you-may-want-to-use-it)
+* [Usage](#usage)
+* [Build-in exception mappers](#built-in-exception-mappers)
+* [Configuration options](#configuration-options)
+
+## Why you may want to use it?
 This extension unifies (and simplifies) the way services handle and return REST API error messages.
 
 From [RFC7807](https://tools.ietf.org/html/rfc7807):
@@ -27,11 +34,18 @@ Thus, API clients can be informed of both the high-level error class
 ```
 
 ## Usage
-!! IMPORTANT !! This extension is not yet available in any public Maven repo. We're working on it.
+
+--- 
+
+**IMPORTANT**
+
+This extension is not yet available in any public Maven repo. We're working on it.
+
+---
 
 In the meantime you have to release, build and publish this extension to your own Nexus repo.
 
-This extension is compatible with Quarkus 1.4.2.Final and newer.
+This extension is compatible with _Quarkus 1.4.2.Final_ and newer.
 
 Add this to your pom.xml:
 ```xml
@@ -70,7 +84,7 @@ You'll also see it in the logs:
 ```
 10:53:48 INFO [http-problem] (executor-thread-1) status=404, title="Not Found", detail="Test resource not found"
 ```
-Exceptions transformed into http 500s (aka server errors) will be logged as ERROR, including full stacktrace.
+Exceptions transformed into http 500s (aka server errors) will be logged as `ERROR`, including full stacktrace.
 
 More info on throwing problems from your code: [zalando/problem usage](https://github.com/zalando/problem#usage)
 
@@ -79,19 +93,19 @@ This extension provides mappers for common exceptions thrown by Quarkus apps.\
 Some of them are thrown by Quarkus itself in certain situations (i.e failed authorization).
 You can throw them from controllers or business logic as well (i.e `NotFoundException` as in the example above).
 
-| Exception                              | Thrown by                    | Example JSON response                        |
-|----------------------------------------|------------------------------|----------------------------------------------|
-| sec.AuthenticationFailedException      | Missing or invalid JWT       | { "status" : 401, ... }                      |
-| sec.UnauthorizedException              | Missing or invalid JWT       | { "status" : 401, ... }                      |
-| sec.ForbiddenException                 | @RolesAllowed not satisfied  | { "status" : 403, ... }                      |
-| javax.ConstraintViolationException     | Hibernate Validator (@Valid) | { "status" : 400, violations : [{...}] }     |
-| javax.ValidationException              | user                         | { "status" : 400, ... }                      |
-| jaxrs.NotFoundException                | RESTeasy, user               | { "status" : 404, ... }                      |
-| jaxrs.WebApplicationException(status)  | user                         | { "status" : &#60;status&#62;, ... }         |
-| zalando.Problem(status)                | user                         | { "status" : &#60;status&#62;, ... }         |
-| Exception                              | user                         | { "status" : 500, ... }                      |
+| Exception                                | Thrown by                     | Example JSON response                           |
+|------------------------------------------|--------------------------------|------------------------------------------------|
+| `sec.AuthenticationFailedException`      | Missing or invalid JWT         | `{ "status" : 401, ... }`                      |
+| `sec.UnauthorizedException`              | Missing or invalid JWT         | `{ "status" : 401, ... }`                      |
+| `sec.ForbiddenException`                 | `@RolesAllowed` not satisfied  | `{ "status" : 403, ... }`                      |
+| `javax.ConstraintViolationException`     | Hibernate Validator (`@Valid`) | `{ "status" : 400, violations : [{...}] }`     |
+| `javax.ValidationException`              | user                           | `{ "status" : 400, ... }`                      |
+| `jaxrs.NotFoundException`                | RESTeasy, user                 | `{ "status" : 404, ... }`                      |
+| `jaxrs.WebApplicationException(status)`  | user                           | `{ "status" : &#60;status&#62;, ... }`         |
+| `zalando.Problem(status)`                | user                           | `{ "status" : &#60;status&#62;, ... }`         |
+| `Exception`                              | user                           | `{ "status" : 500, ... }`                      |
 
-There's also top-level mapper for `Exception` class, which will convert all unhandled exceptions to http 500 response.
+There's also top-level mapper for `Exception` class, which will convert all unhandled exceptions to HTTP 500 response.
 
 ## Configuration options
 - Include MDC properties in responses (you have to provide those properties to MDC using `MDC.put`)
