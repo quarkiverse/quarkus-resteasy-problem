@@ -8,7 +8,6 @@
         <groupId>com.tietoevry.quarkus</groupId>
         <artifactId>quarkus-resteasy-problem-parent</artifactId>
         <version>0.9.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>quarkus-resteasy-problem-integration-test</artifactId>
