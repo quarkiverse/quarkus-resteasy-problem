@@ -1,7 +1,13 @@
 ./mvnw clean install -DskipTests
 
-./mvnw clean verify -Pjackson -pl integration-test
-./mvnw clean verify -Pjsonb -pl integration-test
+./mvnw clean verify -Pjackson,quarkus-1.12 -pl integration-test
+./mvnw clean verify -Pjsonb,quarkus-1.12 -pl integration-test
+
+./mvnw clean verify -Pjackson,quarkus-1.11 -pl integration-test
+./mvnw clean verify -Pjsonb,quarkus-1.11 -pl integration-test
+
+./mvnw clean verify -Pjackson,quarkus-1.10 -pl integration-test
+./mvnw clean verify -Pjsonb,quarkus-1.10 -pl integration-test
 
 ./mvnw clean verify -Pjackson,quarkus-1.9 -pl integration-test
 ./mvnw clean verify -Pjsonb,quarkus-1.9 -pl integration-test
