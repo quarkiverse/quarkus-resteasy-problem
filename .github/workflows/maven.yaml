@@ -15,6 +15,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
+
       - name: Cache local Maven repository
         uses: actions/cache@v2
         with:
@@ -23,16 +24,19 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
             ${{ runner.os }}-
+
       - name: Compile
         run: ./mvnw -B install -DskipTests --file pom.xml
+
       - name: Tests
         run: |
           ./mvnw -B verify -Pjackson,quarkus-1.12 -pl integration-test
           ./mvnw -B verify -Pjsonb,quarkus-1.12 -pl integration-test
+
       - name: Tests (older Quarkus versions)
         run: |
-          ./mvnw clean verify -Pjackson,quarkus-1.11 -pl integration-test
-          ./mvnw clean verify -Pjsonb,quarkus-1.11 -pl integration-test
+          ./mvnw -B verify -Pjackson,quarkus-1.11 -pl integration-test
+          ./mvnw -B verify -Pjsonb,quarkus-1.11 -pl integration-test
 
-          ./mvnw clean verify -Pjackson,quarkus-1.4 -pl integration-test
-          ./mvnw clean verify -Pjsonb,quarkus-1.4 -pl integration-test
+          ./mvnw -B verify -Pjackson,quarkus-1.4 -pl integration-test
+          ./mvnw -B verify -Pjsonb,quarkus-1.4 -pl integration-test
