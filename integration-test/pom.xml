@@ -10,6 +10,10 @@
         <version>0.9.0-SNAPSHOT</version>
     </parent>
 
+    <properties>
+        <quarkus.version>1.12.1.Final</quarkus.version>
+    </properties>
+
     <artifactId>quarkus-resteasy-problem-integration-test</artifactId>
     <name>Quarkus - RESTeasy - Problem - Integration Tests</name>
 
@@ -114,6 +118,22 @@
                     <artifactId>quarkus-resteasy-jsonb</artifactId>
                 </dependency>
             </dependencies>
+        </profile>
+
+
+        <profile>
+            <id>quarkus-1.11</id>
+            <properties>
+                <quarkus.version>1.11.5.Final</quarkus.version>
+            </properties>
+        </profile>
+
+
+        <profile>
+            <id>quarkus-1.10</id>
+            <properties>
+                <quarkus.version>1.10.5.Final</quarkus.version>
+            </properties>
         </profile>
 
         <profile>
