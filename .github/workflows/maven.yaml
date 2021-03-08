@@ -23,5 +23,16 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
             ${{ runner.os }}-
-      - name: Build with Maven
-        run: ./mvnw -B verify --file pom.xml
+      - name: Compile
+        run: ./mvnw -B install -DskipTests --file pom.xml
+      - name: Tests
+        run: |
+          ./mvnw -B verify -Pjackson,quarkus-1.12 -pl integration-test
+          ./mvnw -B verify -Pjsonb,quarkus-1.12 -pl integration-test
+      - name: Tests (older Quarkus versions)
+        run: |
+          ./mvnw clean verify -Pjackson,quarkus-1.11 -pl integration-test
+          ./mvnw clean verify -Pjsonb,quarkus-1.11 -pl integration-test
+
+          ./mvnw clean verify -Pjackson,quarkus-1.4 -pl integration-test
+          ./mvnw clean verify -Pjsonb,quarkus-1.4 -pl integration-test
