@@ -9,6 +9,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: [ 1.4, 1.11, 1.12 ]
+        json-provider: [ jsonb, jackson ]
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 11
@@ -28,15 +32,6 @@ jobs:
       - name: Compile
         run: ./mvnw -B install -DskipTests --file pom.xml
 
-      - name: Tests
+      - name: Integration tests
         run: |
-          ./mvnw -B clean verify -Pjackson,quarkus-1.12 -pl integration-test
-          ./mvnw -B clean verify -Pjsonb,quarkus-1.12 -pl integration-test
-
-      - name: Tests (older Quarkus versions)
-        run: |
-          ./mvnw -B clean verify -Pjackson,quarkus-1.11 -pl integration-test
-          ./mvnw -B clean verify -Pjsonb,quarkus-1.11 -pl integration-test
-
-          ./mvnw -B clean verify -Pjackson,quarkus-1.4 -pl integration-test
-          ./mvnw -B clean verify -Pjsonb,quarkus-1.4 -pl integration-test
+          ./mvnw -B clean verify -P${{ matrix.json-provider }},quarkus-${{ matrix.version }} -pl integration-test
