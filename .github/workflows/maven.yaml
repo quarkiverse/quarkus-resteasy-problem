@@ -30,13 +30,13 @@ jobs:
 
       - name: Tests
         run: |
-          ./mvnw -B verify -Pjackson,quarkus-1.12 -pl integration-test
-          ./mvnw -B verify -Pjsonb,quarkus-1.12 -pl integration-test
+          ./mvnw -B clean verify -Pjackson,quarkus-1.12 -pl integration-test
+          ./mvnw -B clean verify -Pjsonb,quarkus-1.12 -pl integration-test
 
       - name: Tests (older Quarkus versions)
         run: |
-          ./mvnw -B verify -Pjackson,quarkus-1.11 -pl integration-test
-          ./mvnw -B verify -Pjsonb,quarkus-1.11 -pl integration-test
+          ./mvnw -B clean verify -Pjackson,quarkus-1.11 -pl integration-test
+          ./mvnw -B clean verify -Pjsonb,quarkus-1.11 -pl integration-test
 
-          ./mvnw -B verify -Pjackson,quarkus-1.4 -pl integration-test
-          ./mvnw -B verify -Pjsonb,quarkus-1.4 -pl integration-test
+          ./mvnw -B clean verify -Pjackson,quarkus-1.4 -pl integration-test
+          ./mvnw -B clean verify -Pjsonb,quarkus-1.4 -pl integration-test
