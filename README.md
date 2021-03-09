@@ -100,16 +100,18 @@ You can throw them from controllers or business logic as well (i.e `NotFoundExce
 | `sec.UnauthorizedException`              | Missing or invalid JWT         | `{ "status" : 401, ... }`                      |
 | `sec.ForbiddenException`                 | `@RolesAllowed` not satisfied  | `{ "status" : 403, ... }`                      |
 | `javax.ConstraintViolationException`     | Hibernate Validator (`@Valid`) | `{ "status" : 400, violations : [{...}] }`     |
-| `javax.ValidationException`              | user                           | `{ "status" : 400, ... }`                      |
+| `javax.ValidationException`              | user or Quarkus                | `{ "status" : 400, ... }`                      |
 | `jaxrs.NotFoundException`                | RESTeasy, user                 | `{ "status" : 404, ... }`                      |
-| `jaxrs.WebApplicationException(status)`  | user                           | `{ "status" : &#60;status&#62;, ... }`         |
-| `zalando.Problem(status)`                | user                           | `{ "status" : &#60;status&#62;, ... }`         |
-| `Exception`                              | user                           | `{ "status" : 500, ... }`                      |
+| `jaxrs.WebApplicationException(status)`  | user or Quarkus                | `{ "status" : &#60;status&#62;, ... }`         |
+| `zalando.Problem(status)`                | user or Quarkus                | `{ "status" : &#60;status&#62;, ... }`         |
+| `Exception`                              | user or Quarkus                | `{ "status" : 500, ... }`                      |
 
 There's also top-level mapper for `Exception` class, which will convert all unhandled exceptions to HTTP 500 response.
 
 ## Configuration options
-- Include MDC properties in responses (you have to provide those properties to MDC using `MDC.put`)
+All configuration options are build-time properties, meaning that you cannot override them in the runtime (i.e via environment variables).
+
+- Include MDC properties in the API response (you have to provide those properties to MDC using `MDC.put`)
 ```
 quarkus.resteasy.problem.include-mdc-properties=uuid,application,version
 ```
