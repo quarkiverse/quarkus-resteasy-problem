@@ -107,7 +107,7 @@ public class ProblemProcessor {
     @BuildStep(onlyIfNot = QuarkusSmallryeMetricsDetector.class)
     void warnOnMissingSmallryeMetricsDependency(ProblemRecorder recorder, ProblemBuildConfig config) {
         if (config.metricsEnabled) {
-            logger.warn("quarkus.rfc7807-problem.metrics.enabled is set to true, but quarkus-smallrye-metrics not "
+            logger.warn("quarkus.resteasy.problem.metrics.enabled is set to true, but quarkus-smallrye-metrics not "
                     + "found in the classpath");
         }
     }

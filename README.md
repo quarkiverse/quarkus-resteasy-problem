@@ -111,7 +111,7 @@ There's also top-level mapper for `Exception` class, which will convert all unha
 ## Configuration options
 - Include MDC properties in responses (you have to provide those properties to MDC using `MDC.put`)
 ```
-quarkus.rfc7807-problem.include-mdc-properties=uuid,application,version
+quarkus.resteasy.problem.include-mdc-properties=uuid,application,version
 ```
 Result:
 ```json
@@ -124,9 +124,12 @@ Result:
 }
 ```
 
-- Enable metrics for http error counters. Requires `quarkus-smallrye-metrics` in the classpath.
+- Enable Smallrye (Microprofile) metrics for http error counters. Requires `quarkus-smallrye-metrics` in the classpath.
+
+Please note that if you use `quarkus-micrometer-registry-prometheus` you don't need this feature - http error metrics will be produced regardless of this setting or presence of this extension.
+
 ```
-quarkus.rfc7807-problem.metrics.enabled=true
+quarkus.resteasy.problem.metrics.enabled=true
 ```
 Result:
 ```
