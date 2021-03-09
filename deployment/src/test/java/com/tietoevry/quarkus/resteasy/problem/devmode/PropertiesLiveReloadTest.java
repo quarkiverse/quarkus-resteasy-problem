@@ -1,7 +1,6 @@
 package com.tietoevry.quarkus.resteasy.problem.devmode;
 
 import io.quarkus.test.QuarkusDevModeTest;
-import io.restassured.response.ValidatableResponse;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Test;
@@ -30,33 +29,33 @@ public class PropertiesLiveReloadTest {
                     .addClass(TestMdcResource.class)
                     .addAsResource("application.properties"));
 
-
     @Test
     public void includeMdcPropertiesConfigChangeShouldBeApplied() {
-        //given
-        callErrorProneEndpoint()
-                .body(ORIGINAL_PROPERTY_NAME, is(PROPERTY_VALUE))
-                .body(NEW_PROPERTY_NAME, is(nullValue()));
+        expectOriginalMdcPropertyOnly();
 
-        // when
-        modifyMdcPropertiesConfiguration();
+        whenAppConfigurationIsModified();
 
-        // then
-        callErrorProneEndpoint()
-                .body(ORIGINAL_PROPERTY_NAME, is(nullValue()))
-                .body(NEW_PROPERTY_NAME, is(PROPERTY_VALUE));
+        expectNewMdcPropertyOnly();
     }
 
-    private void modifyMdcPropertiesConfiguration() {
+    private void expectOriginalMdcPropertyOnly() {
+        when().get("/throw-exception").then()
+                .statusCode(500)
+                .body(ORIGINAL_PROPERTY_NAME, is(PROPERTY_VALUE))
+                .body(NEW_PROPERTY_NAME, is(nullValue()));
+    }
+
+    private void whenAppConfigurationIsModified() {
         test.modifyResourceFile("application.properties",
                 propertiesFileContent -> propertiesFileContent.replace(ORIGINAL_PROPERTY_NAME, NEW_PROPERTY_NAME));
     }
 
-    private ValidatableResponse callErrorProneEndpoint() {
-        return when().get("/throw-exception").then()
-                .statusCode(500);
+    private void expectNewMdcPropertyOnly() {
+        when().get("/throw-exception").then()
+                .statusCode(500)
+                .body(ORIGINAL_PROPERTY_NAME, is(nullValue()))
+                .body(NEW_PROPERTY_NAME, is(PROPERTY_VALUE));
     }
-
 
     @Path("/throw-exception")
     @Produces(MediaType.APPLICATION_JSON)
