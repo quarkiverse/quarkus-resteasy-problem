@@ -19,4 +19,8 @@ public class ProblemRecorder {
     public void enableMetrics() {
         ExceptionMapperBase.registerProcessor(new HttpErrorMetricsProcessor());
     }
+
+    public void enableXmlProblemSupport() {
+        ExceptionMapperBase.enableXmlProblemSupport();
+    }
 }

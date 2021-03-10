@@ -8,6 +8,7 @@ import com.tietoevry.quarkus.resteasy.problem.JacksonProblemModuleRegistrar;
 import com.tietoevry.quarkus.resteasy.problem.JsonBProblemSerializer;
 import com.tietoevry.quarkus.resteasy.problem.ProblemMapper;
 import com.tietoevry.quarkus.resteasy.problem.ProblemRecorder;
+import com.tietoevry.quarkus.resteasy.problem.XmlProblem;
 import com.tietoevry.quarkus.resteasy.problem.javax.ConstraintViolationExceptionMapper;
 import com.tietoevry.quarkus.resteasy.problem.javax.ValidationExceptionMapper;
 import com.tietoevry.quarkus.resteasy.problem.javax.Violation;
@@ -87,7 +88,10 @@ public class ProblemProcessor {
 
     @BuildStep
     ReflectiveClassBuildItem registerPojosForReflection() {
-        return new ReflectiveClassBuildItem(true, true, Violation.class.getName());
+        return new ReflectiveClassBuildItem(true, true,
+                Violation.class.getName(),
+                XmlProblem.class.getName()
+        );
     }
 
     @Record(STATIC_INIT)
@@ -119,6 +123,12 @@ public class ProblemProcessor {
             logger.warn("quarkus.resteasy.problem.metrics.enabled is set to true, but quarkus-smallrye-metrics not "
                     + "found in the classpath");
         }
+    }
+
+    @Record(RUNTIME_INIT)
+    @BuildStep(onlyIf = JaxBDetector.class)
+    void enableXmlProblemSupport(ProblemRecorder recorder) {
+        recorder.enableXmlProblemSupport();
     }
 
 }

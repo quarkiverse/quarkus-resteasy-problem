@@ -4,7 +4,8 @@
 
 [RFC7807 Problem](https://tools.ietf.org/html/rfc7807) extension for Quarkus RESTeasy/JaxRS applications, inspired and based on [Zalando Problem library](https://github.com/zalando/problem) \
 Supports:
-- _resteasy-jackson_ and _resteasy-jsonb_
+- _application/problem+json_, requires either _resteasy-jackson_ or _resteasy-jsonb_ in the classpath
+- _application/problem+xml_, requires jaxb in the classpath (i.e _resteasy-jaxb_)
 - JVM and native mode
 - Java 8+
 
@@ -64,7 +65,7 @@ Now you can throw JaxRS or custom exceptions (or Problems) from controllers and 
 import javax.ws.rs.*;
 
 @Path("/test-endpoint")
-@Produces(MediaType.APPLICATION_JSON)
+@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 public class ExampleResource {
     @GET
     public String fetchTestResource() {
@@ -73,13 +74,29 @@ public class ExampleResource {
 }
 ```
 
-Which will be translated to HTTP 404 response with body:
+Which will be translated to HTTP 404 response:
 ```json
+HTTP/1.1 404 Not Found
+Content-Length: 83
+Content-Type: application/problem+json
+        
 {
   "title": "Not Found",
   "status": 404,
   "detail": "Test resource not found"
 }
+```
+or
+```xml
+HTTP/1.1 404 Not Found
+Content-Length: 173
+Content-Type: application/problem+xml
+
+<problem xmlns="urn:ietf:rfc:7807">
+    <status xmlns="">404</status>
+    <title xmlns="">Not Found</title>
+    <detail xmlns="">Test resource not found</detail>
+</problem>
 ```
 
 You'll also see it in the logs:
