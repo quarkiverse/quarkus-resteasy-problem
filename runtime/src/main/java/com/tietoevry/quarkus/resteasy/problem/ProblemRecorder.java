@@ -7,6 +7,10 @@ import java.util.Set;
 @Recorder
 public class ProblemRecorder {
 
+    public void reset() {
+        ExceptionMapperBase.resetProcessors();
+    }
+
     public void configureMdc(Set<String> includeMdcProperties) {
         if (!includeMdcProperties.isEmpty()) {
             ExceptionMapperBase.registerProcessor(new MdcPropertiesProcessor(includeMdcProperties));

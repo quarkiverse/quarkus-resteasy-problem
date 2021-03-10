@@ -26,9 +26,12 @@ jobs:
             ${{ runner.os }}-
 
       - name: Compile
-        run: ./mvnw -B install -DskipTests --file pom.xml
+        run: ./mvnw -B install -DskipTests
 
-      - name: Tests
+      - name: Unit Tests
+        run: ./mvnw -B test -pl '!integration-test'
+
+      - name: Integration Tests
         run: |
           ./mvnw -B clean verify -Pjackson,quarkus-1.12 -pl integration-test
           ./mvnw -B clean verify -Pjsonb,quarkus-1.12 -pl integration-test
