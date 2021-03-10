@@ -1,6 +1,7 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
 import com.tietoevry.quarkus.resteasy.problem.javax.Violation;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.zalando.problem.Problem;
 import org.zalando.problem.ProblemBuilder;
@@ -17,20 +18,20 @@ class XmlProblemTest {
         String serialized = XmlProblem.serialize(exampleProblemBuilder().build());
 
         assertThat(serialized).isEqualTo(
-                "<problem xmlns=\"urn:ietf:rfc:7807\">\n"
-                + "  <status xmlns=\"\">400</status>\n"
-                + "  <title xmlns=\"\">Bad Request</title>\n"
-                + "  <custom_parameter xmlns=\"\">exampleValue</custom_parameter>\n"
-                + "  <singleton_list xmlns=\"\">test-element</singleton_list>\n"
-                + "  <violations xmlns=\"\">\n"
-                + "    <error>too long</error>\n"
-                + "    <field>first_field</field>\n"
-                + "  </violations>\n"
-                + "  <violations xmlns=\"\">\n"
-                + "    <error>too short</error>\n"
-                + "    <field>second_field</field>\n"
-                + "  </violations>\n"
-                + "</problem>\n"
+                "<problem>"
+                + "<status>400</status>"
+                + "<title>Bad Request</title>"
+                + "<custom_parameter>exampleValue</custom_parameter>"
+                + "<singleton_list>test-element</singleton_list>"
+                + "<violations>"
+                + "<error>too long</error>"
+                + "<field>first_field</field>"
+                + "</violations>"
+                + "<violations>"
+                + "<error>too short</error>"
+                + "<field>second_field</field>"
+                + "</violations>"
+                + "</problem>"
         );
     }
 

@@ -41,6 +41,7 @@ class XmlProblemIT {
                 .contentType(APPLICATION_JSON)
                 .post("/throw/javax/constraint-violation-exception")
                 .then()
+                .log().all()
                 .statusCode(400)
                 .contentType("application/problem+xml")
                 .body("problem.violations.field", equalTo("key"))

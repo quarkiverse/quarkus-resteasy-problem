@@ -89,7 +89,13 @@ public class ProblemProcessor {
     @BuildStep
     ReflectiveClassBuildItem registerPojosForReflection() {
         return new ReflectiveClassBuildItem(true, true,
-                Violation.class.getName(),
+                Violation.class.getName()
+        );
+    }
+
+    @BuildStep
+    ReflectiveClassBuildItem registerPojosForReflection2() {
+        return new ReflectiveClassBuildItem(true, true,
                 XmlProblem.class.getName()
         );
     }

@@ -92,10 +92,10 @@ HTTP/1.1 404 Not Found
 Content-Length: 173
 Content-Type: application/problem+xml
 
-<problem xmlns="urn:ietf:rfc:7807">
-    <status xmlns="">404</status>
-    <title xmlns="">Not Found</title>
-    <detail xmlns="">Test resource not found</detail>
+<problem>
+    <status>404</status>
+    <title>Not Found</title>
+    <detail>Test resource not found</detail>
 </problem>
 ```
 

@@ -27,7 +27,7 @@ import java.util.Map;
  *      </accounts>
  *  </problem>
  */
-@JacksonXmlRootElement(localName = "problem", namespace = "urn:ietf:rfc:7807")
+@JacksonXmlRootElement(localName = "problem")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class XmlProblem {
 
@@ -55,8 +55,7 @@ public class XmlProblem {
     }
 
     public static String serialize(Problem problem) {
-        ObjectMapper mapper = new XmlMapper();
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        XmlMapper mapper = new XmlMapper();
         try {
             return mapper.writeValueAsString(new XmlProblem(problem));
         } catch (JsonProcessingException e) {
