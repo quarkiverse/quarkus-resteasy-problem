@@ -1,5 +1,6 @@
 # Quarkus RESTeasy Problem (RFC7807) Extension
 
+[![Build status](https://github.com/TietoEVRY-DataPlatforms/quarkus-resteasy-problem/actions/workflows/maven.yaml/badge.svg)](https://github.com/TietoEVRY-DataPlatforms/quarkus-resteasy-problem/actions)
 
 [RFC7807 Problem](https://tools.ietf.org/html/rfc7807) extension for Quarkus RESTeasy applications, inspired and based on [Zalando Problem library](https://github.com/zalando/problem) \
 Supports:
@@ -99,18 +100,20 @@ You can throw them from controllers or business logic as well (i.e `NotFoundExce
 | `sec.UnauthorizedException`              | Missing or invalid JWT         | `{ "status" : 401, ... }`                      |
 | `sec.ForbiddenException`                 | `@RolesAllowed` not satisfied  | `{ "status" : 403, ... }`                      |
 | `javax.ConstraintViolationException`     | Hibernate Validator (`@Valid`) | `{ "status" : 400, violations : [{...}] }`     |
-| `javax.ValidationException`              | user                           | `{ "status" : 400, ... }`                      |
+| `javax.ValidationException`              | user or Quarkus                | `{ "status" : 400, ... }`                      |
 | `jaxrs.NotFoundException`                | RESTeasy, user                 | `{ "status" : 404, ... }`                      |
-| `jaxrs.WebApplicationException(status)`  | user                           | `{ "status" : &#60;status&#62;, ... }`         |
-| `zalando.Problem(status)`                | user                           | `{ "status" : &#60;status&#62;, ... }`         |
-| `Exception`                              | user                           | `{ "status" : 500, ... }`                      |
+| `jaxrs.WebApplicationException(status)`  | user or Quarkus                | `{ "status" : &#60;status&#62;, ... }`         |
+| `zalando.Problem(status)`                | user or Quarkus                | `{ "status" : &#60;status&#62;, ... }`         |
+| `Exception`                              | user or Quarkus                | `{ "status" : 500, ... }`                      |
 
 There's also top-level mapper for `Exception` class, which will convert all unhandled exceptions to HTTP 500 response.
 
 ## Configuration options
-- Include MDC properties in responses (you have to provide those properties to MDC using `MDC.put`)
+All configuration options are build-time properties, meaning that you cannot override them in the runtime (i.e via environment variables).
+
+- Include MDC properties in the API response (you have to provide those properties to MDC using `MDC.put`)
 ```
-quarkus.rfc7807-problem.include-mdc-properties=uuid,application,version
+quarkus.resteasy.problem.include-mdc-properties=uuid,application,version
 ```
 Result:
 ```json
@@ -123,9 +126,12 @@ Result:
 }
 ```
 
-- Enable metrics for http error counters. Requires `quarkus-smallrye-metrics` in the classpath.
+- Enable Smallrye (Microprofile) metrics for http error counters. Requires `quarkus-smallrye-metrics` in the classpath.
+
+Please note that if you use `quarkus-micrometer-registry-prometheus` you don't need this feature - http error metrics will be produced regardless of this setting or presence of this extension.
+
 ```
-quarkus.rfc7807-problem.metrics.enabled=true
+quarkus.resteasy.problem.metrics.enabled=true
 ```
 Result:
 ```

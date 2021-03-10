@@ -21,6 +21,7 @@ import io.quarkus.deployment.annotations.BuildProducer;
 import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.deployment.annotations.Record;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
+import io.quarkus.deployment.builditem.LiveReloadBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.ReflectiveClassBuildItem;
 import io.quarkus.jsonb.spi.JsonbSerializerBuildItem;
 import io.quarkus.resteasy.common.spi.ResteasyJaxrsProviderBuildItem;
@@ -29,6 +30,7 @@ import org.jboss.logging.Logger;
 import javax.ws.rs.ext.ExceptionMapper;
 import java.util.List;
 
+import static io.quarkus.deployment.annotations.ExecutionTime.RUNTIME_INIT;
 import static io.quarkus.deployment.annotations.ExecutionTime.STATIC_INIT;
 
 public class ProblemProcessor {
@@ -91,11 +93,19 @@ public class ProblemProcessor {
 
     @Record(STATIC_INIT)
     @BuildStep
+    void resetRecorder(ProblemRecorder recorder, LiveReloadBuildItem liveReload) {
+        if(liveReload.isLiveReload()) {
+            recorder.reset();
+        }
+    }
+
+    @Record(RUNTIME_INIT)
+    @BuildStep
     void setupMdc(ProblemRecorder recorder, ProblemBuildConfig config) {
         recorder.configureMdc(config.includeMdcProperties);
     }
 
-    @Record(STATIC_INIT)
+    @Record(RUNTIME_INIT)
     @BuildStep(onlyIf = QuarkusSmallryeMetricsDetector.class)
     void setupMetrics(ProblemRecorder recorder, ProblemBuildConfig config) {
         if (config.metricsEnabled) {
@@ -107,7 +117,7 @@ public class ProblemProcessor {
     @BuildStep(onlyIfNot = QuarkusSmallryeMetricsDetector.class)
     void warnOnMissingSmallryeMetricsDependency(ProblemRecorder recorder, ProblemBuildConfig config) {
         if (config.metricsEnabled) {
-            logger.warn("quarkus.rfc7807-problem.metrics.enabled is set to true, but quarkus-smallrye-metrics not "
+            logger.warn("quarkus.resteasy.problem.metrics.enabled is set to true, but quarkus-smallrye-metrics not "
                     + "found in the classpath");
         }
     }

@@ -19,6 +19,11 @@ public abstract class ExceptionMapperBase<E extends Throwable> implements Except
     private static final List<ProblemProcessor> processors = new CopyOnWriteArrayList<>();
 
     static {
+        resetProcessors();
+    }
+
+    static synchronized void resetProcessors() {
+        processors.clear();
         registerProcessor(new LoggingProcessor(LoggerFactory.getLogger("http-problem")));
     }
 

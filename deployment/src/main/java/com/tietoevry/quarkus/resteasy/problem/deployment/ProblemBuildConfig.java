@@ -6,7 +6,7 @@ import io.quarkus.runtime.annotations.ConfigRoot;
 
 import java.util.Set;
 
-@ConfigRoot(name = "rfc7807-problem", phase = ConfigPhase.BUILD_TIME)
+@ConfigRoot(name = "resteasy.problem", phase = ConfigPhase.BUILD_TIME)
 public class ProblemBuildConfig {
 
     /**
