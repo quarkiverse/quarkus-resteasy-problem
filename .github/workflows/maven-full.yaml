@@ -1,4 +1,4 @@
-name: Complete CI
+name: Maven CI Build
 
 on:
   push:

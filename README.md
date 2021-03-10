@@ -1,6 +1,6 @@
 # Quarkus RESTeasy Problem (RFC7807) Extension
 
-[![Build status](https://github.com/TietoEVRY-DataPlatforms/quarkus-resteasy-problem/actions/workflows/maven.yaml/badge.svg)](https://github.com/TietoEVRY-DataPlatforms/quarkus-resteasy-problem/actions)
+[![Build status](https://github.com/TietoEVRY-DataPlatforms/quarkus-resteasy-problem/actions/workflows/maven-full.yaml/badge.svg)](https://github.com/TietoEVRY-DataPlatforms/quarkus-resteasy-problem/actions)
 
 [RFC7807 Problem](https://tools.ietf.org/html/rfc7807) extension for Quarkus RESTeasy applications, inspired and based on [Zalando Problem library](https://github.com/zalando/problem) \
 Supports:
