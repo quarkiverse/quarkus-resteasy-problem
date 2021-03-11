@@ -2,7 +2,8 @@ name: Maven CI Build
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
 
 jobs:
   build:
@@ -25,17 +26,23 @@ jobs:
             ${{ runner.os }}-
 
       - name: Compile
-        run: ./mvnw -B package
+        run: ./mvnw -B package -DskipTests
 
       - name: Unit Tests
-        run: ./mvnw -B test -pl '!integration-test'
+        run: ./mvnw -B test
+
+      - name: Integration Tests (oldest)
+        run: |
+          ./mvnw -B clean verify -Pjackson,quarkus-1.4 -pl integration-test
+          ./mvnw -B clean verify -Pjsonb,quarkus-1.4 -pl integration-test
 
       - name: Integration Tests (lastest)
         run: |
           ./mvnw -B clean verify -Pjackson -pl integration-test
           ./mvnw -B clean verify -Pjsonb -pl integration-test
 
-      - name: Integration Tests (oldest)
-        run: |
-          ./mvnw -B clean verify -Pjackson,quarkus-1.4 -pl integration-test
-          ./mvnw -B clean verify -Pjsonb,quarkus-1.4 -pl integration-test
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1.9
+        if: always()
+        with:
+          files: "**/target/*-reports/**/TEST-*.xml"
