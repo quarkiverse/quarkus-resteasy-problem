@@ -30,8 +30,14 @@ jobs:
             ${{ runner.os }}-
 
       - name: Build project
-        run: ./mvnw -B package -DskipTests --file pom.xml
+        run: ./mvnw -B package -DskipTests
 
       - name: Integration tests
         run: |
           ./mvnw -B clean verify -P${{ matrix.json-provider }},quarkus-${{ matrix.version }} -pl integration-test
+
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1.9
+        if: always()
+        with:
+          files: "**/target/*-reports/**/TEST-*.xml"
