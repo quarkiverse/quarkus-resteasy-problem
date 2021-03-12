@@ -1,12 +1,10 @@
 # Troubleshooting
 List of common problems you may encounter when using this extension.
 
-## WebApplicationExceptions are not handled properly sometimes
-Long story short: if your application throws WebApplicationException, which wraps Response object, which includes entity (body), this exception will **bypass all JaxRS Exception Mappers!**. API client will see exactly the Response wrapped by this exception.
+## Some WebApplicationExceptions are not handled properly
+Long story short: any WebApplicationException, which wraps Response with non-null entity (body) will **bypass all JaxRS Exception Mappers**, both built-in and custom ones. Http response will be purely based on the Response object.
 
-I.e this happens when you use RestClient without assigning ExceptionMapper (via @RegisterProvider). The result is that all WebApplicationExceptions (wrapping Response object that includes entity) thrown by RestClient will be propagated 'as-is' to your application's api clients directly without any modification. 
-
-This exception:
+Here are some code examples. This exception:
 ```java
 throw new WebApplicationException(Response.status(400).entity("{\"message\": \"This request is bad\"}").build());
 ```
@@ -23,7 +21,7 @@ throw new WebApplicationException(400);
 // or
 throw new WebApplicationException(Response.status(400).build());
 ```
-Exception Mapper will be triggered as expected, and the response will look like this:
+matching Exception Mapper will be triggered as expected, and the response will look like this:
 ```json
 {
   "status": 400,
@@ -32,8 +30,12 @@ Exception Mapper will be triggered as expected, and the response will look like 
 }
 ```
 
+### RestClient case
+This behaviour can be observed when RestClient is used without ExceptionMapper assigned (via @RegisterProvider): all WebApplicationExceptions (wrapping Response object containing entity) thrown by RestClient will be propagated 'as-is' directly to your REST api clients without any modification.  
+**Fix**: create even the simplest ExceptionMapper via @RegisterProvider for your RestClient, where you can wrap WebApplicationException with custom Exception (even RuntimeException will do the trick).
+
 ### Explanation
-This is all by-design: [JaxRS specification](https://raw.githubusercontent.com/javaee/jax-rs-spec/master/spec.pdf) defines how WebApplicationException should be translated into http response, which all implementations must follow (including RESTeasy).
+This is all by-design: [JaxRS specification](https://raw.githubusercontent.com/javaee/jax-rs-spec/master/spec.pdf) defines how WebApplicationException should be translated into http response, which all implementations (including RESTeasy) must comply.
 
 ```
 Section 3.3.4
@@ -45,5 +47,5 @@ response property is used directly.
 ```
 
 ### References  
-[JaxRS specification](https://raw.githubusercontent.com/javaee/jax-rs-spec/master/spec.pdf)
+[JaxRS specification](https://raw.githubusercontent.com/javaee/jax-rs-spec/master/spec.pdf)  
 [Quarkus issue related to this behaviour](https://github.com/quarkusio/quarkus/issues/4031)
