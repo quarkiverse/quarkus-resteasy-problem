@@ -30,7 +30,7 @@ jobs:
             ${{ runner.os }}-
 
       - name: Build project
-        run: ./mvnw -B package -DskipTests
+        run: ./mvnw -B install -DskipTests
 
       - name: Integration tests
         run: |
