@@ -6,6 +6,7 @@
 Supports:
 - _resteasy-jackson_ and _resteasy-jsonb_
 - JVM and native mode
+- Java 8+
 
 ## Table of contents
 * [Why you may want to use it?](#why-you-may-want-to-use-it)

@@ -23,7 +23,7 @@ class LoggingProcessor implements ProblemProcessor {
 
     @Override
     public Problem apply(Problem problem, Throwable cause) {
-        var statusCode = Optional.ofNullable(problem.getStatus())
+        int statusCode = Optional.ofNullable(problem.getStatus())
                 .map(StatusType::getStatusCode)
                 .orElse(500);
 

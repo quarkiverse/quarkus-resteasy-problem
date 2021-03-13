@@ -28,6 +28,7 @@ import io.quarkus.resteasy.common.spi.ResteasyJaxrsProviderBuildItem;
 import org.jboss.logging.Logger;
 
 import javax.ws.rs.ext.ExceptionMapper;
+import java.util.Arrays;
 import java.util.List;
 
 import static io.quarkus.deployment.annotations.ExecutionTime.RUNTIME_INIT;
@@ -38,7 +39,7 @@ public class ProblemProcessor {
     private static final String FEATURE_NAME = "resteasy-problem";
     private static final Logger logger = Logger.getLogger(FEATURE_NAME);
 
-    private static final List<Class<? extends ExceptionMapper<?>>> COMMON_EXCEPTION_MAPPER_CLASSES = List.of(
+    private static final List<Class<? extends ExceptionMapper<?>>> COMMON_EXCEPTION_MAPPER_CLASSES = Arrays.asList(
             // TOP LEVEL
             DefaultExceptionMapper.class,
             ProblemMapper.class,
