@@ -1,10 +1,9 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
+import java.util.Set;
 import org.slf4j.MDC;
 import org.zalando.problem.Problem;
 import org.zalando.problem.ProblemBuilder;
-
-import java.util.Set;
 
 class MdcPropertiesProcessor implements ProblemProcessor {
 

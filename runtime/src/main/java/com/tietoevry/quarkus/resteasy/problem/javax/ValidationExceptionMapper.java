@@ -1,14 +1,13 @@
 package com.tietoevry.quarkus.resteasy.problem.javax;
 
-import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
-import org.zalando.problem.Problem;
+import static org.zalando.problem.Status.BAD_REQUEST;
 
+import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
 import javax.annotation.Priority;
 import javax.validation.ValidationException;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.ext.Provider;
-
-import static org.zalando.problem.Status.BAD_REQUEST;
+import org.zalando.problem.Problem;
 
 @Provider
 @Priority(Priorities.USER)

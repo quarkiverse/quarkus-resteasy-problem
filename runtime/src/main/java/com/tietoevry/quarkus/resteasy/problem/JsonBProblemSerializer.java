@@ -1,11 +1,10 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
-import org.zalando.problem.Problem;
-
+import java.net.URI;
 import javax.json.bind.serializer.JsonbSerializer;
 import javax.json.bind.serializer.SerializationContext;
 import javax.json.stream.JsonGenerator;
-import java.net.URI;
+import org.zalando.problem.Problem;
 
 public class JsonBProblemSerializer implements JsonbSerializer<Problem> {
 

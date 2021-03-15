@@ -3,11 +3,10 @@ package com.tietoevry.quarkus.resteasy.problem;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import org.zalando.problem.Problem;
-
 import java.io.IOException;
 import java.net.URI;
 import java.util.Map;
+import org.zalando.problem.Problem;
 
 public class JacksonProblemSerializer extends StdSerializer<Problem> {
 

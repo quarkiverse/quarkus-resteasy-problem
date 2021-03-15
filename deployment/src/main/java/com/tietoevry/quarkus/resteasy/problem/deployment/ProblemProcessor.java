@@ -1,5 +1,8 @@
 package com.tietoevry.quarkus.resteasy.problem.deployment;
 
+import static io.quarkus.deployment.annotations.ExecutionTime.RUNTIME_INIT;
+import static io.quarkus.deployment.annotations.ExecutionTime.STATIC_INIT;
+
 import com.tietoevry.quarkus.resteasy.problem.DefaultExceptionMapper;
 import com.tietoevry.quarkus.resteasy.problem.JacksonProblemModuleRegistrar;
 import com.tietoevry.quarkus.resteasy.problem.JsonBProblemSerializer;
@@ -25,14 +28,10 @@ import io.quarkus.deployment.builditem.LiveReloadBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.ReflectiveClassBuildItem;
 import io.quarkus.jsonb.spi.JsonbSerializerBuildItem;
 import io.quarkus.resteasy.common.spi.ResteasyJaxrsProviderBuildItem;
-import org.jboss.logging.Logger;
-
-import javax.ws.rs.ext.ExceptionMapper;
 import java.util.Arrays;
 import java.util.List;
-
-import static io.quarkus.deployment.annotations.ExecutionTime.RUNTIME_INIT;
-import static io.quarkus.deployment.annotations.ExecutionTime.STATIC_INIT;
+import javax.ws.rs.ext.ExceptionMapper;
+import org.jboss.logging.Logger;
 
 public class ProblemProcessor {
 
@@ -54,8 +53,7 @@ public class ProblemProcessor {
 
             // JAVAX
             ValidationExceptionMapper.class,
-            ConstraintViolationExceptionMapper.class
-    );
+            ConstraintViolationExceptionMapper.class);
 
     @BuildStep
     FeatureBuildItem createFeature() {
@@ -69,7 +67,7 @@ public class ProblemProcessor {
 
     @BuildStep(onlyIf = JsonBDetector.class)
     void registerJsonbItems(BuildProducer<JsonbSerializerBuildItem> serializers,
-                                  BuildProducer<ResteasyJaxrsProviderBuildItem> providers) {
+            BuildProducer<ResteasyJaxrsProviderBuildItem> providers) {
         serializers.produce(new JsonbSerializerBuildItem(JsonBProblemSerializer.class.getName()));
         providers.produce(new ResteasyJaxrsProviderBuildItem(JsonbExceptionMapper.class.getName()));
     }
@@ -95,7 +93,7 @@ public class ProblemProcessor {
     @Record(STATIC_INIT)
     @BuildStep
     void resetRecorder(ProblemRecorder recorder, LiveReloadBuildItem liveReload) {
-        if(liveReload.isLiveReload()) {
+        if (liveReload.isLiveReload()) {
             recorder.reset();
         }
     }

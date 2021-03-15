@@ -1,7 +1,6 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
 import io.quarkus.runtime.annotations.Recorder;
-
 import java.util.Set;
 
 @Recorder

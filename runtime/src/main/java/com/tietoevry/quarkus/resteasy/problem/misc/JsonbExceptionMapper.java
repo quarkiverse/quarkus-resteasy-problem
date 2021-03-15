@@ -1,16 +1,15 @@
 package com.tietoevry.quarkus.resteasy.problem.misc;
 
-import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
-import org.zalando.problem.Problem;
+import static org.zalando.problem.Status.BAD_REQUEST;
+import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
 
+import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
 import javax.annotation.Priority;
 import javax.json.bind.JsonbException;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.ext.Provider;
-
-import static org.zalando.problem.Status.BAD_REQUEST;
-import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
+import org.zalando.problem.Problem;
 
 /**
  * Unfortunately if payload body is malformed, and if JsonB is used, then JsonbException is thrown not directly,

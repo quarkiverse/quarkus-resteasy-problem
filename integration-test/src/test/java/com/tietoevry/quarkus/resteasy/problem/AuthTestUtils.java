@@ -1,18 +1,17 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
+import static io.restassured.RestAssured.given;
+
 import com.google.common.collect.Sets;
 import io.restassured.specification.RequestSpecification;
 import io.smallrye.jwt.build.Jwt;
-import org.eclipse.microprofile.config.ConfigProvider;
-
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
-
-import static io.restassured.RestAssured.given;
+import org.eclipse.microprofile.config.ConfigProvider;
 
 /**
  * Utilities for testing application with quarkus-smallrye-jwt based application using RestAssured.
@@ -29,8 +28,8 @@ public class AuthTestUtils {
      * Creates RestAssured request specification with Authorization Bearer for given username and roles.
      *
      * @param username Username of test principal
-     * @param roles    Roles/groups that will be included in JWT. All endpoints secured with @RolesAllowed(role)
-     *                 will be accessible for this user
+     * @param roles Roles/groups that will be included in JWT. All endpoints secured with @RolesAllowed(role)
+     *        will be accessible for this user
      * @return RestAssured request specification with JWT bearer in Authorization header.
      */
     public static RequestSpecification givenUser(String username, String... roles) {
