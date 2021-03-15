@@ -7,7 +7,7 @@ import javax.ws.rs.core.MediaType;
 import org.slf4j.MDC;
 
 @Path("/throw/mdc/")
-@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 public class MdcResource {
 
     @GET

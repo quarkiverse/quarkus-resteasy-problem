@@ -11,7 +11,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 @Path("/throw/javax/")
-@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 public class JavaxExceptionsResource {
 
     @GET

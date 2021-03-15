@@ -1,17 +1,18 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
+import java.util.Collections;
+import java.util.Map;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import java.util.Map;
 import org.zalando.problem.AbstractThrowableProblem;
 import org.zalando.problem.Status;
 import org.zalando.problem.StatusType;
 
 @Path("/throw/generic/")
-@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 public class GenericExceptionsResource {
 
     @GET
@@ -23,8 +24,8 @@ public class GenericExceptionsResource {
     @GET
     @Path("/problem")
     public void throwProblem(@QueryParam("status") int status, @QueryParam("title") String title,
-                             @QueryParam("detail") String detail) {
-        throw new TestProblem(title, Status.valueOf(status), detail, Map.of("custom_param", "two"));
+            @QueryParam("detail") String detail) {
+        throw new TestProblem(title, Status.valueOf(status), detail, Collections.singletonMap("custom_param", "two"));
     }
 
     private static final class TestProblem extends AbstractThrowableProblem {
