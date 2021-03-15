@@ -3,7 +3,6 @@ package com.tietoevry.quarkus.resteasy.problem.deployment;
 import io.quarkus.runtime.annotations.ConfigItem;
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
-
 import java.util.Set;
 
 @ConfigRoot(name = "resteasy.problem", phase = ConfigPhase.BUILD_TIME)

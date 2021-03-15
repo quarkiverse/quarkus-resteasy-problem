@@ -1,5 +1,7 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.google.common.collect.Sets;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,8 +9,6 @@ import org.slf4j.MDC;
 import org.zalando.problem.Problem;
 import org.zalando.problem.ProblemBuilder;
 import org.zalando.problem.Status;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class MdcPropertiesProcessorTest {
 

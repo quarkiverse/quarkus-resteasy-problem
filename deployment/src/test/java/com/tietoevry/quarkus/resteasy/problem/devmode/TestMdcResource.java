@@ -1,11 +1,10 @@
 package com.tietoevry.quarkus.resteasy.problem.devmode;
 
-import org.slf4j.MDC;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import org.slf4j.MDC;
 
 @Path("/throw-exception")
 @Produces(MediaType.APPLICATION_JSON)

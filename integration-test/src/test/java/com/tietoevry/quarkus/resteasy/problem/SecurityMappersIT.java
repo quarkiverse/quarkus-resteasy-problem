@@ -1,9 +1,5 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
-import io.quarkus.test.junit.QuarkusTest;
-import io.restassured.RestAssured;
-import org.junit.jupiter.api.Test;
-
 import static com.tietoevry.quarkus.resteasy.problem.AuthTestUtils.givenAnonymous;
 import static com.tietoevry.quarkus.resteasy.problem.AuthTestUtils.givenUser;
 import static io.restassured.RestAssured.given;
@@ -11,6 +7,10 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.nullValue;
 import static org.zalando.problem.Status.FORBIDDEN;
 import static org.zalando.problem.Status.UNAUTHORIZED;
+
+import io.quarkus.test.junit.QuarkusTest;
+import io.restassured.RestAssured;
+import org.junit.jupiter.api.Test;
 
 @QuarkusTest
 class SecurityMappersIT {
@@ -59,7 +59,6 @@ class SecurityMappersIT {
                 .body("detail", equalTo(SAMPLE_DETAIL))
                 .body("stacktrace", nullValue());
     }
-
 
     @Test
     void securedResourceWithoutValidJwtShouldReturn401() {

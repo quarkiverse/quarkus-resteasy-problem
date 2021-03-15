@@ -1,15 +1,14 @@
 package com.tietoevry.quarkus.resteasy.problem.jaxrs;
 
 import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.zalando.problem.Problem;
-import org.zalando.problem.Status;
-
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.ext.Provider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.zalando.problem.Problem;
+import org.zalando.problem.Status;
 
 @Provider
 @Priority(Priorities.USER)

@@ -1,16 +1,15 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
-import org.slf4j.LoggerFactory;
-import org.zalando.problem.Problem;
-import org.zalando.problem.StatusType;
-
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.ExceptionMapper;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.ExceptionMapper;
+import org.slf4j.LoggerFactory;
+import org.zalando.problem.Problem;
+import org.zalando.problem.StatusType;
 
 public abstract class ExceptionMapperBase<E extends Throwable> implements ExceptionMapper<E> {
 

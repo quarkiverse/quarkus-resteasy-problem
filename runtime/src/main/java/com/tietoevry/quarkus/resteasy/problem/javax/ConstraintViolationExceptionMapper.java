@@ -1,14 +1,13 @@
 package com.tietoevry.quarkus.resteasy.problem.javax;
 
 import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
-import org.zalando.problem.Problem;
-
+import java.util.Set;
 import javax.annotation.Priority;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.ext.Provider;
-import java.util.Set;
+import org.zalando.problem.Problem;
 
 @Provider
 @Priority(Priorities.USER)

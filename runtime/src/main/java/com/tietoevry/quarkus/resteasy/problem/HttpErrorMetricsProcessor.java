@@ -1,13 +1,12 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
 import io.smallrye.metrics.MetricRegistries;
+import java.util.Optional;
 import org.eclipse.microprofile.metrics.Metadata;
 import org.eclipse.microprofile.metrics.MetricRegistry;
 import org.eclipse.microprofile.metrics.Tag;
 import org.zalando.problem.Problem;
 import org.zalando.problem.StatusType;
-
-import java.util.Optional;
 
 class HttpErrorMetricsProcessor implements ProblemProcessor {
 

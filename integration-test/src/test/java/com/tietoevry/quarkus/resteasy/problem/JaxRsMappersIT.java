@@ -1,18 +1,18 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
-import io.quarkus.test.junit.QuarkusTest;
-import io.restassured.RestAssured;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-import org.zalando.problem.Status;
-
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.nullValue;
 import static org.zalando.problem.Status.FORBIDDEN;
 import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
 import static org.zalando.problem.Status.NOT_FOUND;
+
+import io.quarkus.test.junit.QuarkusTest;
+import io.restassured.RestAssured;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.zalando.problem.Status;
 
 @QuarkusTest
 class JaxRsMappersIT {
@@ -25,7 +25,7 @@ class JaxRsMappersIT {
     }
 
     @ParameterizedTest(name = "http status: {0}")
-    @ValueSource(ints = {400, 401, 403, 404, 500, 502, 511})
+    @ValueSource(ints = { 400, 401, 403, 404, 500, 502, 511 })
     void webApplicationExceptionShouldReturnGivenStatus(int status) {
         given()
                 .queryParam("status", status)
@@ -49,7 +49,6 @@ class JaxRsMappersIT {
                 .body("stacktrace", nullValue());
     }
 
-
     @Test
     void jaxRsNotFoundShouldReturn404ProblemInsteadOfDefaultRestEasyDefaultResponse() {
         given()
@@ -62,7 +61,6 @@ class JaxRsMappersIT {
                 .body("detail", equalTo(SAMPLE_DETAIL))
                 .body("stacktrace", nullValue());
     }
-
 
     @Test
     void jaxRsForbiddenShouldReturn403ProblemInsteadOfDefaultRestEasyDefaultResponse() {

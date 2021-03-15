@@ -2,15 +2,14 @@ package com.tietoevry.quarkus.resteasy.problem;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.zalando.problem.Problem;
-import org.zalando.problem.StatusType;
-
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.slf4j.Logger;
+import org.zalando.problem.Problem;
+import org.zalando.problem.StatusType;
 
 class LoggingProcessor implements ProblemProcessor {
 
@@ -37,16 +36,15 @@ class LoggingProcessor implements ProblemProcessor {
 
     private String serialize(Problem problem) {
         return Stream.concat(
-                    Stream.of(
-                            (problem.getStatus() == null) ? null : ("status=" + problem.getStatus().getStatusCode()),
-                            (problem.getTitle() == null) ? null : ("title=\"" + problem.getTitle() + "\""),
-                            (problem.getDetail() == null) ? null : ("detail=\"" + problem.getDetail() + "\""),
-                            (problem.getInstance() == null) ? null : ("instance=\"" + problem.getInstance() + "\""),
-                            "about:blank".equals(problem.getType().toString())
-                                    ? null : "type=" + problem.getType().toString()
-                    ),
-                    problem.getParameters().entrySet().stream().map(this::serializeParameter)
-                )
+                Stream.of(
+                        (problem.getStatus() == null) ? null : ("status=" + problem.getStatus().getStatusCode()),
+                        (problem.getTitle() == null) ? null : ("title=\"" + problem.getTitle() + "\""),
+                        (problem.getDetail() == null) ? null : ("detail=\"" + problem.getDetail() + "\""),
+                        (problem.getInstance() == null) ? null : ("instance=\"" + problem.getInstance() + "\""),
+                        "about:blank".equals(problem.getType().toString())
+                                ? null
+                                : "type=" + problem.getType().toString()),
+                problem.getParameters().entrySet().stream().map(this::serializeParameter))
                 .filter(Objects::nonNull)
                 .collect(Collectors.joining(", "));
     }

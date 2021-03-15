@@ -1,8 +1,7 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
-import org.zalando.problem.Problem;
-
 import java.util.function.BiFunction;
+import org.zalando.problem.Problem;
 
 interface ProblemProcessor extends BiFunction<Problem, Throwable, Problem> {
 

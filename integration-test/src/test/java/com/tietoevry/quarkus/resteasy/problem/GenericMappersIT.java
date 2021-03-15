@@ -1,13 +1,13 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
-import io.quarkus.test.junit.QuarkusTest;
-import io.restassured.RestAssured;
-import org.junit.jupiter.api.Test;
-
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.nullValue;
 import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
+
+import io.quarkus.test.junit.QuarkusTest;
+import io.restassured.RestAssured;
+import org.junit.jupiter.api.Test;
 
 @QuarkusTest
 class GenericMappersIT {

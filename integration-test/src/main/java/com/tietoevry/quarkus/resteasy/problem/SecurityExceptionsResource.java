@@ -3,7 +3,6 @@ package com.tietoevry.quarkus.resteasy.problem;
 import io.quarkus.security.AuthenticationFailedException;
 import io.quarkus.security.ForbiddenException;
 import io.quarkus.security.UnauthorizedException;
-
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

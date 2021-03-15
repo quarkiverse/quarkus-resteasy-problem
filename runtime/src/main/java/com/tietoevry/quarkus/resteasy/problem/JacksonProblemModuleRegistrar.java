@@ -3,9 +3,8 @@ package com.tietoevry.quarkus.resteasy.problem;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.quarkus.jackson.ObjectMapperCustomizer;
-import org.zalando.problem.Problem;
-
 import javax.inject.Singleton;
+import org.zalando.problem.Problem;
 
 @Singleton
 public class JacksonProblemModuleRegistrar implements ObjectMapperCustomizer {

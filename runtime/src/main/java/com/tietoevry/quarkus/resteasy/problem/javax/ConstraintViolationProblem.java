@@ -1,11 +1,5 @@
 package com.tietoevry.quarkus.resteasy.problem.javax;
 
-import org.zalando.problem.Problem;
-import org.zalando.problem.Status;
-import org.zalando.problem.StatusType;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -13,6 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.validation.ConstraintViolation;
+import javax.validation.Path;
+import org.zalando.problem.Problem;
+import org.zalando.problem.Status;
+import org.zalando.problem.StatusType;
 
 class ConstraintViolationProblem implements Problem {
 
@@ -44,8 +43,7 @@ class ConstraintViolationProblem implements Problem {
     private Violation toViolation(ConstraintViolation<?> constraintViolation) {
         return new Violation(
                 constraintViolation.getMessage(),
-                dropFirstTwoPathElements(constraintViolation.getPropertyPath())
-        );
+                dropFirstTwoPathElements(constraintViolation.getPropertyPath()));
     }
 
     private String dropFirstTwoPathElements(Path propertyPath) {
