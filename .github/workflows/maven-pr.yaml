@@ -25,7 +25,7 @@ jobs:
             ${{ runner.os }}-
 
       - name: Compile
-        run: ./mvnw -B install -DskipTests
+        run: ./mvnw -B formatter:validate install -DskipTests
 
       - name: Unit Tests
         run: ./mvnw -B test
