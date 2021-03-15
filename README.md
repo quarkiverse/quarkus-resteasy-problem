@@ -54,7 +54,7 @@ Add this to your pom.xml:
 <dependency>
     <groupId>com.tietoevry.quarkus</groupId>
     <artifactId>quarkus-resteasy-problem</artifactId>
-    <version>0.9.0-SNAPSHOT</version>
+    <version>0.9.0</version>
 </dependency>
 ```
 

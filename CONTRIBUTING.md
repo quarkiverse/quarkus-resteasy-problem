@@ -5,6 +5,7 @@ or add your own suggestions and start discussion. Then create fork or branch and
 
 ## Setup
 - JDK 8
+- GraalVM for native test run, check [Quarkus Contributing guide](https://github.com/quarkusio/quarkus/blob/main/CONTRIBUTING.md#setup) for more details.
 
 ### IDE Config and Code Style
 
@@ -27,6 +28,13 @@ Command line:\
 `./mvnw test verify` - jackson profile enabled by default\ 
 `./mvnw test verify -Pjsonb`\
 `./mvnw test verify -Pjackson,quarkus-1.4` - checking backward compatibility with older versions of Quarkus
+`./mvnw clean verify -Pnative,jackson -pl integration-test` - running tests in native mode
 
-#### Native mode test
-You need to have GraalVM and native-image installed to be able to run those tests.
+### Releasing and deploying final versions
+```
+./run-jvm-tests
+./mvnw release:prepare -DskipTests
+git push
+git push --tags
+./mvnw deploy -DskipTests
+```

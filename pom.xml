@@ -11,6 +11,10 @@
 
     <name>Quarkus - RESTeasy - Problem - Parent</name>
 
+    <scm>
+        <developerConnection>scm:git:git@github.com:TietoEVRY-DataPlatforms/quarkus-resteasy-problem.git</developerConnection>
+    </scm>
+
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -54,6 +58,16 @@
                     </systemProperties>
                 </configuration>
                 <version>${surefire-plugin.version}</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>3.0.0-M1</version>
+                <configuration>
+                    <tagNameFormat>v@{project.version}</tagNameFormat>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                </configuration>
             </plugin>
 
             <plugin>
