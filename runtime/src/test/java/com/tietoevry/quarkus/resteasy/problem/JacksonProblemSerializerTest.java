@@ -43,7 +43,7 @@ class JacksonProblemSerializerTest {
         jacksonProblemSerializer.serialize(problem, jsonGenerator, null);
 
         jsonGenerator.close();
-        assertThat(outputStream.toString(StandardCharsets.UTF_8))
+        assertThat(outputStream.toString(StandardCharsets.UTF_8.name()))
                 .isEqualTo("{\"type\":\"URI:goeshere\",\"status\":400,\"title\":\"Something wrong in the dirt\",\"detail\":\"Deep down wrongness, zażółć gęślą jaźń for Håkensth\",\"custom_field_1\":\"too long\",\"custom_field_2\":\"too short\"}");
     }
 
@@ -58,7 +58,7 @@ class JacksonProblemSerializerTest {
         jacksonProblemSerializer.serialize(problem, jsonGenerator, null);
 
         jsonGenerator.close();
-        assertThat(outputStream.toString(StandardCharsets.UTF_8))
+        assertThat(outputStream.toString(StandardCharsets.UTF_8.name()))
                 .isEqualTo("{\"status\":400,\"title\":\"Something wrong in the dirt\"}");
     }
 

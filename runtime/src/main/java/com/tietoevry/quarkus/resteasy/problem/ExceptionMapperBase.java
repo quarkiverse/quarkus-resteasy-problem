@@ -34,15 +34,15 @@ public abstract class ExceptionMapperBase<E extends Throwable> implements Except
 
     @Override
     public final Response toResponse(E exception) {
-        var problem = toProblem(exception);
-        for (var processor : processors) {
+        Problem problem = toProblem(exception);
+        for (ProblemProcessor processor : processors) {
             problem = processor.apply(problem, exception);
         }
         return toResponse(problem);
     }
 
     private Response toResponse(Problem problem) {
-        var statusCode = Optional.ofNullable(problem.getStatus())
+        int statusCode = Optional.ofNullable(problem.getStatus())
                 .map(StatusType::getStatusCode)
                 .orElse(500);
 

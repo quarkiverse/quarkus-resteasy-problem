@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
 
-import java.util.List;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -43,7 +43,7 @@ class LoggingProcessorTest {
                 .withTitle("your fault")
                 .withStatus(Status.BAD_REQUEST)
                 .with("custom-field", "123")
-                .with("violations", List.of(new Violation("too small", "key")))
+                .with("violations", Collections.singletonList(new Violation("too small", "key")))
                 .build();
 
         processor.apply(problem, new RuntimeException());

@@ -4,7 +4,7 @@ You're more than welcome to work on this extension. Check [issues](../../issues/
 or add your own suggestions and start discussion. Then create fork or branch and Pull Request once it's ready.
 
 ### Prerequisites
-- JDK 11
+- JDK 8
 
 ### Modules
 `runtime` - this happens in the runtime: this code ends up in your app's classpath\

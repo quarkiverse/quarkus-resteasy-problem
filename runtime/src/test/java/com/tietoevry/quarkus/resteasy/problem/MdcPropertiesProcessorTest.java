@@ -1,5 +1,6 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
+import com.google.common.collect.Sets;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.MDC;
@@ -7,13 +8,11 @@ import org.zalando.problem.Problem;
 import org.zalando.problem.ProblemBuilder;
 import org.zalando.problem.Status;
 
-import java.util.Set;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 class MdcPropertiesProcessorTest {
 
-    MdcPropertiesProcessor processor = new MdcPropertiesProcessor(Set.of("uuid", "another"));
+    MdcPropertiesProcessor processor = new MdcPropertiesProcessor(Sets.newHashSet("uuid", "another"));
 
     @BeforeEach
     void init() {

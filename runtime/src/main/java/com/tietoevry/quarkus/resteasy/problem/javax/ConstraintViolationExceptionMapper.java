@@ -4,9 +4,11 @@ import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
 import org.zalando.problem.Problem;
 
 import javax.annotation.Priority;
+import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.ext.Provider;
+import java.util.Set;
 
 @Provider
 @Priority(Priorities.USER)
@@ -14,7 +16,7 @@ public class ConstraintViolationExceptionMapper extends ExceptionMapperBase<Cons
 
     @Override
     public Problem toProblem(ConstraintViolationException exception) {
-        final var constraintViolations = exception.getConstraintViolations();
+        final Set<ConstraintViolation<?>> constraintViolations = exception.getConstraintViolations();
         return new ConstraintViolationProblem(constraintViolations);
     }
 }

@@ -5,12 +5,6 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.slf4j.MDC;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 
 import static io.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.is;
@@ -57,16 +51,4 @@ public class PropertiesLiveReloadTest {
                 .body(NEW_PROPERTY_NAME, is(PROPERTY_VALUE));
     }
 
-    @Path("/throw-exception")
-    @Produces(MediaType.APPLICATION_JSON)
-    public static class TestMdcResource {
-
-        @GET
-        public String setMdcAndThrow() {
-            MDC.put(ORIGINAL_PROPERTY_NAME, PROPERTY_VALUE);
-            MDC.put(NEW_PROPERTY_NAME, PROPERTY_VALUE);
-            throw new RuntimeException("mdc test");
-        }
-
-    }
 }

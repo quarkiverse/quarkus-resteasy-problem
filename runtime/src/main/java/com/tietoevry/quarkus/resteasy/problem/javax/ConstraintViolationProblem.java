@@ -7,6 +7,7 @@ import org.zalando.problem.StatusType;
 import javax.validation.ConstraintViolation;
 import javax.validation.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +38,7 @@ class ConstraintViolationProblem implements Problem {
                 .stream()
                 .map(this::toViolation)
                 .collect(Collectors.toList());
-        return Map.of("violations", violations);
+        return Collections.singletonMap("violations", violations);
     }
 
     private Violation toViolation(ConstraintViolation<?> constraintViolation) {

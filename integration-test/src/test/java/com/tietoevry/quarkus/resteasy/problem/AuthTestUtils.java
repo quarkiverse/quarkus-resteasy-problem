@@ -1,5 +1,6 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
+import com.google.common.collect.Sets;
 import io.restassured.specification.RequestSpecification;
 import io.smallrye.jwt.build.Jwt;
 import org.eclipse.microprofile.config.ConfigProvider;
@@ -10,7 +11,6 @@ import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
-import java.util.Set;
 
 import static io.restassured.RestAssured.given;
 
@@ -53,7 +53,7 @@ public class AuthTestUtils {
                 .claim("given_name", username)
                 .claim("family_name", username)
                 .claim("email", username + "@evry.com")
-                .groups(Set.of(groups))
+                .groups(Sets.newHashSet(groups))
                 .expiresAt(System.currentTimeMillis() + 3600)
                 .sign(pk);
     }
