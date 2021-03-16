@@ -4,14 +4,14 @@
 
     <groupId>com.tietoevry.quarkus</groupId>
     <artifactId>quarkus-resteasy-problem-parent</artifactId>
-    <version>0.9.0</version>
+    <version>0.9.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Quarkus - RESTeasy - Problem - Parent</name>
 
     <scm>
         <developerConnection>scm:git:git@github.com:TietoEVRY-DataPlatforms/quarkus-resteasy-problem.git</developerConnection>
-      <tag>v0.9.0</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <properties>
