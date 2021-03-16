@@ -1,3 +1,9 @@
+java_ver=$(java -version 2>&1 | head -1 | cut -d'"' -f2 | sed '/^1\./s///' | cut -d'.' -f1)
+if [[ "$java_ver" != "8" ]]; then
+    echo "Expected Java version is 1.8, while $java_ver was found"
+    exit;
+fi
+
 ./mvnw clean install -DskipTests
 
 ./mvnw clean verify -Pjackson,quarkus-1.12 -pl integration-test
