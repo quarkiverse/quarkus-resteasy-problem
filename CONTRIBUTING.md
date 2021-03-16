@@ -34,7 +34,6 @@ Command line:\
 ```
 ./run-jvm-tests
 ./mvnw release:prepare -DskipTests
-git push
-git push --tags
+git pull
 ./mvnw deploy -DskipTests
 ```

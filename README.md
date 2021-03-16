@@ -1,8 +1,8 @@
-# Quarkus RESTeasy Problem (RFC7807) Extension
+# Problem Details for HTTP APIs (RFC-7807) implementation for Quarkus / RESTeasy.
 
 [![Build status](https://github.com/TietoEVRY-DataPlatforms/quarkus-resteasy-problem/actions/workflows/maven-full.yaml/badge.svg)](https://github.com/TietoEVRY-DataPlatforms/quarkus-resteasy-problem/actions)
 
-[RFC7807 Problem](https://tools.ietf.org/html/rfc7807) extension for Quarkus RESTeasy applications, inspired and based on [Zalando Problem library](https://github.com/zalando/problem) \
+[RFC7807 Problem](https://tools.ietf.org/html/rfc7807) extension for Quarkus RESTeasy/JaxRS applications, inspired and based on [Zalando Problem library](https://github.com/zalando/problem) \
 Supports:
 - _resteasy-jackson_ and _resteasy-jsonb_
 - JVM and native mode
