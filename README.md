@@ -75,6 +75,10 @@ public class ExampleResource {
 
 Which will be translated to HTTP 404 response with body:
 ```json
+HTTP/1.1 404 Not Found
+Content-Length: 83
+Content-Type: application/problem+json
+        
 {
   "title": "Not Found",
   "status": 404,
@@ -103,8 +107,8 @@ You can throw them from controllers or business logic as well (i.e `NotFoundExce
 | `javax.ConstraintViolationException`     | Hibernate Validator (`@Valid`) | `{ "status" : 400, violations : [{...}] }`     |
 | `javax.ValidationException`              | user or Quarkus                | `{ "status" : 400, ... }`                      |
 | `jaxrs.NotFoundException`                | RESTeasy, user                 | `{ "status" : 404, ... }`                      |
-| `jaxrs.WebApplicationException(status)`  | user or Quarkus                | `{ "status" : &#60;status&#62;, ... }`         |
-| `zalando.Problem(status)`                | user or Quarkus                | `{ "status" : &#60;status&#62;, ... }`         |
+| `jaxrs.WebApplicationException(status)`  | user or Quarkus                | `{ "status" : <status>, ... }`         |
+| `zalando.Problem(status)`                | user or Quarkus                | `{ "status" : <status>, ... }`         |
 | `Exception`                              | user or Quarkus                | `{ "status" : 500, ... }`                      |
 
 There's also top-level mapper for `Exception` class, which will convert all unhandled exceptions to HTTP 500 response.
