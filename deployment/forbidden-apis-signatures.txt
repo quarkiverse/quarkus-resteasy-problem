@@ -1,0 +1,2 @@
+@defaultMessage You should avoid loading a class in deployment module just to use its name. Use full qualified class name string literal instead.
+java.lang.Class#getName()
