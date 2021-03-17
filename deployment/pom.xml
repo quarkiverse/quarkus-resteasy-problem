@@ -93,6 +93,17 @@
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>de.thetaphi</groupId>
+                <artifactId>forbiddenapis</artifactId>
+
+                <configuration>
+                    <signaturesFiles>
+                        <signaturesFile>forbidden-apis-signatures.txt</signaturesFile>
+                    </signaturesFiles>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

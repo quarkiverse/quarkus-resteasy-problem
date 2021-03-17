@@ -11,22 +11,23 @@
 
     <scm>
         <developerConnection>scm:git:git@github.com:TietoEVRY-DataPlatforms/quarkus-resteasy-problem.git</developerConnection>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler-plugin.version>3.8.1</maven.compiler-plugin.version>
 
         <quarkus.version>1.11.5.Final</quarkus.version>
         <zalando-problem.version>0.24.0</zalando-problem.version>
+        <assertj.version>3.16.1</assertj.version>
 
+        <maven.compiler-plugin.version>3.8.1</maven.compiler-plugin.version>
         <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
         <failsafe-plugin.version>3.0.0-M5</failsafe-plugin.version>
-        <assertj.version>3.16.1</assertj.version>
+        <forbiddenapis-maven-plugin.version>3.1</forbiddenapis-maven-plugin.version>
     </properties>
 
     <modules>
@@ -110,5 +111,52 @@
                 </executions>
             </plugin>
         </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>de.thetaphi</groupId>
+                    <artifactId>forbiddenapis</artifactId>
+                    <version>${forbiddenapis-maven-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>verify-forbidden-apis</id>
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                            <configuration>
+                                <failOnUnsupportedJava>false</failOnUnsupportedJava>
+                                <excludes>
+                                    <!-- JBoss Logger formats messages according to default Locale (bug or feature?) -->
+                                    <exclude>**/*_$logger.class</exclude>
+                                    <!-- JBoss message bundles format messages -->
+                                    <exclude>**/*_$bundle.class</exclude>
+                                </excludes>
+
+                                <bundledSignatures>
+                                    <!-- These signatures on the top are not specific to any JDK version -->
+                                    <bundledSignature>jdk-system-out</bundledSignature>
+                                    <bundledSignature>jdk-non-portable</bundledSignature>
+                                    <bundledSignature>jdk-reflection</bundledSignature>
+
+                                    <!-- All following signatures should be replicated for each target JDK version we intend to support -->
+                                    <bundledSignature>jdk-unsafe-1.8</bundledSignature>
+                                    <bundledSignature>jdk-unsafe-11</bundledSignature>
+
+                                    <bundledSignature>jdk-deprecated-1.8</bundledSignature>
+                                    <bundledSignature>jdk-deprecated-11</bundledSignature>
+
+                                    <bundledSignature>jdk-internal-1.8</bundledSignature>
+                                    <bundledSignature>jdk-internal-11</bundledSignature>
+                                </bundledSignatures>
+                                <failOnMissingClasses>false</failOnMissingClasses>
+                                <ignoreSignaturesOfMissingClasses>true</ignoreSignaturesOfMissingClasses>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 </project>
