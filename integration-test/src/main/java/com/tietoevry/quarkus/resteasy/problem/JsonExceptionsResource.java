@@ -15,7 +15,7 @@ public class JsonExceptionsResource {
     public void throwProblem(TestRequestBody body) {
     }
 
-    public static final class TestRequestBody {
+    static final class TestRequestBody {
         public int key;
     }
 

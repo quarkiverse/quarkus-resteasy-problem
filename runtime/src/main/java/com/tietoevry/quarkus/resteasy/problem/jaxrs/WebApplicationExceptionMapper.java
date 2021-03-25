@@ -44,8 +44,8 @@ public class WebApplicationExceptionMapper extends ExceptionMapperBase<WebApplic
 
     private Response withHeaders(Response problemResponse, MultivaluedMap<String, Object> additionalHeaders) {
         Response.ResponseBuilder responseBuilder = Response.fromResponse(problemResponse);
-        additionalHeaders.forEach((headerName, headerValues) -> headerValues
-                .forEach(headerValue -> responseBuilder.header(headerName, headerValue)));
+        additionalHeaders.forEach(
+                (header, values) -> values.forEach(value -> responseBuilder.header(header, value)));
         return responseBuilder.build();
     }
 }

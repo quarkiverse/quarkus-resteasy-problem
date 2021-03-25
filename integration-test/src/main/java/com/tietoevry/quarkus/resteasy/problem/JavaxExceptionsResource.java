@@ -25,7 +25,7 @@ public class JavaxExceptionsResource {
     public void throwConstraintViolationException(@Valid TestRequestBody body) {
     }
 
-    public static final class TestRequestBody {
+    static final class TestRequestBody {
 
         @Min(15)
         public int key;

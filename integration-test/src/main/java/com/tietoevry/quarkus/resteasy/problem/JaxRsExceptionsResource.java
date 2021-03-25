@@ -18,6 +18,8 @@ import javax.ws.rs.core.Response;
 @Produces(MediaType.APPLICATION_JSON)
 public class JaxRsExceptionsResource {
 
+    static final MediaType MEDIA_TYPE_SHOULD_BE_IGNORED = MediaType.TEXT_PLAIN_TYPE;
+
     @GET
     @Path("/web-application-exception")
     public void throwWebApplicationException(@QueryParam("status") int status) {
@@ -30,13 +32,16 @@ public class JaxRsExceptionsResource {
         throw new WebApplicationException(
                 Response.status(status)
                         .header(RETRY_AFTER, 120)
+                        .type(MEDIA_TYPE_SHOULD_BE_IGNORED)
                         .build());
     }
 
     @GET
     @Path("/redirection-exception")
     public void throwRedirection() {
-        throw new RedirectionException(Response.Status.MOVED_PERMANENTLY, URI.create("/new-location"));
+        throw new RedirectionException(
+                Response.Status.MOVED_PERMANENTLY,
+                URI.create("/new-location"));
     }
 
     @GET
@@ -51,7 +56,7 @@ public class JaxRsExceptionsResource {
         throw new ForbiddenException(message);
     }
 
-    private static final class TestRuntimeException extends RuntimeException {
+    static final class TestRuntimeException extends RuntimeException {
         TestRuntimeException() {
             super("First cause", new RuntimeException("Root cause"));
         }
