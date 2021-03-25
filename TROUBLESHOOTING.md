@@ -1,7 +1,7 @@
 # Troubleshooting #
 List of common problems you may encounter when using this extension.
 
-# Some `WebApplicationException`s seems not to be handled properly
+## Some `WebApplicationException`s seems not to be handled properly
 Long story short: any `WebApplicationException`, which wraps Response with non-null entity (body) will **bypass all JaxRS Exception Mappers**, both built-in and custom ones. HTTP response will be purely based on the `Response` object.
 
 Here are some code examples. This exception:
@@ -50,7 +50,7 @@ response property is used directly.
 [JaxRS specification](https://raw.githubusercontent.com/javaee/jax-rs-spec/master/spec.pdf)  
 [Quarkus issue related to this behaviour](https://github.com/quarkusio/quarkus/issues/4031)
 
-# I use JsonB and I see stack traces and other strange fields in API error responses
+## I use JsonB and I see stack traces and other strange fields in API error responses
 Your code most likely overrides `JsonB` configuration by providing bean of type `javax.json.bind.JsonB` - this is considered bad practice, as described in [this document](https://quarkus.io/guides/rest-json#json-b). 
 The easiest fix is to customize, not override existing `JsonB` configuration:
 ```java
