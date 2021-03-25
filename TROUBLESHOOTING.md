@@ -50,9 +50,21 @@ response property is used directly.
 [JaxRS specification](https://raw.githubusercontent.com/javaee/jax-rs-spec/master/spec.pdf)  
 [Quarkus issue related to this behaviour](https://github.com/quarkusio/quarkus/issues/4031)
 
-## I use JsonB and I see stack traces and other strange fields in API error responses
-Your code most likely overrides `JsonB` configuration by providing bean of type `javax.json.bind.JsonB` - this is considered bad practice, as described in [this document](https://quarkus.io/guides/rest-json#json-b). 
-The easiest fix is to customize, not override existing `JsonB` configuration:
+## There are strange fields (stack traces etc.) in API error responses
+Your code most likely overrides `Jackson`/`JsonB` configuration by providing bean of type `com.fasterxml.jackson.databind.ObjectMapper`/`javax.json.bind.JsonB`, thus deregistering serializers provided by this extension - this is considered a bad practice, as described in [Quarkus docs](https://quarkus.io/guides/rest-json#configuring-json-support). 
+The easiest fix is to customize, not override existing configurations.
+
+Jackson:
+```java
+@ApplicationScoped
+public class RegisterCustomModuleCustomizer implements ObjectMapperCustomizer {
+    public void customize(ObjectMapper mapper) {
+        mapper.registerModule(new CustomModule());
+    }
+}
+```
+
+JsonB:
 ```java
 @ApplicationScoped
 public class FooSerializerRegistrationCustomizer implements JsonbConfigCustomizer {
@@ -63,8 +75,9 @@ public class FooSerializerRegistrationCustomizer implements JsonbConfigCustomize
 ```
 This approach will **not** wipe out configuration provided by extensions (including this one) and is recommended by Quarkus.
 
-In case you really have to provide your own `JsonB` bean, and still want to use this extension you'll have to apply all customizers on your `JsonB` object, as described below:
+In case you really have to provide your own configuration bean, and still want to use this extension you'll have to apply all customizers yourself as described below:
 
 ```
-(...) it is very important to manually inject and apply all io.quarkus.jsonb.JsonbConfigCustomizer beans in the CDI producer that produces javax.json.bind.Jsonb. Failure to do so will prevent JSON-B specific customizations provided by various extensions from being applied.
+Jackson: it is very important to manually inject and apply all io.quarkus.jackson.ObjectMapperCustomizer beans in the CDI producer that produces ObjectMapper. Failure to do so will prevent Jackson specific customizations provided by various extensions from being applied.
+JsonB: it is very important to manually inject and apply all io.quarkus.jsonb.JsonbConfigCustomizer beans in the CDI producer that produces javax.json.bind.Jsonb. Failure to do so will prevent JSON-B specific customizations provided by various extensions from being applied.
 ```
