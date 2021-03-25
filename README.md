@@ -1,6 +1,10 @@
 # Problem Details for HTTP APIs (RFC-7807) implementation for Quarkus / RESTeasy.
 
 [![Build status](https://github.com/TietoEVRY-DataPlatforms/quarkus-resteasy-problem/actions/workflows/maven-full.yaml/badge.svg)](https://github.com/TietoEVRY-DataPlatforms/quarkus-resteasy-problem/actions)
+[![Release](https://img.shields.io/badge/release-v0.9.0-blue.svg)](https://github.com/TietoEVRY-DataPlatforms/quarkus-resteasy-problem/releases)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://raw.githubusercontent.com/TietoEVRY-DataPlatforms/quarkus-resteasy-problem/master/LICENSE.txt)
+[![JVM](https://img.shields.io/badge/JVM-1.8+-blue.svg)](https://raw.githubusercontent.com/TietoEVRY-DataPlatforms/quarkus-resteasy-problem/master/LICENSE.txt)
+![Features](https://img.shields.io/badge/features-jackson%20%7C%20jsonb%20%7C%20native%20mode-green)
 
 [RFC7807 Problem](https://tools.ietf.org/html/rfc7807) extension for Quarkus RESTeasy/JaxRS applications, inspired and based on [Zalando Problem library](https://github.com/zalando/problem). \
 This extension registers few JaxRS Exceptions Mappers for common exceptions thrown by Quarkus apps, which turn exceptions into standardized HTTP responses described in RFC, with content type `application/problem+json`. See [Built-in exception mappers](#built-in-exception-mappers) section for more details.
@@ -11,12 +15,12 @@ Supports:
 - Java 8+
 
 ## Table of contents
-* [Why you may want to use it?](#why-you-may-want-to-use-it)
+* [Why you should use it?](#why-you-should-use-it)
 * [Usage](#usage)
 * [Build-in exception mappers](#built-in-exception-mappers)
 * [Configuration options](#configuration-options)
 
-## Why you may want to use it?
+## Why you should use it?
 This extension unifies (and simplifies) the way services handle and return REST API error messages.
 
 From [RFC7807](https://tools.ietf.org/html/rfc7807):
@@ -26,16 +30,9 @@ enough information about an error to be helpful.  While humans behind
 Web browsers can be informed about the nature of the problem with an
 HTML [W3C.REC-html5-20141028] response body, non-human consumers of
 so-called "HTTP APIs" are usually not.
-
-This specification defines simple JSON [RFC7159] and XML
-[W3C.REC-xml-20081126] document formats to suit this purpose.  They
-are designed to be reused by HTTP APIs, which can identify distinct
-"problem types" specific to their needs.
-
-Thus, API clients can be informed of both the high-level error class
-(using the status code) and the finer-grained details of the problem
-(using one of these formats).
 ```
+
+You may also want to check [this article](https://dzone.com/articles/when-http-status-codes-are-not-enough-tackling-web) on RFC7807 practical usage.
 
 ## Usage
 
