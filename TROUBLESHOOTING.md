@@ -1,7 +1,7 @@
-# Troubleshooting
+# Troubleshooting #
 List of common problems you may encounter when using this extension.
 
-## Some `WebApplicationException`s seems not to be handled properly
+# Some `WebApplicationException`s seems not to be handled properly
 Long story short: any `WebApplicationException`, which wraps Response with non-null entity (body) will **bypass all JaxRS Exception Mappers**, both built-in and custom ones. HTTP response will be purely based on the `Response` object.
 
 Here are some code examples. This exception:
@@ -49,3 +49,22 @@ response property is used directly.
 ### References  
 [JaxRS specification](https://raw.githubusercontent.com/javaee/jax-rs-spec/master/spec.pdf)  
 [Quarkus issue related to this behaviour](https://github.com/quarkusio/quarkus/issues/4031)
+
+# I use JsonB and I see stack traces and other strange fields in API error responses
+Your code most likely overrides `JsonB` configuration by providing bean of type `javax.json.bind.JsonB` - this is considered bad practice, as described in [this document](https://quarkus.io/guides/rest-json#json-b). 
+The easiest fix is to customize, not override existing `JsonB` configuration:
+```java
+@ApplicationScoped
+public class FooSerializerRegistrationCustomizer implements JsonbConfigCustomizer {
+    public void customize(JsonbConfig config) {
+        config.withSerializers(new FooSerializer());
+    }
+}
+```
+This approach will **not** wipe out configuration provided by extensions (including this one) and is recommended by Quarkus.
+
+In case you really have to provide your own `JsonB` bean, and still want to use this extension you'll have to apply all customizers on your `JsonB` object, as described below:
+
+```
+(...) it is very important to manually inject and apply all io.quarkus.jsonb.JsonbConfigCustomizer beans in the CDI producer that produces javax.json.bind.Jsonb. Failure to do so will prevent JSON-B specific customizations provided by various extensions from being applied.
+```
