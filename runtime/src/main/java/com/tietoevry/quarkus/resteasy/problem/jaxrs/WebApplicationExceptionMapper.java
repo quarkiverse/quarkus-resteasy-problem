@@ -4,6 +4,8 @@ import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,4 +30,22 @@ public class WebApplicationExceptionMapper extends ExceptionMapperBase<WebApplic
         return Problem.valueOf(status, exception.getMessage());
     }
 
+    @Override
+    protected Response toResponse(Problem problem, WebApplicationException originalException) {
+        Response problemResponse = super.toResponse(problem, originalException);
+
+        Response originalResponse = originalException.getResponse();
+        if (originalResponse == null || originalResponse.getHeaders().isEmpty()) {
+            return problemResponse;
+        }
+
+        return withHeaders(problemResponse, originalResponse.getHeaders());
+    }
+
+    private Response withHeaders(Response problemResponse, MultivaluedMap<String, Object> additionalHeaders) {
+        Response.ResponseBuilder responseBuilder = Response.fromResponse(problemResponse);
+        additionalHeaders.forEach((headerName, headerValues) -> headerValues
+                .forEach(headerValue -> responseBuilder.header(headerName, headerValue)));
+        return responseBuilder.build();
+    }
 }

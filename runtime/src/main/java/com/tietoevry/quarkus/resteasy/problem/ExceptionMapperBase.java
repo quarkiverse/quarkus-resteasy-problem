@@ -37,10 +37,12 @@ public abstract class ExceptionMapperBase<E extends Throwable> implements Except
         for (ProblemProcessor processor : processors) {
             problem = processor.apply(problem, exception);
         }
-        return toResponse(problem);
+        return toResponse(problem, exception);
     }
 
-    private Response toResponse(Problem problem) {
+    protected abstract Problem toProblem(E exception);
+
+    protected Response toResponse(Problem problem, E originalException) {
         int statusCode = Optional.ofNullable(problem.getStatus())
                 .map(StatusType::getStatusCode)
                 .orElse(500);
@@ -52,5 +54,4 @@ public abstract class ExceptionMapperBase<E extends Throwable> implements Except
                 .build();
     }
 
-    protected abstract Problem toProblem(E exception);
 }
