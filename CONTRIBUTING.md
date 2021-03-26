@@ -31,9 +31,13 @@ Command line:\
 `./mvnw clean verify -Pnative,jackson -pl integration-test` - running tests in native mode
 
 ### Releasing and deploying final versions
+You'll need OSSRH account with deploy rights + GPG installed and configured to be able to sign artifacts.
+More details on installing, generating and propagating keys can be found [here](https://central.sonatype.org/pages/working-with-pgp-signatures.html).
 ```
 ./run-jvm-tests
 ./mvnw release:prepare -DskipTests
 git pull
-./mvnw deploy -DskipTests
+./mvnw deploy -Pdeploy -DskipTests
 ```
+
+Run `export GPG_TTY=$(tty)` if you see this error: `gpg: signing failed: Inappropriate ioctl for device`
