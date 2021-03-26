@@ -1,10 +1,10 @@
 # Problem Details for HTTP APIs (RFC-7807) implementation for Quarkus / RESTeasy.
 
 [![Build status](https://github.com/TietoEVRY-DataPlatforms/quarkus-resteasy-problem/actions/workflows/maven-full.yaml/badge.svg)](https://github.com/TietoEVRY-DataPlatforms/quarkus-resteasy-problem/actions)
-[![Release](https://img.shields.io/badge/release-v0.9.0-blue.svg)](https://github.com/TietoEVRY-DataPlatforms/quarkus-resteasy-problem/releases)
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://raw.githubusercontent.com/TietoEVRY-DataPlatforms/quarkus-resteasy-problem/master/LICENSE.txt)
-[![JVM](https://img.shields.io/badge/JVM-1.8+-blue.svg)](https://raw.githubusercontent.com/TietoEVRY-DataPlatforms/quarkus-resteasy-problem/master/LICENSE.txt)
-![Features](https://img.shields.io/badge/features-jackson%20%7C%20jsonb%20%7C%20native%20mode-green)
+[![Release](https://img.shields.io/maven-central/v/com.tietoevry.quarkus/quarkus-resteasy-problem)](https://search.maven.org/artifact/com.tietoevry.quarkus/quarkus-resteasy-problem)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/TietoEVRY-DataPlatforms/quarkus-resteasy-problem/blob/master/LICENSE.txt)
+![JVM](https://img.shields.io/badge/JVM-1.8+-green.svg)
+![Quarkus](https://img.shields.io/badge/Quarkus-1.4.2%20+-green.svg)
 
 [RFC7807 Problem](https://tools.ietf.org/html/rfc7807) extension for Quarkus RESTeasy/JaxRS applications, inspired and based on [Zalando Problem library](https://github.com/zalando/problem). \
 This extension registers few JaxRS Exceptions Mappers for common exceptions thrown by Quarkus apps, which turn exceptions into standardized HTTP responses described in RFC, with content type `application/problem+json`. See [Built-in exception mappers](#built-in-exception-mappers) section for more details.
@@ -36,7 +36,18 @@ so-called "HTTP APIs" are usually not.
 You may also want to check [this article](https://dzone.com/articles/when-http-status-codes-are-not-enough-tackling-web) on RFC7807 practical usage.
 
 ## Usage
-Add this to your pom.xml:
+Create a new Quarkus project with the following command (you can also use `jsonb` instead of `jackson`):
+```shell
+mvn io.quarkus:quarkus-maven-plugin:1.12.2.Final:create \
+    -DprojectGroupId=org.acme \
+    -DprojectArtifactId=rest-client-quickstart \
+    -DclassName="org.acme.rest.client.CountriesResource" \
+    -Dpath="/country" \
+    -Dextensions="resteasy,resteasy-jackson"
+cd rest-client-quickstart
+```
+
+Now add this to your `pom.xml`:
 ```xml
 <dependency>
     <groupId>com.tietoevry.quarkus</groupId>
@@ -45,17 +56,19 @@ Add this to your pom.xml:
 </dependency>
 ```
 
-Now you can throw JaxRS or custom exceptions (or Problems) from resources/controllers and business layer:
+Run the application with: `./mvnw compile quarkus:dev`, and you will find `resteasy-problem` in the logs:
+<pre>
+Installed features: [cdi, resteasy, resteasy-jackson, <b><u>resteasy-problem</u></b>]
+</pre>
+
+Now you can throw JaxRS or custom exceptions (or ThrowableProblems from Zalando library) in your code:
 
 ```java
-import javax.ws.rs.*;
-
-@Path("/test-endpoint")
-@Produces(MediaType.APPLICATION_JSON)
-public class ExampleResource {
+@Path("/country")
+public class CountriesResource {
     @GET
-    public String fetchTestResource() {
-        throw new NotFoundException("Test resource not found");
+    public String hello() {
+        throw new NotFoundException("Country not found");
     }
 }
 ```
@@ -63,23 +76,23 @@ public class ExampleResource {
 Which will be translated to HTTP 404 response with body:
 ```json
 HTTP/1.1 404 Not Found
-Content-Length: 83
+Content-Length: 63
 Content-Type: application/problem+json
         
 {
   "title": "Not Found",
   "status": 404,
-  "detail": "Test resource not found"
+  "detail": "Country not found"
 }
 ```
 
-You'll also see this in the logs:
+This extension will also produce the following log message:
 ```
 10:53:48 INFO [http-problem] (executor-thread-1) status=404, title="Not Found", detail="Test resource not found"
 ```
 Exceptions transformed into http 500s (aka server errors) will be logged as `ERROR`, including full stacktrace.
 
-More info on throwing problems from your code: [zalando/problem usage](https://github.com/zalando/problem#usage)
+More info on throwing problems: [zalando/problem usage](https://github.com/zalando/problem#usage)
 
 ## Built-in exception mappers
 This extension provides mappers for common exceptions thrown by Quarkus apps.\
