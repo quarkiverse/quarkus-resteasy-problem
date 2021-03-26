@@ -34,7 +34,6 @@ class ConstraintViolationExceptionMapperTest {
         ConstraintViolationProblem problem = (ConstraintViolationProblem) response.getEntity();
         List<Violation> violations = (List<Violation>) problem.getParameters().get("violations");
         assertThat(violations)
-                .hasSize(2)
                 .usingFieldByFieldElementComparator()
                 .containsExactlyInAnyOrder(
                         new Violation("must be greater than or equal to 20", "numericField"),
