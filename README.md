@@ -13,6 +13,7 @@ Supports:
 - _resteasy-jackson_ and _resteasy-jsonb_
 - JVM and native mode
 - Java 8+
+- Quarkus 1.4.2 +
 
 ## Table of contents
 * [Why you should use it?](#why-you-should-use-it)
@@ -35,29 +36,16 @@ so-called "HTTP APIs" are usually not.
 You may also want to check [this article](https://dzone.com/articles/when-http-status-codes-are-not-enough-tackling-web) on RFC7807 practical usage.
 
 ## Usage
-
---- 
-
-**IMPORTANT**
-
-This extension is not yet available in any public Maven repo. We're working on it.
-
----
-
-In the meantime you have to release, build and publish this extension to your own Nexus repo.
-
-This extension is compatible with _Quarkus 1.4.2.Final_ and newer.
-
 Add this to your pom.xml:
 ```xml
 <dependency>
     <groupId>com.tietoevry.quarkus</groupId>
     <artifactId>quarkus-resteasy-problem</artifactId>
-    <version>0.9.0</version>
+    <version>${resteasy-problem.version}</version>
 </dependency>
 ```
 
-Now you can throw JaxRS or custom exceptions (or Problems) from controllers and business layer:
+Now you can throw JaxRS or custom exceptions (or Problems) from resources/controllers and business layer:
 
 ```java
 import javax.ws.rs.*;
@@ -85,7 +73,7 @@ Content-Type: application/problem+json
 }
 ```
 
-You'll also see it in the logs:
+You'll also see this in the logs:
 ```
 10:53:48 INFO [http-problem] (executor-thread-1) status=404, title="Not Found", detail="Test resource not found"
 ```
