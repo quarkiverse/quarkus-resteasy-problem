@@ -13,7 +13,7 @@ import org.zalando.problem.StatusType;
 
 public abstract class ExceptionMapperBase<E extends Throwable> implements ExceptionMapper<E> {
 
-    private static final MediaType APPLICATION_PROBLEM_JSON = new MediaType("application", "problem+json");
+    public static final MediaType APPLICATION_PROBLEM_JSON = new MediaType("application", "problem+json");
 
     private static final List<ProblemProcessor> processors = new CopyOnWriteArrayList<>();
 

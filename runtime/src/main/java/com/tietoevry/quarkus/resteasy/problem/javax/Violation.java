@@ -10,4 +10,11 @@ public class Violation {
         this.field = field;
     }
 
+    @Override
+    public String toString() {
+        return "Violation{" +
+                "error='" + error + '\'' +
+                ", field='" + field + '\'' +
+                '}';
+    }
 }
