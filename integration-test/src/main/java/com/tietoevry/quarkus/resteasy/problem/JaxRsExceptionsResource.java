@@ -56,7 +56,7 @@ public class JaxRsExceptionsResource {
         throw new ForbiddenException(message);
     }
 
-    static final class TestRuntimeException extends RuntimeException {
+    private static final class TestRuntimeException extends RuntimeException {
         TestRuntimeException() {
             super("First cause", new RuntimeException("Root cause"));
         }
