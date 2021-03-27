@@ -15,12 +15,6 @@ Supports:
 - Java 8+
 - Quarkus 1.4.2 +
 
-## Table of contents
-* [Why you should use it?](#why-you-should-use-it)
-* [Usage](#usage)
-* [Build-in exception mappers](#built-in-exception-mappers)
-* [Configuration options](#configuration-options)
-
 ## Why you should use it?
 This extension unifies (and simplifies) the way services handle and return REST API error messages.
 
