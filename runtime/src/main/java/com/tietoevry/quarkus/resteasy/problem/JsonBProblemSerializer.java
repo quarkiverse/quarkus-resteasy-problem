@@ -16,9 +16,6 @@ public class JsonBProblemSerializer implements JsonbSerializer<Problem> {
         if (problem.getType() != null && !problem.getType().equals(DEFAULT_URI)) {
             generator.write("type", problem.getType().toASCIIString());
         }
-        if (problem.getInstance() != null) {
-            generator.write("instance", problem.getInstance().toASCIIString());
-        }
         if (problem.getStatus() != null) {
             generator.write("status", problem.getStatus().getStatusCode());
         }
@@ -27,6 +24,9 @@ public class JsonBProblemSerializer implements JsonbSerializer<Problem> {
         }
         if (problem.getDetail() != null) {
             generator.write("detail", problem.getDetail());
+        }
+        if (problem.getInstance() != null) {
+            generator.write("instance", problem.getInstance().toASCIIString());
         }
 
         problem.getParameters().forEach((key, value) -> ctx.serialize(key, value, generator));

@@ -27,9 +27,6 @@ public class JacksonProblemSerializer extends StdSerializer<Problem> {
         if (problem.getType() != null && !problem.getType().equals(DEFAULT_URI)) {
             json.writeStringField("type", problem.getType().toASCIIString());
         }
-        if (problem.getInstance() != null) {
-            json.writeStringField("instance", problem.getInstance().toASCIIString());
-        }
         if (problem.getStatus() != null) {
             json.writeNumberField("status", problem.getStatus().getStatusCode());
         }
@@ -38,6 +35,9 @@ public class JacksonProblemSerializer extends StdSerializer<Problem> {
         }
         if (problem.getDetail() != null) {
             json.writeStringField("detail", problem.getDetail());
+        }
+        if (problem.getInstance() != null) {
+            json.writeStringField("instance", problem.getInstance().toASCIIString());
         }
 
         for (Map.Entry<String, Object> entry : problem.getParameters().entrySet()) {

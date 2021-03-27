@@ -4,7 +4,7 @@ import org.jboss.resteasy.specimpl.ResteasyUriInfo;
 
 public class ProblemContextMother {
 
-    static ProblemContext simple() {
+    static ProblemContext simpleContext() {
         return withCause(new RuntimeException());
     }
 

@@ -81,10 +81,10 @@ Content-Type: application/problem+json
         
 {
   "type": "/not-found",
-  "instance": "/country",
   "title": "Not Found",
   "status": 404,
-  "detail": "Country not found"
+  "detail": "Country not found",
+  "instance": "/country"
 }
 ```
 

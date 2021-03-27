@@ -8,6 +8,13 @@ import org.zalando.problem.ProblemBuilder;
 import org.zalando.problem.Status;
 import org.zalando.problem.StatusType;
 
+/**
+ * Replaces null/default values of <i>type</i> and <i>instnace</i> with sensible defaults:<br/>
+ * <ul>
+ * <li><i>type</i> - URI made out of http status phrase in kebab-case, e.g `/bad-request` for HTTP 400</li>
+ * <li><i>instance</i> - URI of currently served endpoint, i.e `/products/123`</li>
+ * </ul>
+ */
 class ProblemDefaultsProvider implements ProblemProcessor {
 
     private static final URI DEFAULT_URI = URI.create("about:blank");
@@ -47,11 +54,14 @@ class ProblemDefaultsProvider implements ProblemProcessor {
     }
 
     private URI statusURI(StatusType statusCode) {
-        return URI.create(typePrefix
-                + statusCode.getReasonPhrase()
-                        .replaceAll(" ", "-")
-                        .replaceAll("[^a-zA-Z0-9-]", "")
-                        .toLowerCase(Locale.ENGLISH));
+        return URI.create(typePrefix + kebabCase(statusCode.getReasonPhrase()));
+    }
+
+    private String kebabCase(String input) {
+        return input
+                .replaceAll(" ", "-")
+                .replaceAll("[^a-zA-Z0-9-]", "")
+                .toLowerCase(Locale.ENGLISH);
     }
 
 }
