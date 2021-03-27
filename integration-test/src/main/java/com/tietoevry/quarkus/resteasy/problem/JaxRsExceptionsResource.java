@@ -7,6 +7,7 @@ import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.RedirectionException;
@@ -21,8 +22,8 @@ public class JaxRsExceptionsResource {
     static final MediaType MEDIA_TYPE_SHOULD_BE_IGNORED = MediaType.TEXT_PLAIN_TYPE;
 
     @GET
-    @Path("/web-application-exception")
-    public void throwWebApplicationException(@QueryParam("status") int status) {
+    @Path("/web-application-exception/{status}")
+    public void throwWebApplicationException(@PathParam("status") int status) {
         throw new WebApplicationException(new TestRuntimeException(), status);
     }
 

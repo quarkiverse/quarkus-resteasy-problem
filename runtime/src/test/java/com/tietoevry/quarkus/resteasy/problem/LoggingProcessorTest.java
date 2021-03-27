@@ -31,7 +31,7 @@ class LoggingProcessorTest {
                 .withStatus(Status.BAD_REQUEST)
                 .build();
 
-        processor.apply(problem, new RuntimeException());
+        processor.apply(problem, ProblemContextMother.simple());
 
         assertThat(capturedInfoMessage()).isEqualTo("status=400, title=\"your fault\"");
     }
@@ -45,7 +45,7 @@ class LoggingProcessorTest {
                 .with("violations", Collections.singletonList(new Violation("too small", "key")))
                 .build();
 
-        processor.apply(problem, new RuntimeException());
+        processor.apply(problem, ProblemContextMother.simple());
 
         assertThat(capturedInfoMessage()).isEqualTo("status=400, title=\"your fault\", custom-field=\"123\", "
                 + "violations=[{\"error\":\"too small\",\"field\":\"key\"}]");
@@ -59,7 +59,7 @@ class LoggingProcessorTest {
                 .build();
         RuntimeException cause = new RuntimeException("hey");
 
-        processor.apply(problem, cause);
+        processor.apply(problem, ProblemContextMother.withCause(cause));
 
         assertThat(capturedErrorMessage()).isEqualTo("status=500, title=\"my fault\"");
         assertThat(capturedErrorException()).isEqualTo(cause);

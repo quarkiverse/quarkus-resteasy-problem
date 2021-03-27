@@ -23,7 +23,7 @@ class MdcPropertiesProcessorTest {
     void processorShouldPreserveAllFields() {
         Problem originalProblem = exampleProblemBuilder().build();
 
-        Problem enhancedProblem = processor.apply(originalProblem, new RuntimeException());
+        Problem enhancedProblem = processor.apply(originalProblem, ProblemContextMother.simple());
 
         assertThat(enhancedProblem.getTitle()).isEqualTo("title");
         assertThat(enhancedProblem.getStatus()).isEqualTo(Status.BAD_REQUEST);
@@ -34,7 +34,7 @@ class MdcPropertiesProcessorTest {
         MDC.put("uuid", "123");
         Problem originalProblem = exampleProblemBuilder().build();
 
-        Problem enhancedProblem = processor.apply(originalProblem, new RuntimeException());
+        Problem enhancedProblem = processor.apply(originalProblem, ProblemContextMother.simple());
 
         assertThat(enhancedProblem.getParameters().get("uuid")).isEqualTo("123");
         assertThat(enhancedProblem.getParameters().containsKey("another")).isFalse();
@@ -47,7 +47,7 @@ class MdcPropertiesProcessorTest {
                 .with("customProperty", "abc")
                 .build();
 
-        Problem enhancedProblem = processor.apply(originalProblem, new RuntimeException());
+        Problem enhancedProblem = processor.apply(originalProblem, ProblemContextMother.simple());
 
         assertThat(enhancedProblem.getParameters().get("customProperty")).isEqualTo("abc");
     }

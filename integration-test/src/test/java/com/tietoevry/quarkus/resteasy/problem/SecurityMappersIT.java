@@ -27,6 +27,7 @@ class SecurityMappersIT {
                 .queryParam("message", SAMPLE_DETAIL)
                 .get("/throw/security/unauthorized-exception")
                 .then()
+                .log().all()
                 .statusCode(UNAUTHORIZED.getStatusCode())
                 .body("title", equalTo(UNAUTHORIZED.getReasonPhrase()))
                 .body("status", equalTo(UNAUTHORIZED.getStatusCode()))

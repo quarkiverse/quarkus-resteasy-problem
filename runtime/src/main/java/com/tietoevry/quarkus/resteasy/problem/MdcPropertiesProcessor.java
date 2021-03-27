@@ -19,7 +19,7 @@ class MdcPropertiesProcessor implements ProblemProcessor {
     }
 
     @Override
-    public Problem apply(Problem problem, Throwable cause) {
+    public Problem apply(Problem problem, ProblemContext context) {
         ProblemBuilder builder = Problem.builder()
                 .withType(problem.getType())
                 .withTitle(problem.getTitle())
