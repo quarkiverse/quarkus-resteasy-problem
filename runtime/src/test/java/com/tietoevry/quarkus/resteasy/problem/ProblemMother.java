@@ -10,7 +10,11 @@ public class ProblemMother {
     public static final String SERIALIZED_BAD_REQUEST_PROBLEM = "{\"status\":400,\"title\":\"Something wrong in the dirt\"}";
     public static final String SERIALIZED_COMPLEX_PROBLEM = "{\"type\":\"URI:goeshere\",\"status\":400,\"title\":\"Something wrong in the dirt\",\"detail\":\"Deep down wrongness, zażółć gęślą jaźń for Håkensth\",\"custom_field_1\":\"too long\",\"custom_field_2\":\"too short\"}";
 
-    public static ProblemBuilder badRequestProblem() {
+    public static Problem badRequestProblem() {
+        return badRequestProblemBuilder().build();
+    }
+
+    public static ProblemBuilder badRequestProblemBuilder() {
         return Problem.builder()
                 .withTitle("There's something wrong with your request")
                 .withStatus(Status.BAD_REQUEST);

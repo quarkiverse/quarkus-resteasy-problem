@@ -3,6 +3,9 @@ package com.tietoevry.quarkus.resteasy.problem;
 import io.quarkus.runtime.annotations.Recorder;
 import java.util.Set;
 
+/**
+ * Quarkus Recorder that applies configuration in the runtime.
+ */
 @Recorder
 public class ProblemRecorder {
 
@@ -12,12 +15,12 @@ public class ProblemRecorder {
 
     public void configureMdc(Set<String> includeMdcProperties) {
         if (!includeMdcProperties.isEmpty()) {
-            ExceptionMapperBase.postProcessorsRegistry.register(new MdcPropertiesProcessor(includeMdcProperties));
+            ExceptionMapperBase.postProcessorsRegistry.register(new MdcPropertiesInjector(includeMdcProperties));
         }
     }
 
     public void enableMetrics() {
-        ExceptionMapperBase.postProcessorsRegistry.register(new HttpErrorMetricsProcessor());
+        ExceptionMapperBase.postProcessorsRegistry.register(new MicrometerMetricsCollector());
     }
 
 }

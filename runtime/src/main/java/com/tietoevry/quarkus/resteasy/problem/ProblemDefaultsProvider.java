@@ -1,18 +1,15 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
 import java.net.URI;
-import java.util.Optional;
 import javax.ws.rs.core.UriInfo;
 import org.zalando.problem.Problem;
 import org.zalando.problem.ProblemBuilder;
-import org.zalando.problem.Status;
-import org.zalando.problem.StatusType;
 
 /**
- * Replaces <code>null</code> values of <code>status</code> with default HTTP500
- * and/or <code>instance</code> with URI of currently served endpoint, i.e <code>/products/123</code>
+ * Replaces <code>null</code> value of <code>instance</code> with URI of currently served endpoint, i.e
+ * <code>/products/123</code>
  */
-class ProblemDefaultsProvider implements ProblemProcessor {
+class ProblemDefaultsProvider implements ProblemPostProcessor {
 
     @Override
     public int priority() {
@@ -21,24 +18,16 @@ class ProblemDefaultsProvider implements ProblemProcessor {
 
     @Override
     public Problem apply(Problem problem, ProblemContext context) {
-        StatusType status = Optional.ofNullable(problem.getStatus())
-                .orElse(Status.INTERNAL_SERVER_ERROR);
-        URI instance = Optional.ofNullable(problem.getInstance())
-                .orElseGet(() -> defaultUri(context));
+        if (problem.getInstance() != null) {
+            return problem;
+        }
 
-        ProblemBuilder builder = Problem.builder()
-                .withType(problem.getType())
-                .withInstance(instance)
-                .withTitle(problem.getTitle())
-                .withStatus(status)
-                .withDetail(problem.getDetail());
-
-        problem.getParameters().forEach(builder::with);
-
+        ProblemBuilder builder = mutableCopyOf(problem);
+        builder.withInstance(defaultInstance(context));
         return builder.build();
     }
 
-    private URI defaultUri(ProblemContext context) {
+    private URI defaultInstance(ProblemContext context) {
         UriInfo uriInfo = context.uriInfo;
         return (uriInfo == null) ? null : URI.create(uriInfo.getPath());
     }

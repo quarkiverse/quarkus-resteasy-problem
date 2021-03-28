@@ -2,16 +2,15 @@ package com.tietoevry.quarkus.resteasy.problem;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.slf4j.LoggerFactory;
 import org.zalando.problem.Problem;
 
 /**
  * Container for prioritised list of Problem post-processors.
  */
-class PostProcessorsRegistry {
+public class PostProcessorsRegistry {
 
-    private final List<ProblemProcessor> processors = new ArrayList<>();
+    private final List<ProblemPostProcessor> processors = new ArrayList<>();
 
     public PostProcessorsRegistry() {
         reset();
@@ -19,13 +18,13 @@ class PostProcessorsRegistry {
 
     synchronized void reset() {
         processors.clear();
-        register(new LoggingProcessor(LoggerFactory.getLogger("http-problem")));
+        register(new ProblemLogger(LoggerFactory.getLogger("http-problem")));
         register(new ProblemDefaultsProvider());
     }
 
-    synchronized void register(ProblemProcessor processor) {
+    synchronized void register(ProblemPostProcessor processor) {
         processors.add(processor);
-        processors.sort(ProblemProcessor.DEFAULT_ORDERING);
+        processors.sort(ProblemPostProcessor.DEFAULT_ORDERING);
     }
 
     /**
@@ -36,10 +35,11 @@ class PostProcessorsRegistry {
      * @return Enhanced version of original Problem
      */
     public Problem applyPostProcessing(Problem problem, ProblemContext context) {
-        for (ProblemProcessor processor : processors) {
-            problem = processor.apply(problem, context);
+        Problem finalProblem = problem;
+        for (ProblemPostProcessor processor : processors) {
+            finalProblem = processor.apply(finalProblem, context);
         }
-        return problem;
+        return finalProblem;
     }
 
 }

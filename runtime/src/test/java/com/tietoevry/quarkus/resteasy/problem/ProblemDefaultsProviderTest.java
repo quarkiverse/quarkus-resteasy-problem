@@ -1,13 +1,13 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
 import static com.tietoevry.quarkus.resteasy.problem.ProblemContextMother.simpleContext;
+import static com.tietoevry.quarkus.resteasy.problem.ProblemMother.badRequestProblem;
+import static com.tietoevry.quarkus.resteasy.problem.ProblemMother.badRequestProblemBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.net.URI;
 import org.junit.jupiter.api.Test;
 import org.zalando.problem.Problem;
-import org.zalando.problem.ProblemBuilder;
-import org.zalando.problem.Status;
 
 class ProblemDefaultsProviderTest {
 
@@ -15,28 +15,23 @@ class ProblemDefaultsProviderTest {
 
     @Test
     void shouldProvideDefaults() {
-        Problem originalProblem = exampleProblemBuilder().build();
+        ProblemContext context = simpleContext();
 
-        Problem enhancedProblem = processor.apply(originalProblem, simpleContext());
+        Problem enhancedProblem = processor.apply(badRequestProblem(), context);
 
-        assertThat(enhancedProblem.getInstance()).hasPath("/endpoint");
+        assertThat(enhancedProblem.getInstance()).hasPath(context.uriInfo.getPath());
     }
 
     @Test
     void shouldNotOverrideExistingValues() {
-        Problem originalProblem = exampleProblemBuilder()
+        Problem originalProblem = badRequestProblemBuilder()
+                .withType(URI.create("/business-error"))
                 .withInstance(URI.create("/non-default-endpoint"))
                 .build();
 
         Problem enhancedProblem = processor.apply(originalProblem, simpleContext());
 
         assertThat(enhancedProblem.getInstance()).hasPath("/non-default-endpoint");
-    }
-
-    private ProblemBuilder exampleProblemBuilder() {
-        return Problem.builder()
-                .withTitle("title")
-                .withStatus(Status.BAD_REQUEST);
     }
 
 }
