@@ -89,7 +89,7 @@
                 <configuration>
                     <systemPropertyVariables>
                         <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-                        <quarkus.log.level>DEBUG</quarkus.log.level>
+                        <quarkus.log.level>INFO</quarkus.log.level>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
