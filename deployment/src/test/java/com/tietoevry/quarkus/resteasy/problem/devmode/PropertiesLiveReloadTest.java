@@ -12,8 +12,8 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 public class PropertiesLiveReloadTest {
 
-    static final String ORIGINAL_PROPERTY_NAME = "field-from-properties";
-    static final String NEW_PROPERTY_NAME = "another-field-from-properties";
+    static final String ORIGINAL_PROPERTY_NAME = "field-from-configuration";
+    static final String NEW_PROPERTY_NAME = "another-field-from-configuration";
 
     static final String PROPERTY_VALUE = "123";
 

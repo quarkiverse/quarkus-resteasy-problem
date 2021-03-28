@@ -13,7 +13,7 @@ public class MdcResource {
     @GET
     public void setMdcAndThrow() {
         MDC.put("uuid", "30a48c9e");
-        MDC.put("field-from-properties", "123");
+        MDC.put("field-from-configuration", "123");
         throw new RuntimeException("mdc test");
     }
 
