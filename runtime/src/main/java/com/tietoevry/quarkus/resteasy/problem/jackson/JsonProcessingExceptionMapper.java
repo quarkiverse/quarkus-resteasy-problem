@@ -1,4 +1,4 @@
-package com.tietoevry.quarkus.resteasy.problem.misc;
+package com.tietoevry.quarkus.resteasy.problem.jackson;
 
 import static org.zalando.problem.Status.BAD_REQUEST;
 

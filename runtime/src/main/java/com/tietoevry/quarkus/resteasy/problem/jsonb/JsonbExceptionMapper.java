@@ -1,4 +1,4 @@
-package com.tietoevry.quarkus.resteasy.problem.misc;
+package com.tietoevry.quarkus.resteasy.problem.jsonb;
 
 import static org.zalando.problem.Status.BAD_REQUEST;
 import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;

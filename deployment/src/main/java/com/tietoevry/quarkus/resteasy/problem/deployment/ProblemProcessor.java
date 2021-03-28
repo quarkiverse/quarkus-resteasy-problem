@@ -48,17 +48,22 @@ public class ProblemProcessor {
     }
 
     @BuildStep(onlyIf = JacksonDetector.class)
-    void registerJacksonMapperCustomizer(BuildProducer<AdditionalBeanBuildItem> additionalBeans) {
-        additionalBeans
-                .produce(new AdditionalBeanBuildItem("com.tietoevry.quarkus.resteasy.problem.JacksonProblemModuleRegistrar"));
+    void registerJacksonItems(BuildProducer<AdditionalBeanBuildItem> additionalBeans,
+            BuildProducer<ResteasyJaxrsProviderBuildItem> providers) {
+        additionalBeans.produce(new AdditionalBeanBuildItem(
+                "com.tietoevry.quarkus.resteasy.problem.jackson.JacksonProblemModuleRegistrar"));
+
+        providers.produce(new ResteasyJaxrsProviderBuildItem(
+                "com.tietoevry.quarkus.resteasy.problem.jackson.JsonProcessingExceptionMapper"));
     }
 
     @BuildStep(onlyIf = JsonBDetector.class)
     void registerJsonbItems(BuildProducer<JsonbSerializerBuildItem> serializers,
             BuildProducer<ResteasyJaxrsProviderBuildItem> providers) {
-        serializers.produce(new JsonbSerializerBuildItem("com.tietoevry.quarkus.resteasy.problem.JsonBProblemSerializer"));
+        serializers.produce(
+                new JsonbSerializerBuildItem("com.tietoevry.quarkus.resteasy.problem.jsonb.JsonbProblemSerializer"));
         providers.produce(
-                new ResteasyJaxrsProviderBuildItem("com.tietoevry.quarkus.resteasy.problem.misc.JsonbExceptionMapper"));
+                new ResteasyJaxrsProviderBuildItem("com.tietoevry.quarkus.resteasy.problem.jsonb.JsonbExceptionMapper"));
     }
 
     @BuildStep
@@ -66,12 +71,6 @@ public class ProblemProcessor {
         EXCEPTION_MAPPER_CLASSES.stream()
                 .map(ResteasyJaxrsProviderBuildItem::new)
                 .forEach(providers::produce);
-    }
-
-    @BuildStep(onlyIf = JacksonDetector.class)
-    void registerJacksonProviders(BuildProducer<ResteasyJaxrsProviderBuildItem> providers) {
-        providers.produce(new ResteasyJaxrsProviderBuildItem(
-                "com.tietoevry.quarkus.resteasy.problem.misc.JsonProcessingExceptionMapper"));
     }
 
     @BuildStep

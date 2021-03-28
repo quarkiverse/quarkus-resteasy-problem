@@ -1,4 +1,4 @@
-package com.tietoevry.quarkus.resteasy.problem;
+package com.tietoevry.quarkus.resteasy.problem.jackson;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
