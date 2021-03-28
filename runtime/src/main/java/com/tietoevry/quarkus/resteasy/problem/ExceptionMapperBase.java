@@ -1,9 +1,6 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
-import java.util.Comparator;
-import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CopyOnWriteArrayList;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -18,23 +15,7 @@ import org.zalando.problem.StatusType;
 public abstract class ExceptionMapperBase<E extends Throwable> implements ExceptionMapper<E> {
 
     public static final MediaType APPLICATION_PROBLEM_JSON = new MediaType("application", "problem+json");
-
-    private static final List<ProblemProcessor> processors = new CopyOnWriteArrayList<>();
-
-    static {
-        resetProcessors();
-    }
-
-    static synchronized void resetProcessors() {
-        processors.clear();
-        registerProcessor(new LoggingProcessor(LoggerFactory.getLogger("http-problem")));
-        registerProcessor(new ProblemDefaultsProvider());
-    }
-
-    static synchronized void registerProcessor(ProblemProcessor processor) {
-        processors.add(processor);
-        processors.sort(Comparator.comparingInt(ProblemProcessor::priority).reversed());
-    }
+    public static final PostProcessorsRegistry postProcessorsRegistry = new PostProcessorsRegistry();
 
     @Context
     UriInfo uriInfo;
@@ -43,10 +24,8 @@ public abstract class ExceptionMapperBase<E extends Throwable> implements Except
     public final Response toResponse(E exception) {
         Problem problem = toProblem(exception);
         ProblemContext context = new ProblemContext(exception, uriInfo);
-        for (ProblemProcessor processor : processors) {
-            problem = processor.apply(problem, context);
-        }
-        return toResponse(problem, exception);
+        Problem finalProblem = postProcessorsRegistry.applyPostProcessing(problem, context);
+        return toResponse(finalProblem, exception);
     }
 
     protected abstract Problem toProblem(E exception);
