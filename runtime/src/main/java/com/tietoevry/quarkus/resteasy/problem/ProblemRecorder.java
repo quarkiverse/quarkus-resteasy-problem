@@ -7,16 +7,17 @@ import java.util.Set;
 public class ProblemRecorder {
 
     public void reset() {
-        ExceptionMapperBase.resetProcessors();
+        ExceptionMapperBase.postProcessorsRegistry.reset();
     }
 
     public void configureMdc(Set<String> includeMdcProperties) {
         if (!includeMdcProperties.isEmpty()) {
-            ExceptionMapperBase.registerProcessor(new MdcPropertiesProcessor(includeMdcProperties));
+            ExceptionMapperBase.postProcessorsRegistry.register(new MdcPropertiesProcessor(includeMdcProperties));
         }
     }
 
     public void enableMetrics() {
-        ExceptionMapperBase.registerProcessor(new HttpErrorMetricsProcessor());
+        ExceptionMapperBase.postProcessorsRegistry.register(new HttpErrorMetricsProcessor());
     }
+
 }
