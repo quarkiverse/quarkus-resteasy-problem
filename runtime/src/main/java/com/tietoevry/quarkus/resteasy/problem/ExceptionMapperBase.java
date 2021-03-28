@@ -1,16 +1,15 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
-import java.util.Optional;
+import com.tietoevry.quarkus.resteasy.problem.postprocessing.PostProcessorsRegistry;
+import com.tietoevry.quarkus.resteasy.problem.postprocessing.ProblemContext;
+import java.util.Objects;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.ExceptionMapper;
 import org.apiguardian.api.API;
-import org.slf4j.LoggerFactory;
 import org.zalando.problem.Problem;
-import org.zalando.problem.Status;
-import org.zalando.problem.StatusType;
 
 public abstract class ExceptionMapperBase<E extends Throwable> implements ExceptionMapper<E> {
 
@@ -35,11 +34,9 @@ public abstract class ExceptionMapperBase<E extends Throwable> implements Except
      */
     @API(status = API.Status.INTERNAL)
     protected Response toResponse(Problem problem, E originalException) {
-        StatusType status = Optional.ofNullable(problem.getStatus())
-                .orElse(Status.INTERNAL_SERVER_ERROR);
-
+        Objects.requireNonNull(problem.getStatus());
         return Response
-                .status(status.getStatusCode())
+                .status(problem.getStatus().getStatusCode())
                 .type(APPLICATION_PROBLEM_JSON)
                 .entity(problem)
                 .build();

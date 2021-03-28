@@ -1,37 +1,47 @@
-package com.tietoevry.quarkus.resteasy.problem;
+package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.zalando.problem.Problem;
-import org.zalando.problem.StatusType;
+import org.zalando.problem.ProblemBuilder;
 
-class LoggingProcessor implements ProblemProcessor {
+/**
+ * Logs problems with ERROR (for HTTP 5XX) or INFO (other exceptions) log level. In case of ERROR (HTTP 5XX) stack trace is
+ * printed as well.
+ */
+class ProblemLogger implements ProblemPostProcessor {
 
     private final Logger logger;
     private final ObjectMapper mapper = new ObjectMapper();
 
-    public LoggingProcessor(Logger logger) {
+    ProblemLogger(Logger logger) {
         this.logger = logger;
     }
 
     @Override
-    public Problem apply(Problem problem, ProblemContext context) {
-        int statusCode = Optional.ofNullable(problem.getStatus())
-                .map(StatusType::getStatusCode)
-                .orElse(500);
-
-        if (statusCode >= 500) {
-            logger.error(serialize(problem), context.cause);
-        } else {
-            logger.info(serialize(problem));
+    public ProblemBuilder apply(ProblemBuilder builder, ProblemContext context) {
+        if (!logger.isErrorEnabled()) {
+            return builder;
         }
-        return problem;
+
+        Problem problem = builder.build();
+        Objects.requireNonNull(problem.getStatus());
+
+        if (problem.getStatus().getStatusCode() >= 500) {
+            if (logger.isErrorEnabled()) {
+                logger.error(serialize(problem), context.cause);
+            }
+        } else {
+            if (logger.isInfoEnabled()) {
+                logger.info(serialize(problem));
+            }
+        }
+        return builder;
     }
 
     private String serialize(Problem problem) {

@@ -1,13 +1,13 @@
-package com.tietoevry.quarkus.resteasy.problem;
+package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
-import static com.tietoevry.quarkus.resteasy.problem.ProblemContextMother.simpleContext;
 import static com.tietoevry.quarkus.resteasy.problem.ProblemMother.badRequestProblem;
+import static com.tietoevry.quarkus.resteasy.problem.postprocessing.ProblemContextMother.simpleContext;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.zalando.problem.Problem;
+import org.zalando.problem.ProblemBuilder;
 
 class PostProcessorsRegistryTest {
 
@@ -41,11 +41,11 @@ class PostProcessorsRegistryTest {
         assertThat(invocations).containsExactly(HIGHEST, MEDIUM, MEDIUM, MEDIUM);
     }
 
-    ProblemProcessor processorWithPriority(int priority) {
+    ProblemPostProcessor processorWithPriority(int priority) {
         return new TestProcessor(priority);
     }
 
-    class TestProcessor implements ProblemProcessor {
+    class TestProcessor implements ProblemPostProcessor {
 
         final int priority;
 
@@ -54,9 +54,9 @@ class PostProcessorsRegistryTest {
         }
 
         @Override
-        public Problem apply(Problem problem, ProblemContext problemContext) {
+        public ProblemBuilder apply(ProblemBuilder problemBuilder, ProblemContext problemContext) {
             invocations.add(priority);
-            return problem;
+            return problemBuilder;
         }
 
         @Override
