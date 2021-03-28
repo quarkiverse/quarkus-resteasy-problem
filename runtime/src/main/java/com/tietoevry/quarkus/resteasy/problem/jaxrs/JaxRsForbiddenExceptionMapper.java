@@ -6,7 +6,6 @@ import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
 import javax.annotation.Priority;
 import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.Priorities;
-import javax.ws.rs.ext.Provider;
 import org.zalando.problem.Problem;
 
 /**
@@ -14,7 +13,6 @@ import org.zalando.problem.Problem;
  *
  * @see io.quarkus.resteasy.runtime.ForbiddenExceptionMapper
  */
-@Provider
 @Priority(Priorities.USER)
 public class JaxRsForbiddenExceptionMapper extends ExceptionMapperBase<ForbiddenException> {
 

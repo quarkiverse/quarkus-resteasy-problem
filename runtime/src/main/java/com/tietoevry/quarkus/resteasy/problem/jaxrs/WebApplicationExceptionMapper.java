@@ -6,13 +6,16 @@ import javax.ws.rs.Priorities;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.Provider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
 
-@Provider
+/**
+ * Generic exception mapper for JaxRS WebApplicationExceptions - it passes status and message to application/problem response.
+ *
+ * @see io.quarkus.resteasy.runtime.ForbiddenExceptionMapper
+ */
 @Priority(Priorities.USER)
 public class WebApplicationExceptionMapper extends ExceptionMapperBase<WebApplicationException> {
 

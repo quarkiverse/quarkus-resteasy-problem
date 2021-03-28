@@ -6,10 +6,12 @@ import javax.annotation.Priority;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.ws.rs.Priorities;
-import javax.ws.rs.ext.Provider;
 import org.zalando.problem.Problem;
 
-@Provider
+/**
+ * Exception Mapper for ConstraintViolationException from Bean Validation API. Hibernate Validator, among others throw
+ * these exceptions. Adds 'violations' field into `application/problem` responses.
+ */
 @Priority(Priorities.USER)
 public class ConstraintViolationExceptionMapper extends ExceptionMapperBase<ConstraintViolationException> {
 

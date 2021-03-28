@@ -6,7 +6,6 @@ import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
 import io.quarkus.security.UnauthorizedException;
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
-import javax.ws.rs.ext.Provider;
 import org.zalando.problem.Problem;
 
 /**
@@ -14,7 +13,6 @@ import org.zalando.problem.Problem;
  *
  * @see io.quarkus.resteasy.runtime.UnauthorizedExceptionMapper
  */
-@Provider
 @Priority(Priorities.USER)
 public class UnauthorizedExceptionMapper extends ExceptionMapperBase<UnauthorizedException> {
 

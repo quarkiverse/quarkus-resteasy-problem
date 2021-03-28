@@ -6,6 +6,9 @@ import javax.json.bind.serializer.SerializationContext;
 import javax.json.stream.JsonGenerator;
 import org.zalando.problem.Problem;
 
+/**
+ * Low level JsonB serializer for Problem type.
+ */
 public class JsonBProblemSerializer implements JsonbSerializer<Problem> {
 
     private static final URI DEFAULT_URI = URI.create("about:blank");

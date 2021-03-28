@@ -11,6 +11,10 @@ import org.slf4j.Logger;
 import org.zalando.problem.Problem;
 import org.zalando.problem.StatusType;
 
+/**
+ * Logs problems with ERROR (for HTTP 5XX) or INFO (other exceptions) log level. In case of ERROR (HTTP 5XX) stack trace is
+ * printed as well.
+ */
 class LoggingProcessor implements ProblemProcessor {
 
     private final Logger logger;

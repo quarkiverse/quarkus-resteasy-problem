@@ -8,14 +8,12 @@ import javax.annotation.Priority;
 import javax.json.bind.JsonbException;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.ProcessingException;
-import javax.ws.rs.ext.Provider;
 import org.zalando.problem.Problem;
 
 /**
- * Unfortunately if payload body is malformed, and if JsonB is used, then JsonbException is thrown not directly,
- * but is wrapped into ProcessingException
+ * Unfortunately Quarkus+JsonB throws ProcessingException, not JsonbException in case of malformed payload body, so `cause`
+ * needs to be checked explicitly.
  */
-@Provider
 @Priority(Priorities.USER)
 public class JsonbExceptionMapper extends ExceptionMapperBase<ProcessingException> {
 

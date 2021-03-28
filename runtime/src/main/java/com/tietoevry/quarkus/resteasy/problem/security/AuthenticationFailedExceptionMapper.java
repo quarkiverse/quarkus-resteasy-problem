@@ -6,7 +6,6 @@ import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
 import io.quarkus.security.AuthenticationFailedException;
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
-import javax.ws.rs.ext.Provider;
 import org.zalando.problem.Problem;
 
 /**
@@ -14,7 +13,6 @@ import org.zalando.problem.Problem;
  *
  * @see io.quarkus.resteasy.runtime.AuthenticationFailedExceptionMapper
  */
-@Provider
 @Priority(Priorities.USER)
 public class AuthenticationFailedExceptionMapper extends ExceptionMapperBase<AuthenticationFailedException> {
 

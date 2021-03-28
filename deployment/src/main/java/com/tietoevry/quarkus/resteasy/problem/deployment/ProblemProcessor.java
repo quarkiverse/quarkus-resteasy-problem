@@ -17,8 +17,6 @@ import java.util.Arrays;
 import java.util.List;
 import org.jboss.logging.Logger;
 
-;
-
 public class ProblemProcessor {
 
     private static final String FEATURE_NAME = "resteasy-problem";
