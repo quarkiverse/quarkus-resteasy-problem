@@ -13,8 +13,6 @@ import org.zalando.problem.Status;
 
 /**
  * Generic exception mapper for JaxRS WebApplicationExceptions - it passes status and message to application/problem response.
- *
- * @see io.quarkus.resteasy.runtime.ForbiddenExceptionMapper
  */
 @Priority(Priorities.USER)
 public class WebApplicationExceptionMapper extends ExceptionMapperBase<WebApplicationException> {

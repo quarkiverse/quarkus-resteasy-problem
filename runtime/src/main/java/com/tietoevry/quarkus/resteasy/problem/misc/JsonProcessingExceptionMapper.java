@@ -8,6 +8,9 @@ import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
 import org.zalando.problem.Problem;
 
+/**
+ * Mapper for Jackson payload processing exceptions.
+ */
 @Priority(Priorities.USER)
 public class JsonProcessingExceptionMapper extends ExceptionMapperBase<JsonProcessingException> {
 

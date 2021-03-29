@@ -9,7 +9,7 @@ import javax.ws.rs.Priorities;
 import org.zalando.problem.Problem;
 
 /**
- * Overriding default RESTEasy exception mapper to make all error responses compliant with RFC7807.
+ * Mapper overriding default Quarkus exception mapper to make all error responses compliant with RFC7807.
  *
  * @see io.quarkus.resteasy.runtime.NotFoundExceptionMapper
  */

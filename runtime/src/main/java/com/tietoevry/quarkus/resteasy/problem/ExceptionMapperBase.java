@@ -13,8 +13,8 @@ import org.zalando.problem.Problem;
 import org.zalando.problem.StatusType;
 
 /**
- * Base class for all ExceptionMappers, takes care of mapping Exceptions to Problems, triggering post-processing stage, and
- * creating final JaxRS Response.
+ * Base class for all ExceptionMappers in this extension, takes care of mapping Exceptions to Problems, triggering
+ * post-processing stage, and creating final JaxRS Response.
  */
 public abstract class ExceptionMapperBase<E extends Throwable> implements ExceptionMapper<E> {
 

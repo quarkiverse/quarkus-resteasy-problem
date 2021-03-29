@@ -5,6 +5,9 @@ import javax.ws.rs.Priorities;
 import org.zalando.problem.Problem;
 import org.zalando.problem.ThrowableProblem;
 
+/**
+ * Mapper for ThrowableProblem exception from Zalando Problem library.
+ */
 @Priority(Priorities.USER)
 public class ProblemMapper extends ExceptionMapperBase<ThrowableProblem> {
 

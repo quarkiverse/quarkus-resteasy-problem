@@ -6,6 +6,9 @@ import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
 import org.zalando.problem.Problem;
 
+/**
+ * Default exception mapper processing all exceptions not matching any more specific mapper.
+ */
 @Priority(Priorities.USER)
 public class DefaultExceptionMapper extends ExceptionMapperBase<Exception> {
 
