@@ -99,16 +99,17 @@ This extension provides mappers for common exceptions thrown by Quarkus apps.\
 Some of them are thrown by Quarkus itself in certain situations (i.e failed authorization).
 You can throw them from controllers or business logic as well (i.e `NotFoundException` as in the example above).
 
-| Exception                                | Thrown by                     | Example JSON response                           |
+| Exception                                | Thrown by / when                 | Example JSON response                           |
 |------------------------------------------|--------------------------------|------------------------------------------------|
 | `sec.AuthenticationFailedException`      | Missing or invalid JWT         | `{ "status" : 401, ... }`                      |
 | `sec.UnauthorizedException`              | Missing or invalid JWT         | `{ "status" : 401, ... }`                      |
 | `sec.ForbiddenException`                 | `@RolesAllowed` not satisfied  | `{ "status" : 403, ... }`                      |
 | `javax.ConstraintViolationException`     | Hibernate Validator (`@Valid`) | `{ "status" : 400, violations : [{...}] }`     |
 | `javax.ValidationException`              | user or Quarkus                | `{ "status" : 400, ... }`                      |
+| `javax.RedirectionException`             | user or Quarkus                | `{ "status" : 3XX, ... }` + `Location` header    |
 | `jaxrs.NotFoundException`                | RESTeasy, user                 | `{ "status" : 404, ... }`                      |
-| `jaxrs.WebApplicationException(status)`  | user or Quarkus                | `{ "status" : <status>, ... }`         |
-| `zalando.Problem(status)`                | user or Quarkus                | `{ "status" : <status>, ... }`         |
+| `jaxrs.WebApplicationException(status)`  | user or Quarkus                | `{ "status" : <status>, ... }`                 |
+| `zalando.Problem(status)`                | user or Quarkus                | `{ "status" : <status>, ... }`                 |
 | `Exception`                              | user or Quarkus                | `{ "status" : 500, ... }`                      |
 
 There's also top-level mapper for `Exception` class, which will convert all unhandled exceptions to HTTP 500 response.

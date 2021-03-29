@@ -26,13 +26,13 @@ public class GenericExceptionsResource {
         throw new TestProblem(title, Status.valueOf(status), detail);
     }
 
-    private static final class TestProblem extends AbstractThrowableProblem {
+    static final class TestProblem extends AbstractThrowableProblem {
         TestProblem(String title, StatusType status, String detail) {
             super(null, title, status, detail, null, null);
         }
     }
 
-    private static final class TestRuntimeException extends RuntimeException {
+    static final class TestRuntimeException extends RuntimeException {
         TestRuntimeException(String message) {
             super(message, new RuntimeException("Root cause"));
         }
