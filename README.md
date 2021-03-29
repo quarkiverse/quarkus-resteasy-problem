@@ -80,7 +80,6 @@ Content-Length: XX
 Content-Type: application/problem+json
         
 {
-  "type": "/not-found",
   "title": "Not Found",
   "status": 404,
   "detail": "Country not found",
@@ -118,18 +117,6 @@ There's also top-level mapper for `Exception` class, which will convert all unha
 
 ## Configuration options
 All configuration options are build-time properties, meaning that you cannot override them in the runtime (i.e via environment variables).
-
-- Prefix for `type` URI field. Default value: `/`
-```
-quarkus.resteasy.problem.type-prefix=/api/errors/
-```
-Result:
-```json
-{
-  "type": "/api/errors/not-found",
-  (...)
-}
-```
 
 - Include MDC properties in the API response (you have to provide those properties to MDC using `MDC.put`)
 ```

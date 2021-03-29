@@ -47,8 +47,8 @@ class MetricsIT {
 
     private void throwException(int httpStatus) {
         given()
-                .pathParam("status", httpStatus)
-                .get("/throw/jax-rs/web-application-exception/{status}")
+                .queryParam("status", httpStatus)
+                .get("/throw/jax-rs/web-application-exception")
                 .then();
     }
 

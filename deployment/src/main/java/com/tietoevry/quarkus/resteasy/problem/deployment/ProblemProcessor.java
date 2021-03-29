@@ -90,9 +90,8 @@ public class ProblemProcessor {
 
     @Record(RUNTIME_INIT)
     @BuildStep
-    void setupBasicConfig(ProblemRecorder recorder, ProblemBuildConfig config) {
+    void setupMdc(ProblemRecorder recorder, ProblemBuildConfig config) {
         recorder.configureMdc(config.includeMdcProperties);
-        recorder.configureTypePrefix(config.typePrefix);
     }
 
     @Record(RUNTIME_INIT)

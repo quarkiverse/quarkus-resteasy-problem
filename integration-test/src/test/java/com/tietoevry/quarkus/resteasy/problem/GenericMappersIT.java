@@ -26,7 +26,6 @@ class GenericMappersIT {
                 .get("/throw/generic/runtime-exception")
                 .then()
                 .statusCode(INTERNAL_SERVER_ERROR.getStatusCode())
-                .body("type", equalTo("/api/errors/internal-server-error"))
                 .body("instance", equalTo("/throw/generic/runtime-exception"))
                 .body("title", equalTo(INTERNAL_SERVER_ERROR.getReasonPhrase()))
                 .body("status", equalTo(INTERNAL_SERVER_ERROR.getStatusCode()))

@@ -28,6 +28,7 @@ public abstract class ExceptionMapperBase<E extends Throwable> implements Except
     static synchronized void resetProcessors() {
         processors.clear();
         registerProcessor(new LoggingProcessor(LoggerFactory.getLogger("http-problem")));
+        registerProcessor(new ProblemDefaultsProvider());
     }
 
     static synchronized void registerProcessor(ProblemProcessor processor) {

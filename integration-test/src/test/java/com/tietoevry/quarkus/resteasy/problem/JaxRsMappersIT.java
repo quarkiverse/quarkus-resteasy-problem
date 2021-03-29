@@ -31,10 +31,9 @@ class JaxRsMappersIT {
     @ValueSource(ints = { 400, 401, 403, 404, 500, 502, 511 })
     void webApplicationExceptionShouldReturnGivenStatus(int status) {
         given()
-                .pathParam("status", status)
-                .get("/throw/jax-rs/web-application-exception/{status}")
+                .queryParam("status", status)
+                .get("/throw/jax-rs/web-application-exception")
                 .then()
-                .log().all()
                 .statusCode(status)
                 .body("title", equalTo(Status.valueOf(status).getReasonPhrase()))
                 .body("status", equalTo(status))
@@ -59,8 +58,8 @@ class JaxRsMappersIT {
     @Test
     void webApplicationExceptionWithInvalidCodeShould500() {
         given()
-                .pathParam("status", INVALID_HTTP_CODE)
-                .get("/throw/jax-rs/web-application-exception/{status}")
+                .queryParam("status", INVALID_HTTP_CODE)
+                .get("/throw/jax-rs/web-application-exception")
                 .then()
                 .statusCode(500)
                 .body("title", equalTo(INTERNAL_SERVER_ERROR.getReasonPhrase()))

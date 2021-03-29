@@ -40,7 +40,6 @@ class JavaxMappersIT {
                 .contentType(APPLICATION_JSON)
                 .post("/throw/javax/constraint-violation-exception")
                 .then()
-                .log().all()
                 .statusCode(BAD_REQUEST.getStatusCode())
                 .body("title", equalTo(BAD_REQUEST.getReasonPhrase()))
                 .body("status", equalTo(BAD_REQUEST.getStatusCode()))

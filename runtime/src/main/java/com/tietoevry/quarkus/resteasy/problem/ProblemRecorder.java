@@ -19,8 +19,4 @@ public class ProblemRecorder {
     public void enableMetrics() {
         ExceptionMapperBase.registerProcessor(new HttpErrorMetricsProcessor());
     }
-
-    public void configureTypePrefix(String typePrefix) {
-        ExceptionMapperBase.registerProcessor(new ProblemDefaultsProvider(typePrefix));
-    }
 }

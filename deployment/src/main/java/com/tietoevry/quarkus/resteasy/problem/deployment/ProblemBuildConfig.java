@@ -19,11 +19,4 @@ public class ProblemBuildConfig {
      */
     @ConfigItem(name = "metrics.enabled", defaultValue = "false")
     public boolean metricsEnabled;
-
-    /**
-     * Prefix of a `type` field in the default (non-ThrowableProblem) responses. It may be root location for human-readable
-     * documentation for different kind of errors. I.e `/api/docs/` will produce "type": "/api/docs/unauthorized" for HTTP 401.
-     */
-    @ConfigItem(name = "type-prefix", defaultValue = "/")
-    public String typePrefix;
 }
