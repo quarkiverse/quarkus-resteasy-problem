@@ -9,7 +9,7 @@
 
     <name>Quarkus - RESTeasy - Problem - Parent</name>
     <description>Problem Details for HTTP APIs (RFC-7807) implementation for Quarkus / RESTeasy.</description>
-    <url>https://github.com/TietoEVRY-DataPlatforms/quarkus-resteasy-problem</url>
+    <url>https://github.com/TietoEVRY/quarkus-resteasy-problem</url>
 
     <licenses>
         <license>
@@ -19,10 +19,10 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:git@github.com:TietoEVRY-DataPlatforms/quarkus-resteasy-problem.git</connection>
-        <developerConnection>scm:git:git@github.com:TietoEVRY-DataPlatforms/quarkus-resteasy-problem.git
+        <connection>scm:git:git@github.com:TietoEVRY/quarkus-resteasy-problem.git</connection>
+        <developerConnection>scm:git:git@github.com:TietoEVRY/quarkus-resteasy-problem.git
         </developerConnection>
-        <url>https://github.com/TietoEVRY-DataPlatforms/quarkus-resteasy-problem/tree/master</url>
+        <url>https://github.com/TietoEVRY/quarkus-resteasy-problem/tree/master</url>
         <tag>HEAD</tag>
     </scm>
 

@@ -1,8 +1,8 @@
 # Problem Details for HTTP APIs (RFC-7807) implementation for Quarkus / RESTeasy.
 
-[![Build status](https://github.com/TietoEVRY-DataPlatforms/quarkus-resteasy-problem/actions/workflows/maven-full.yaml/badge.svg)](https://github.com/TietoEVRY-DataPlatforms/quarkus-resteasy-problem/actions)
+[![Build status](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/maven-full.yaml/badge.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions)
 [![Release](https://img.shields.io/maven-central/v/com.tietoevry.quarkus/quarkus-resteasy-problem)](https://search.maven.org/artifact/com.tietoevry.quarkus/quarkus-resteasy-problem)
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/TietoEVRY-DataPlatforms/quarkus-resteasy-problem/blob/master/LICENSE.txt)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/blob/master/LICENSE.txt)
 ![JVM](https://img.shields.io/badge/JVM-1.8+-green.svg)
 ![Quarkus](https://img.shields.io/badge/Quarkus-1.4.2%20+-green.svg)
 
