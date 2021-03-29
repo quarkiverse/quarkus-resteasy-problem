@@ -5,7 +5,7 @@ or add your own suggestions and start discussion. Then create fork or branch and
 
 ## Setup
 - JDK 8
-- GraalVM for native test run, check [Quarkus Contributing guide](https://github.com/quarkusio/quarkus/blob/main/CONTRIBUTING.md#setup) for more details.
+- GraalVM + JDK 11 for native test run, check [Quarkus Contributing guide](https://github.com/quarkusio/quarkus/blob/main/CONTRIBUTING.md#setup) for more details.
 
 ### IDE Config and Code Style
 
@@ -21,23 +21,37 @@ More details on how to setup your ide can be found in official [Quarkus Contribu
 `deployment` - this is Quarkus compile-time stuff\
 `integration-test` - test scenarios + test endpoints + runners for Jackson and JsonB apps
 
+### Architecture
+Everything in this extension revolves around `ExceptionMapperBase` abstract class from `runtime` module. All exceptions go though
+exception mappers extending this class.
+
+Exception lifecycle:
+1. JaxRS implementation (RESTeasy) catches exception, and immediately looks for best matching `ExceptionMapper`. Hopefully it will be one of our mappers :)
+2. `ExceptionMapperBase::toResponse` method is called, where original exception is turned into Zalando's `Problem` object by a specific subclass mapper (e.g `WebApplicationExceptionMapper`).
+3. `Problem` goes into post-processing phase to apply logging, metrics generation, MCD properties injection etc.
+4. Enhanced `Problem` is turned into JaxRS `Response` object, with `Problem` object placed as entity (response body). This is where `ExceptionMapper` work is finished.
+5. RESTeasy serializes `Response` object into raw HTTP response, with little help from our JSON serializer (either `JacksonProblemSerializer` or `JsonBProblemSerializer`)
+6. End user gets nice `application/problem+json` HTTP response.
+
 ### Running tests
 Jackson profile is active by default when you use IntelliJ test runner.
 
 Command line:\
-`./mvnw test verify` - jackson profile enabled by default\ 
-`./mvnw test verify -Pjsonb`\
-`./mvnw test verify -Pjackson,quarkus-1.4` - checking backward compatibility with older versions of Quarkus
+`./mvnw verify` - jackson profile enabled by default\ 
+`./mvnw verify -pl integration-test -Pjsonb`\
+`./mvnw verify -pl integration-test -Pjackson,quarkus-1.4` - checking backward compatibility with older versions of Quarkus\
 `./mvnw clean verify -Pnative,jackson -pl integration-test` - running tests in native mode
 
-### Releasing and deploying final versions
-You'll need OSSRH account with deploy rights + GPG installed and configured to be able to sign artifacts.
-More details on installing, generating and propagating keys can be found [here](https://central.sonatype.org/pages/working-with-pgp-signatures.html).
+### Deployment and release
+Releases are managed and conducted by TietoEVRY. Stable (release) artifacts are available from Maven Central.
+
+OSSRH account with deploy rights is needed + GPG installed and configured to be able to sign artifacts.
+More details on installing, generating and propagating PGP keys can be found [here](https://central.sonatype.org/pages/working-with-pgp-signatures.html).
 ```
-./run-jvm-tests
 ./mvnw release:prepare -DskipTests
 git pull
-./mvnw deploy -Pdeploy -DskipTests
+git checkout vX.Y.Z
+./mvnw clean package deploy -Pdeploy -DskipTests
 ```
 
 Run `export GPG_TTY=$(tty)` if you see this error: `gpg: signing failed: Inappropriate ioctl for device`

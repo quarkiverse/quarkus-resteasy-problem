@@ -139,3 +139,19 @@ GET /metrics
 application_http_error_total{status="401"} 3.0
 application_http_error_total{status="500"} 5.0
 ```
+
+- Tuning logging
+```
+quarkus.log.category.http-problem.level=INFO # default: all problems are logged
+quarkus.log.category.http-problem.level=ERROR # only HTTP 5XX problems are logged
+quarkus.log.category.http-problem.level=OFF # disables all problems-related logging
+```
+
+## Troubles?
+
+If you have questions, concerns, bug reports, etc, please file an issue in this repository's Issue Tracker. You may also want to have a look at [troubleshooting FAQ](./TROUBLESHOOTING.md).
+
+## Contributing
+
+To contribute, simply make a pull request and add a brief description (1-2 sentences) of your addition or change.
+For more details check the [contribution guidelines](./CONTRIBUTING.md).
