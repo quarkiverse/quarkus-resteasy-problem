@@ -6,10 +6,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
-import javax.ws.rs.ext.Provider;
 import org.zalando.problem.Problem;
 
-@Provider
+/**
+ * Mapper for Jackson payload processing exceptions.
+ */
 @Priority(Priorities.USER)
 public class JsonProcessingExceptionMapper extends ExceptionMapperBase<JsonProcessingException> {
 

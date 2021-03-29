@@ -47,7 +47,7 @@ class ConstraintViolationExceptionMapperTest {
     /**
      * This strange hierarchy for this test double is because Hibernate + JaxRs generate pretty complex path for
      * violation subjects (arguments, payloads) paths, i.e: throwConstraintViolationException.arg0.numericField,
-     * but we want only the last part of the path in our responses
+     * but we want only the last part of the path in our responses.
      */
     static class EndpointPayloadWrapper {
 

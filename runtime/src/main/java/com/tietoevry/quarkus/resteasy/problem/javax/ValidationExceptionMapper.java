@@ -6,10 +6,11 @@ import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
 import javax.annotation.Priority;
 import javax.validation.ValidationException;
 import javax.ws.rs.Priorities;
-import javax.ws.rs.ext.Provider;
 import org.zalando.problem.Problem;
 
-@Provider
+/**
+ * More generic Exception Mapper compared to ConstraintViolationException - does not provide any details except the message.
+ */
 @Priority(Priorities.USER)
 public class ValidationExceptionMapper extends ExceptionMapperBase<ValidationException> {
 

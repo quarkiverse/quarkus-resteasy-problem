@@ -12,6 +12,10 @@ import org.slf4j.LoggerFactory;
 import org.zalando.problem.Problem;
 import org.zalando.problem.StatusType;
 
+/**
+ * Base class for all ExceptionMappers in this extension, takes care of mapping Exceptions to Problems, triggering
+ * post-processing stage, and creating final JaxRS Response.
+ */
 public abstract class ExceptionMapperBase<E extends Throwable> implements ExceptionMapper<E> {
 
     public static final MediaType APPLICATION_PROBLEM_JSON = new MediaType("application", "problem+json");

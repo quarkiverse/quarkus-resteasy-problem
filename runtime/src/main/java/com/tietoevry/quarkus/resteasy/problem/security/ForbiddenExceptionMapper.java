@@ -6,10 +6,11 @@ import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
 import io.quarkus.security.ForbiddenException;
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
-import javax.ws.rs.ext.Provider;
 import org.zalando.problem.Problem;
 
-@Provider
+/**
+ * Mapper overriding default Quarkus exception mapper to make all error responses compliant with RFC7807.
+ */
 @Priority(Priorities.USER)
 public class ForbiddenExceptionMapper extends ExceptionMapperBase<ForbiddenException> {
 
