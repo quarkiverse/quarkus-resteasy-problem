@@ -7,6 +7,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
+import org.apiguardian.api.API;
 import org.slf4j.LoggerFactory;
 import org.zalando.problem.Problem;
 import org.zalando.problem.StatusType;
@@ -42,6 +43,10 @@ public abstract class ExceptionMapperBase<E extends Throwable> implements Except
 
     protected abstract Problem toProblem(E exception);
 
+    /**
+     * This is an internal API. It may be changed or removed without notice in any release.
+     */
+    @API(status = API.Status.INTERNAL)
     protected Response toResponse(Problem problem, E originalException) {
         int statusCode = Optional.ofNullable(problem.getStatus())
                 .map(StatusType::getStatusCode)
