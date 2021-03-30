@@ -45,13 +45,8 @@ Command line:\
 ### Deployment and release
 Releases are managed and conducted by TietoEVRY. Stable (release) artifacts are available from Maven Central.
 
-OSSRH account with deploy rights is needed + GPG installed and configured to be able to sign artifacts.
-More details on installing, generating and propagating PGP keys can be found [here](https://central.sonatype.org/pages/working-with-pgp-signatures.html).
 ```
-./mvnw release:prepare -DskipTests
-git pull
-git checkout vX.Y.Z
-./mvnw clean package deploy -Pdeploy -DskipTests
+./mvnw release:prepare -DskipTests 
+./mvnw release:perform -DskipTests
 ```
-
-Run `export GPG_TTY=$(tty)` if you see this error: `gpg: signing failed: Inappropriate ioctl for device`
+Now create and publish new release on Github. This will also automatically trigger GH Action, which will deploy artifacts built from newly created version to OSSRH staging nexus.

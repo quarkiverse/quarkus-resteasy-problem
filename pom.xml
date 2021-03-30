@@ -99,6 +99,7 @@
                 <configuration>
                     <tagNameFormat>v@{project.version}</tagNameFormat>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <goals>install</goals>
                 </configuration>
             </plugin>
 
