@@ -20,6 +20,6 @@ class MdcIT {
                 .get("/throw/mdc")
                 .then()
                 .body("uuid", equalTo("30a48c9e"))
-                .body("field-from-properties", equalTo("123"));
+                .body("field-from-configuration", equalTo("123"));
     }
 }
