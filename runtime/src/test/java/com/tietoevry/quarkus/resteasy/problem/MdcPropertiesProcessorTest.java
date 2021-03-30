@@ -37,8 +37,8 @@ class MdcPropertiesProcessorTest {
 
         Problem enhancedProblem = processor.apply(originalProblem, simpleContext());
 
-        assertThat(enhancedProblem.getParameters().get("uuid")).isEqualTo("123");
-        assertThat(enhancedProblem.getParameters().containsKey("another")).isFalse();
+        assertThat(enhancedProblem.getParameters()).containsEntry("uuid", "123");
+        assertThat(enhancedProblem.getParameters()).doesNotContainKey("another");
     }
 
     @Test
@@ -50,7 +50,7 @@ class MdcPropertiesProcessorTest {
 
         Problem enhancedProblem = processor.apply(originalProblem, simpleContext());
 
-        assertThat(enhancedProblem.getParameters().get("customProperty")).isEqualTo("abc");
+        assertThat(enhancedProblem.getParameters()).containsEntry("customProperty", "abc");
     }
 
     private ProblemBuilder exampleProblemBuilder() {

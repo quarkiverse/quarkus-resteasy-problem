@@ -1,6 +1,5 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -33,7 +32,7 @@ public abstract class ExceptionMapperBase<E extends Throwable> implements Except
 
     static synchronized void registerProcessor(ProblemProcessor processor) {
         processors.add(processor);
-        processors.sort(Comparator.comparingInt(ProblemProcessor::priority).reversed());
+        processors.sort(ProblemProcessor.DEFAULT_ORDERING);
     }
 
     @Context

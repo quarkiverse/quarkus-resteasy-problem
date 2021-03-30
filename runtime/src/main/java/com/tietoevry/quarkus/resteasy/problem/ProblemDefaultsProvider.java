@@ -2,13 +2,15 @@ package com.tietoevry.quarkus.resteasy.problem;
 
 import java.net.URI;
 import java.util.Optional;
+import javax.ws.rs.core.UriInfo;
 import org.zalando.problem.Problem;
 import org.zalando.problem.ProblemBuilder;
 import org.zalando.problem.Status;
 import org.zalando.problem.StatusType;
 
 /**
- * Replaces null/default value of <i>instance</i> with URI of currently served endpoint, i.e `/products/123`
+ * Replaces <code>null</code> values of <code>status</code> with default HTTP500
+ * and/or <code>instance</code> with URI of currently served endpoint, i.e <code>/products/123</code>
  */
 class ProblemDefaultsProvider implements ProblemProcessor {
 
@@ -21,20 +23,24 @@ class ProblemDefaultsProvider implements ProblemProcessor {
     public Problem apply(Problem problem, ProblemContext context) {
         StatusType status = Optional.ofNullable(problem.getStatus())
                 .orElse(Status.INTERNAL_SERVER_ERROR);
+        URI instance = Optional.ofNullable(problem.getInstance())
+                .orElseGet(() -> defaultUri(context));
 
         ProblemBuilder builder = Problem.builder()
                 .withType(problem.getType())
-                .withInstance(problem.getInstance())
+                .withInstance(instance)
                 .withTitle(problem.getTitle())
                 .withStatus(status)
                 .withDetail(problem.getDetail());
 
         problem.getParameters().forEach(builder::with);
 
-        if (problem.getInstance() == null && context.uriInfo != null) {
-            builder.withInstance(URI.create(context.uriInfo.getPath()));
-        }
         return builder.build();
+    }
+
+    private URI defaultUri(ProblemContext context) {
+        UriInfo uriInfo = context.uriInfo;
+        return (uriInfo == null) ? null : URI.create(uriInfo.getPath());
     }
 
 }
