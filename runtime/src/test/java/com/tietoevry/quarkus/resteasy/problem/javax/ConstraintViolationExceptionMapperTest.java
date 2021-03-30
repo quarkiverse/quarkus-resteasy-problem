@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 import org.hibernate.validator.HibernateValidator;
 import org.hibernate.validator.constraints.Length;
 import org.junit.jupiter.api.Test;
+import org.zalando.problem.Problem;
 
 class ConstraintViolationExceptionMapperTest {
 
@@ -31,7 +32,7 @@ class ConstraintViolationExceptionMapperTest {
 
         assertThat(response.getStatus()).isEqualTo(400);
         assertThat(response.getMediaType()).isEqualTo(APPLICATION_PROBLEM_JSON);
-        ConstraintViolationProblem problem = (ConstraintViolationProblem) response.getEntity();
+        Problem problem = (Problem) response.getEntity();
         List<Violation> violations = (List<Violation>) problem.getParameters().get("violations");
         assertThat(violations)
                 .usingFieldByFieldElementComparator()

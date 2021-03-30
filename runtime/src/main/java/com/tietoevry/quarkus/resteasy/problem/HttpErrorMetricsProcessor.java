@@ -18,7 +18,7 @@ class HttpErrorMetricsProcessor implements ProblemProcessor {
     }
 
     @Override
-    public Problem apply(Problem problem, Throwable cause) {
+    public Problem apply(Problem problem, ProblemContext context) {
         int statusCode = Optional.ofNullable(problem.getStatus())
                 .map(StatusType::getStatusCode)
                 .orElse(500);

@@ -25,13 +25,13 @@ class LoggingProcessor implements ProblemProcessor {
     }
 
     @Override
-    public Problem apply(Problem problem, Throwable cause) {
+    public Problem apply(Problem problem, ProblemContext context) {
         int statusCode = Optional.ofNullable(problem.getStatus())
                 .map(StatusType::getStatusCode)
                 .orElse(500);
 
         if (statusCode >= 500) {
-            logger.error(serialize(problem), cause);
+            logger.error(serialize(problem), context.cause);
         } else {
             logger.info(serialize(problem));
         }

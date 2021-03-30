@@ -1,5 +1,6 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
+import java.net.URI;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -28,7 +29,7 @@ public class GenericExceptionsResource {
 
     static final class TestProblem extends AbstractThrowableProblem {
         TestProblem(String title, StatusType status, String detail) {
-            super(null, title, status, detail, null, null);
+            super(URI.create("/business-problem"), title, status, detail, URI.create("/problem/special-case"), null);
         }
     }
 

@@ -70,13 +70,14 @@ public class CountriesResource {
 Which will be translated to HTTP 404 response with body:
 ```json
 HTTP/1.1 404 Not Found
-Content-Length: 63
+Content-Length: XX
 Content-Type: application/problem+json
         
 {
   "title": "Not Found",
   "status": 404,
-  "detail": "Country not found"
+  "detail": "Country not found",
+  "instance": "/country"
 }
 ```
 

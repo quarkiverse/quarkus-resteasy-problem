@@ -1,5 +1,6 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
+import static com.tietoevry.quarkus.resteasy.problem.ProblemContextMother.simpleContext;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.common.collect.Sets;
@@ -23,7 +24,7 @@ class MdcPropertiesProcessorTest {
     void processorShouldPreserveAllFields() {
         Problem originalProblem = exampleProblemBuilder().build();
 
-        Problem enhancedProblem = processor.apply(originalProblem, new RuntimeException());
+        Problem enhancedProblem = processor.apply(originalProblem, simpleContext());
 
         assertThat(enhancedProblem.getTitle()).isEqualTo("title");
         assertThat(enhancedProblem.getStatus()).isEqualTo(Status.BAD_REQUEST);
@@ -34,10 +35,10 @@ class MdcPropertiesProcessorTest {
         MDC.put("uuid", "123");
         Problem originalProblem = exampleProblemBuilder().build();
 
-        Problem enhancedProblem = processor.apply(originalProblem, new RuntimeException());
+        Problem enhancedProblem = processor.apply(originalProblem, simpleContext());
 
-        assertThat(enhancedProblem.getParameters().get("uuid")).isEqualTo("123");
-        assertThat(enhancedProblem.getParameters().containsKey("another")).isFalse();
+        assertThat(enhancedProblem.getParameters()).containsEntry("uuid", "123");
+        assertThat(enhancedProblem.getParameters()).doesNotContainKey("another");
     }
 
     @Test
@@ -47,9 +48,9 @@ class MdcPropertiesProcessorTest {
                 .with("customProperty", "abc")
                 .build();
 
-        Problem enhancedProblem = processor.apply(originalProblem, new RuntimeException());
+        Problem enhancedProblem = processor.apply(originalProblem, simpleContext());
 
-        assertThat(enhancedProblem.getParameters().get("customProperty")).isEqualTo("abc");
+        assertThat(enhancedProblem.getParameters()).containsEntry("customProperty", "abc");
     }
 
     private ProblemBuilder exampleProblemBuilder() {

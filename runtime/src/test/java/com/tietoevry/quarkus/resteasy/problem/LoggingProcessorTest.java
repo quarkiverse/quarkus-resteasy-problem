@@ -1,5 +1,6 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
+import static com.tietoevry.quarkus.resteasy.problem.ProblemContextMother.simpleContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -31,7 +32,7 @@ class LoggingProcessorTest {
                 .withStatus(Status.BAD_REQUEST)
                 .build();
 
-        processor.apply(problem, new RuntimeException());
+        processor.apply(problem, simpleContext());
 
         assertThat(capturedInfoMessage()).isEqualTo("status=400, title=\"your fault\"");
     }
@@ -45,7 +46,7 @@ class LoggingProcessorTest {
                 .with("violations", Collections.singletonList(new Violation("too small", "key")))
                 .build();
 
-        processor.apply(problem, new RuntimeException());
+        processor.apply(problem, simpleContext());
 
         assertThat(capturedInfoMessage()).isEqualTo("status=400, title=\"your fault\", custom-field=\"123\", "
                 + "violations=[{\"error\":\"too small\",\"field\":\"key\"}]");
@@ -59,7 +60,7 @@ class LoggingProcessorTest {
                 .build();
         RuntimeException cause = new RuntimeException("hey");
 
-        processor.apply(problem, cause);
+        processor.apply(problem, ProblemContextMother.withCause(cause));
 
         assertThat(capturedErrorMessage()).isEqualTo("status=500, title=\"my fault\"");
         assertThat(capturedErrorException()).isEqualTo(cause);
