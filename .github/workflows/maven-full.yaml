@@ -42,7 +42,7 @@ jobs:
           ./mvnw -B clean verify -Pjsonb -pl integration-test
 
       - name: Publish Unit Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v1.9
+        uses: docker://ghcr.io/enricomi/publish-unit-test-result-action:v1.10
         if: always()
         with:
           files: "**/target/*-reports/**/TEST-*.xml"
