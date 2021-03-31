@@ -46,6 +46,6 @@ Command line:\
 Releases are managed and conducted by TietoEVRY. Stable (release) artifacts are available from Maven Central.
 
 ```
-./mvnw release:prepare release:perform -DskipTests
+./mvnw release:prepare release:perform
 ```
 Now create and publish new release on Github. This will also automatically trigger GH Action, which will deploy artifacts built from newly created version to OSSRH staging nexus.
