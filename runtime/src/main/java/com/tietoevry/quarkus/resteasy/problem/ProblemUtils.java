@@ -3,7 +3,10 @@ package com.tietoevry.quarkus.resteasy.problem;
 import org.zalando.problem.Problem;
 import org.zalando.problem.ProblemBuilder;
 
-public class ProblemUtils {
+public final class ProblemUtils {
+
+    private ProblemUtils() {
+    }
 
     public static ProblemBuilder toBuilder(Problem problem) {
         ProblemBuilder builder = Problem.builder()
