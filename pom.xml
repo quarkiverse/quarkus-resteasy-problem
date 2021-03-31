@@ -60,6 +60,7 @@
         <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
         <failsafe-plugin.version>3.0.0-M5</failsafe-plugin.version>
         <forbiddenapis-maven-plugin.version>3.1</forbiddenapis-maven-plugin.version>
+        <jmh.version>1.29</jmh.version>
     </properties>
 
     <modules>

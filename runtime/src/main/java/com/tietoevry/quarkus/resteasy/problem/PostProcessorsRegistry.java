@@ -2,7 +2,6 @@ package com.tietoevry.quarkus.resteasy.problem;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.slf4j.LoggerFactory;
 import org.zalando.problem.Problem;
 
