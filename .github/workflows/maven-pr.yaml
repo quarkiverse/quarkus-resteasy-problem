@@ -30,9 +30,6 @@ jobs:
       - name: Unit Tests
         run: ./mvnw -B test
 
-      - name: Performance Benchmark
-        run: ./mvnw -B test-compile failsafe:integration-test -pl runtime
-
       - name: Integration Tests (oldest)
         run: |
           ./mvnw -B clean verify -Pjackson,quarkus-1.4 -pl integration-test
