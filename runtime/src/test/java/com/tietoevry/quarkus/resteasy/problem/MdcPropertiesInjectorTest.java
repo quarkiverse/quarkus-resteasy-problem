@@ -43,8 +43,9 @@ class MdcPropertiesInjectorTest {
 
         Problem enhancedProblem = processor.apply(badRequestProblem(), simpleContext());
 
-        assertThat(enhancedProblem.getParameters().get("uuid")).isEqualTo("123");
-        assertThat(enhancedProblem.getParameters().containsKey("another")).isFalse();
+        assertThat(enhancedProblem.getParameters())
+                .containsEntry("uuid", "123")
+                .doesNotContainKey("another");
     }
 
     @Test
@@ -57,7 +58,8 @@ class MdcPropertiesInjectorTest {
 
         Problem enhancedProblem = processor.apply(originalProblem, simpleContext());
 
-        assertThat(enhancedProblem.getParameters().get(PROPERTY)).isEqualTo(propertyValueFromProblem);
+        assertThat(enhancedProblem.getParameters())
+                .containsEntry(PROPERTY, propertyValueFromProblem);
     }
 
 }

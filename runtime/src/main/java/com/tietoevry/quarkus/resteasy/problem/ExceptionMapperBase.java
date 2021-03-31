@@ -24,6 +24,8 @@ public abstract class ExceptionMapperBase<E extends Throwable> implements Except
     @Override
     public final Response toResponse(E exception) {
         Problem problem = toProblem(exception);
+        Objects.requireNonNull(problem.getStatus(), "Status must not be null");
+
         ProblemContext context = ProblemContext.of(exception, uriInfo);
         Problem finalProblem = postProcessorsRegistry.applyPostProcessing(problem, context);
         return toResponse(finalProblem, exception);
@@ -37,6 +39,7 @@ public abstract class ExceptionMapperBase<E extends Throwable> implements Except
     @API(status = API.Status.INTERNAL)
     protected Response toResponse(Problem problem, E originalException) {
         Objects.requireNonNull(problem.getStatus());
+
         return Response
                 .status(problem.getStatus().getStatusCode())
                 .type(APPLICATION_PROBLEM_JSON)

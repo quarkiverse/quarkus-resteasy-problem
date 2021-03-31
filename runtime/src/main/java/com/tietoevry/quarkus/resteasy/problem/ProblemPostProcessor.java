@@ -1,11 +1,8 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
 import java.util.Comparator;
-import java.util.Optional;
 import java.util.function.BiFunction;
 import org.zalando.problem.Problem;
-import org.zalando.problem.ProblemBuilder;
-import org.zalando.problem.Status;
 
 /**
  * Post-processors use, change or enhance Problems created by ExceptionMappers via 'apply' method, before they get passed on to
@@ -21,17 +18,6 @@ public interface ProblemPostProcessor extends BiFunction<Problem, ProblemContext
      */
     default int priority() {
         return Integer.MIN_VALUE;
-    }
-
-    default ProblemBuilder mutableCopyOf(Problem problem) {
-        ProblemBuilder builder = Problem.builder()
-                .withType(problem.getType())
-                .withInstance(problem.getInstance())
-                .withTitle(problem.getTitle())
-                .withStatus(Optional.ofNullable(problem.getStatus()).orElse(Status.INTERNAL_SERVER_ERROR))
-                .withDetail(problem.getDetail());
-        problem.getParameters().forEach(builder::with);
-        return builder;
     }
 
 }

@@ -8,7 +8,7 @@ import javax.ws.rs.core.UriInfo;
  *
  * @see ProblemPostProcessor
  */
-class ProblemContext {
+public class ProblemContext {
 
     /**
      * * Original exception caught by ExceptionMapper.
@@ -25,7 +25,7 @@ class ProblemContext {
         this.uriInfo = uriInfo;
     }
 
-    static ProblemContext of(Throwable exception, UriInfo uriInfo) {
+    public static ProblemContext of(Throwable exception, UriInfo uriInfo) {
         return new ProblemContext(exception, uriInfo);
     }
 }

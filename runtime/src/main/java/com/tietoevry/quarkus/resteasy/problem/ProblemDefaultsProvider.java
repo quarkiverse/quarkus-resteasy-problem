@@ -22,7 +22,7 @@ class ProblemDefaultsProvider implements ProblemPostProcessor {
             return problem;
         }
 
-        ProblemBuilder builder = mutableCopyOf(problem);
+        ProblemBuilder builder = ProblemUtils.toBuilder(problem);
         builder.withInstance(defaultInstance(context));
         return builder.build();
     }

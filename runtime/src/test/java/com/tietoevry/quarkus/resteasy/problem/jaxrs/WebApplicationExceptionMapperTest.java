@@ -28,8 +28,7 @@ class WebApplicationExceptionMapperTest {
         assertThat(response.getMediaType()).isEqualTo(APPLICATION_PROBLEM_JSON);
         assertThat(response.getEntity())
                 .isInstanceOf(Problem.class)
-                .extracting("detail")
-                .isEqualTo("Hello world");
+                .hasFieldOrPropertyWithValue("detail", "Hello world");
     }
 
     @Test
@@ -47,8 +46,7 @@ class WebApplicationExceptionMapperTest {
         assertThat(response.getHeaderString(RETRY_AFTER)).isEqualTo("120");
         assertThat(response.getEntity())
                 .isInstanceOf(Problem.class)
-                .extracting("detail")
-                .isEqualTo("HTTP 429 Too Many Requests");
+                .hasFieldOrPropertyWithValue("detail", "HTTP 429 Too Many Requests");
     }
 
     @Test
@@ -64,7 +62,6 @@ class WebApplicationExceptionMapperTest {
         assertThat(response.getHeaderString("Location")).endsWith("/new-location");
         assertThat(response.getEntity())
                 .isInstanceOf(Problem.class)
-                .extracting("detail")
-                .isEqualTo("HTTP 301 Moved Permanently");
+                .hasFieldOrPropertyWithValue("detail", "HTTP 301 Moved Permanently");
     }
 }

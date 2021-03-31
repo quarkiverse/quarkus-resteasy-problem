@@ -28,7 +28,7 @@ class MdcPropertiesInjector implements ProblemPostProcessor {
             return problem;
         }
 
-        ProblemBuilder builder = mutableCopyOf(problem);
+        ProblemBuilder builder = ProblemUtils.toBuilder(problem);
 
         properties.stream()
                 .filter(propertyName -> !problem.getParameters().containsKey(propertyName))

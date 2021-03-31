@@ -18,6 +18,7 @@ import org.zalando.problem.Problem;
 class MicrometerMetricsCollector implements ProblemPostProcessor {
 
     private static final String METRIC_NAME = "http.error";
+    private static final String STATUS_TAG = "status";
 
     private final MetricRegistry registry = MetricRegistries.get(MetricRegistry.Type.APPLICATION);
 
@@ -27,7 +28,7 @@ class MicrometerMetricsCollector implements ProblemPostProcessor {
                     .withName(METRIC_NAME)
                     .withDescription("The number of http errors returned since the start of the server.")
                     .build();
-            Tag tag = new Tag("status", "500");
+            Tag tag = new Tag(STATUS_TAG, "500");
             registry.counter(metadata, tag);
         }
     }
@@ -41,7 +42,7 @@ class MicrometerMetricsCollector implements ProblemPostProcessor {
     public Problem apply(Problem problem, ProblemContext context) {
         Objects.requireNonNull(problem.getStatus());
 
-        Tag tag = new Tag("status", String.valueOf(problem.getStatus().getStatusCode()));
+        Tag tag = new Tag(STATUS_TAG, String.valueOf(problem.getStatus().getStatusCode()));
         registry.counter(METRIC_NAME, tag).inc();
 
         return problem;
