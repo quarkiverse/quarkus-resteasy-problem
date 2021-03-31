@@ -31,11 +31,11 @@ jobs:
             ${{ runner.os }}-
 
       - name: Build project
-        run: ./mvnw -B formatter:validate install -DskipTests
+        run: ./mvnw -B install -DskipTests -Dforbiddenapis.skip=true -Dformatter.skip=true
 
       - name: Integration tests
         run: |
-          ./mvnw -B clean verify -P${{ matrix.json-provider }},quarkus-${{ matrix.version }} -pl integration-test
+          ./mvnw -B clean verify -P${{ matrix.json-provider }},quarkus-${{ matrix.version }} -pl integration-test -Dformatter.skip=true
 
       - name: Publish Unit Test Results
         uses: docker://ghcr.io/enricomi/publish-unit-test-result-action:v1
