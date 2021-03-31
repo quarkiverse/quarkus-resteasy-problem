@@ -52,7 +52,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <quarkus.version>1.11.5.Final</quarkus.version>
+        <quarkus.version>1.13.0.Final</quarkus.version>
         <zalando-problem.version>0.24.0</zalando-problem.version>
         <assertj.version>3.16.1</assertj.version>
 
