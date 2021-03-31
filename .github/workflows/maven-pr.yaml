@@ -45,3 +45,4 @@ jobs:
         if: always()
         with:
           files: "**/target/*-reports/**/TEST-*.xml"
+          github_token: ${{ github.token }}
