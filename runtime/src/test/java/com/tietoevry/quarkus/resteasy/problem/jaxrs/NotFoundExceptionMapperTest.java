@@ -1,7 +1,7 @@
 package com.tietoevry.quarkus.resteasy.problem.jaxrs;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static com.tietoevry.quarkus.resteasy.problem.ExceptionMapperAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;

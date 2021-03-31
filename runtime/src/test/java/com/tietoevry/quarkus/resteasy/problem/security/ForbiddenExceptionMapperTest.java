@@ -3,11 +3,9 @@ package com.tietoevry.quarkus.resteasy.problem.security;
 import static com.tietoevry.quarkus.resteasy.problem.ExceptionMapperAssert.assertThat;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import javax.ws.rs.core.Response;
-
-import org.junit.jupiter.api.Test;
-
 import io.quarkus.security.ForbiddenException;
+import javax.ws.rs.core.Response;
+import org.junit.jupiter.api.Test;
 
 class ForbiddenExceptionMapperTest {
 

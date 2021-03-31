@@ -31,7 +31,7 @@ jobs:
             ${{ runner.os }}-
 
       - name: Build project
-        run: ./mvnw -B install -DskipTests -Dforbiddenapis.skip=true -Dformatter.skip=true
+        run: ./mvnw -B install -Pquick -pl '!integration-test'
 
       - name: Integration tests
         run: |
