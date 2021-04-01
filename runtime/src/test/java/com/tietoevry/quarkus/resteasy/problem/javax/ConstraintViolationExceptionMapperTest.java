@@ -1,6 +1,6 @@
 package com.tietoevry.quarkus.resteasy.problem.javax;
 
-import static com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase.APPLICATION_PROBLEM_JSON;
+import static com.tietoevry.quarkus.resteasy.problem.ProblemUtils.APPLICATION_PROBLEM_JSON;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;

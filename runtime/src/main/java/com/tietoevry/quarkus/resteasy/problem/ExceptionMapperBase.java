@@ -1,12 +1,12 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
+import static com.tietoevry.quarkus.resteasy.problem.ProblemUtils.APPLICATION_PROBLEM_JSON;
+
 import java.util.Objects;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.ExceptionMapper;
-import org.apiguardian.api.API;
 import org.zalando.problem.Problem;
 
 /**
@@ -15,7 +15,6 @@ import org.zalando.problem.Problem;
  */
 public abstract class ExceptionMapperBase<E extends Throwable> implements ExceptionMapper<E> {
 
-    public static final MediaType APPLICATION_PROBLEM_JSON = new MediaType("application", "problem+json");
     public static final PostProcessorsRegistry postProcessorsRegistry = new PostProcessorsRegistry();
 
     @Context
@@ -28,16 +27,12 @@ public abstract class ExceptionMapperBase<E extends Throwable> implements Except
 
         ProblemContext context = ProblemContext.of(exception, uriInfo);
         Problem finalProblem = postProcessorsRegistry.applyPostProcessing(problem, context);
-        return toResponse(finalProblem, exception);
+        return toResponse(finalProblem);
     }
 
     protected abstract Problem toProblem(E exception);
 
-    /**
-     * This is an internal API. It may be changed or removed without notice in any release.
-     */
-    @API(status = API.Status.INTERNAL)
-    protected Response toResponse(Problem problem, E originalException) {
+    private Response toResponse(Problem problem) {
         Objects.requireNonNull(problem.getStatus());
 
         return Response
