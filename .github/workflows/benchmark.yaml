@@ -29,9 +29,10 @@ jobs:
       - name: Performance Benchmark
         run: ./mvnw -B test-compile failsafe:integration-test -pl runtime
 
-      - name: Publish Unit Test Results
+      - name: Publish Performance Benchmark Results
         uses: docker://ghcr.io/enricomi/publish-unit-test-result-action:v1
         if: always()
         with:
+          check_name: Performance Benchmark Results
           files: "**/target/*-reports/**/TEST-*.xml"
           github_token: ${{ github.token }}

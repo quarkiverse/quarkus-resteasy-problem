@@ -40,9 +40,10 @@ jobs:
           ./mvnw -B clean verify -Pjackson -pl integration-test
           ./mvnw -B clean verify -Pjsonb -pl integration-test
 
-      - name: Publish Unit Test Results
+      - name: Publish Test Results
         uses: docker://ghcr.io/enricomi/publish-unit-test-result-action:v1
         if: always()
         with:
+          check_name: Test Results
           files: "**/target/*-reports/**/TEST-*.xml"
           github_token: ${{ github.token }}

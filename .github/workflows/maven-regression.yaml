@@ -37,10 +37,11 @@ jobs:
         run: |
           ./mvnw -B clean verify -P${{ matrix.json-provider }},quarkus-${{ matrix.version }} -pl integration-test -Dformatter.skip=true
 
-      - name: Publish Unit Test Results
+      - name: Publish Test Results
         uses: docker://ghcr.io/enricomi/publish-unit-test-result-action:v1
         if: always()
         with:
+          check_name: Regression Test Results
           files: "**/target/*-reports/**/TEST-*.xml"
           comment_on_pr: false
           github_token: ${{ github.token }}
