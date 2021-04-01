@@ -8,10 +8,6 @@
         <version>0.9.3-SNAPSHOT</version>
     </parent>
 
-    <properties>
-        <quarkus.version>1.12.1.Final</quarkus.version>
-    </properties>
-
     <artifactId>quarkus-resteasy-problem-integration-test</artifactId>
     <name>Quarkus - RESTeasy - Problem - Integration Tests</name>
 
@@ -120,12 +116,18 @@
 
 
         <profile>
-            <id>quarkus-1.11</id>
+            <id>quarkus-1.12</id>
             <properties>
-                <quarkus.version>1.11.5.Final</quarkus.version>
+                <quarkus.version>1.12.2.Final</quarkus.version>
             </properties>
         </profile>
 
+        <profile>
+            <id>quarkus-1.11</id>
+            <properties>
+                <quarkus.version>1.11.6.Final</quarkus.version>
+            </properties>
+        </profile>
 
         <profile>
             <id>quarkus-1.10</id>

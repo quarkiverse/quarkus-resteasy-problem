@@ -1,8 +1,7 @@
-name: PullReq Check
+name: Performance benchmark
 
 on:
-  pull_request:
-    branches: [ master ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -25,20 +24,10 @@ jobs:
             ${{ runner.os }}-
 
       - name: Compile
-        run: ./mvnw -B formatter:validate install -DskipTests
+        run: ./mvnw -B install -Pquick -pl '!integration-test'
 
-      - name: Unit Tests
-        run: ./mvnw -B test
-
-      - name: Integration Tests (oldest)
-        run: |
-          ./mvnw -B clean verify -Pjackson,quarkus-1.4 -pl integration-test
-          ./mvnw -B clean verify -Pjsonb,quarkus-1.4 -pl integration-test
-
-      - name: Integration Tests (lastest)
-        run: |
-          ./mvnw -B clean verify -Pjackson -pl integration-test
-          ./mvnw -B clean verify -Pjsonb -pl integration-test
+      - name: Performance Benchmark
+        run: ./mvnw -B test-compile failsafe:integration-test -pl runtime
 
       - name: Publish Unit Test Results
         uses: docker://ghcr.io/enricomi/publish-unit-test-result-action:v1

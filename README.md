@@ -32,7 +32,7 @@ You may also want to check [this article](https://dzone.com/articles/when-http-s
 ## Usage
 Create a new Quarkus project with the following command (you can also use `jsonb` instead of `jackson`):
 ```shell
-mvn io.quarkus:quarkus-maven-plugin:1.12.2.Final:create \
+mvn io.quarkus:quarkus-maven-plugin:1.13.0.Final:create \
     -DprojectGroupId=org.acme \
     -DprojectArtifactId=rest-client-quickstart \
     -DclassName="org.acme.rest.client.CountriesResource" \
