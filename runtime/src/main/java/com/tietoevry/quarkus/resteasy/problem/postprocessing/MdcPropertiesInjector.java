@@ -1,5 +1,6 @@
-package com.tietoevry.quarkus.resteasy.problem;
+package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
+import com.tietoevry.quarkus.resteasy.problem.ProblemUtils;
 import java.util.Set;
 import org.slf4j.MDC;
 import org.zalando.problem.Problem;

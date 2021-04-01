@@ -4,6 +4,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.common.collect.Sets;
+import com.tietoevry.quarkus.resteasy.problem.postprocessing.ProblemRecorder;
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 import javax.ws.rs.core.Response;

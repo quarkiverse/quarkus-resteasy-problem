@@ -1,5 +1,7 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
+import com.tietoevry.quarkus.resteasy.problem.postprocessing.PostProcessorsRegistry;
+import com.tietoevry.quarkus.resteasy.problem.postprocessing.ProblemContext;
 import java.util.Objects;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
