@@ -4,6 +4,7 @@ import static com.tietoevry.quarkus.resteasy.problem.ProblemContextMother.simple
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.tietoevry.quarkus.resteasy.problem.javax.Violation;
 import java.util.Collections;
@@ -14,15 +15,15 @@ import org.slf4j.Logger;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
 
-class LoggingProcessorTest {
+class ProblemLoggerTest {
 
-    Logger logger;
-    LoggingProcessor processor;
+    Logger logger = mock(Logger.class);
+    ProblemLogger processor = new ProblemLogger(logger);
 
     @BeforeEach
     void init() {
-        logger = mock(Logger.class);
-        processor = new LoggingProcessor(logger);
+        when(logger.isErrorEnabled()).thenReturn(true);
+        when(logger.isInfoEnabled()).thenReturn(true);
     }
 
     @Test
@@ -48,8 +49,10 @@ class LoggingProcessorTest {
 
         processor.apply(problem, simpleContext());
 
-        assertThat(capturedInfoMessage()).isEqualTo("status=400, title=\"your fault\", custom-field=\"123\", "
-                + "violations=[{\"error\":\"too small\",\"field\":\"key\"}]");
+        assertThat(capturedInfoMessage())
+                .contains(
+                        "custom-field=\"123\"",
+                        "violations=[{\"error\":\"too small\",\"field\":\"key\"}]");
     }
 
     @Test

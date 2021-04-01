@@ -24,7 +24,7 @@ class PostProcessorsRegistryTest {
         registry.register(processorWithPriority(LOW));
         registry.register(processorWithPriority(HIGHEST));
 
-        registry.applyPostProcessing(badRequestProblem().build(), simpleContext());
+        registry.applyPostProcessing(badRequestProblem(), simpleContext());
 
         assertThat(invocations).containsExactly(HIGHEST, MEDIUM, LOW);
     }
@@ -36,16 +36,16 @@ class PostProcessorsRegistryTest {
         registry.register(processorWithPriority(MEDIUM));
         registry.register(processorWithPriority(MEDIUM));
 
-        registry.applyPostProcessing(badRequestProblem().build(), simpleContext());
+        registry.applyPostProcessing(badRequestProblem(), simpleContext());
 
         assertThat(invocations).containsExactly(HIGHEST, MEDIUM, MEDIUM, MEDIUM);
     }
 
-    ProblemProcessor processorWithPriority(int priority) {
+    ProblemPostProcessor processorWithPriority(int priority) {
         return new TestProcessor(priority);
     }
 
-    class TestProcessor implements ProblemProcessor {
+    class TestProcessor implements ProblemPostProcessor {
 
         final int priority;
 

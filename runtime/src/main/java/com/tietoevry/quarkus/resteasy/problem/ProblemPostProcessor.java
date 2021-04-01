@@ -4,9 +4,13 @@ import java.util.Comparator;
 import java.util.function.BiFunction;
 import org.zalando.problem.Problem;
 
-interface ProblemProcessor extends BiFunction<Problem, ProblemContext, Problem> {
+/**
+ * Post-processors use, change or enhance Problems created by ExceptionMappers via 'apply' method, before they get passed on to
+ * serializers.
+ */
+public interface ProblemPostProcessor extends BiFunction<Problem, ProblemContext, Problem> {
 
-    Comparator<ProblemProcessor> DEFAULT_ORDERING = Comparator.comparingInt(ProblemProcessor::priority).reversed();
+    Comparator<ProblemPostProcessor> DEFAULT_ORDERING = Comparator.comparingInt(ProblemPostProcessor::priority).reversed();
 
     /**
      * Defines order in which processors are triggered. Bigger value means precedence before processors
