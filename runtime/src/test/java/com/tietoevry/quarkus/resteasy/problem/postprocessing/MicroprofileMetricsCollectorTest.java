@@ -7,9 +7,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.zalando.problem.Problem;
 
-class MicrometerMetricsCollectorTest {
+class MicroprofileMetricsCollectorTest {
 
-    ProblemPostProcessor processor = new MicrometerMetricsCollector();
+    ProblemPostProcessor processor = new MicroprofileMetricsCollector();
 
     @Test
     void shouldNotChangeProblemBuilder() {

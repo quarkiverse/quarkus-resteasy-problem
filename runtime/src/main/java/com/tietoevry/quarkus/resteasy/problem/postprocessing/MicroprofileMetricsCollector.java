@@ -8,21 +8,21 @@ import org.eclipse.microprofile.metrics.Tag;
 import org.zalando.problem.Problem;
 
 /**
- * Provides simple metrics to Micrometer Metrics Registry. Example result:
+ * Provides simple metrics to Microprofile Metrics Registry. Example result:
  *
  * <pre>
  * application_http_error_total{status="401"} 3.0
  * application_http_error_total{status="500"} 5.0
  * </pre>
  */
-class MicrometerMetricsCollector implements ProblemPostProcessor {
+class MicroprofileMetricsCollector implements ProblemPostProcessor {
 
     private static final String METRIC_NAME = "http.error";
     private static final String STATUS_TAG = "status";
 
     private final MetricRegistry registry = MetricRegistries.get(MetricRegistry.Type.APPLICATION);
 
-    public MicrometerMetricsCollector() {
+    public MicroprofileMetricsCollector() {
         if (!registry.getMetadata().containsKey(METRIC_NAME)) {
             Metadata metadata = Metadata.builder()
                     .withName(METRIC_NAME)

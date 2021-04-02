@@ -21,7 +21,7 @@ public class ProblemRecorder {
     }
 
     public void enableMetrics() {
-        ExceptionMapperBase.postProcessorsRegistry.register(new MicrometerMetricsCollector());
+        ExceptionMapperBase.postProcessorsRegistry.register(new MicroprofileMetricsCollector());
     }
 
 }
