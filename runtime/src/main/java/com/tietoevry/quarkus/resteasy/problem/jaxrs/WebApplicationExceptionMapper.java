@@ -3,7 +3,7 @@ package com.tietoevry.quarkus.resteasy.problem.jaxrs;
 import static com.tietoevry.quarkus.resteasy.problem.ProblemUtils.APPLICATION_PROBLEM_JSON;
 
 import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
-import com.tietoevry.quarkus.resteasy.problem.ProblemContext;
+import com.tietoevry.quarkus.resteasy.problem.postprocessing.ProblemContext;
 import java.util.Objects;
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;

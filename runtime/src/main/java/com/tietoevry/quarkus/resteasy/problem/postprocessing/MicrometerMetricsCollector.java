@@ -1,4 +1,4 @@
-package com.tietoevry.quarkus.resteasy.problem;
+package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
 import io.smallrye.metrics.MetricRegistries;
 import java.util.Objects;

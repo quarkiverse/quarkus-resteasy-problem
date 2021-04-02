@@ -1,5 +1,6 @@
-package com.tietoevry.quarkus.resteasy.problem;
+package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
+import com.tietoevry.quarkus.resteasy.problem.ProblemUtils;
 import java.net.URI;
 import javax.ws.rs.core.UriInfo;
 import org.zalando.problem.Problem;

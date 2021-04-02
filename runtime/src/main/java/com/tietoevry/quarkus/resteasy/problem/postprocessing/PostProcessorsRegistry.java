@@ -1,4 +1,4 @@
-package com.tietoevry.quarkus.resteasy.problem;
+package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +16,10 @@ public class PostProcessorsRegistry {
         reset();
     }
 
+    /**
+     * Removes all registered post-processors and registers default ones. Used mainly for Quarkus dev mode (live-reload) tests
+     * where there's a need to reset registered processors because of config change.
+     */
     synchronized void reset() {
         processors.clear();
         register(new ProblemLogger(LoggerFactory.getLogger("http-problem")));
@@ -28,7 +32,7 @@ public class PostProcessorsRegistry {
     }
 
     /**
-     * Applies all registered post-processors on given Problem, in prioritized order.
+     * Applies all registered post-processors on a given Problem, in prioritized order.
      *
      * @param problem Original Problem produced by Exception Mapper
      * @param context Additional info on cause (original exception caught by ExceptionMapper) and HTTP request

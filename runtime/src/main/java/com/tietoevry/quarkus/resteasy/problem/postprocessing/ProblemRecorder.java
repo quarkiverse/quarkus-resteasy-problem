@@ -1,5 +1,6 @@
-package com.tietoevry.quarkus.resteasy.problem;
+package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
+import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
 import io.quarkus.runtime.annotations.Recorder;
 import java.util.Set;
 

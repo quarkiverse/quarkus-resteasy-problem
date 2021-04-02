@@ -1,8 +1,8 @@
-package com.tietoevry.quarkus.resteasy.problem;
+package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
-import static com.tietoevry.quarkus.resteasy.problem.ProblemContextMother.simpleContext;
 import static com.tietoevry.quarkus.resteasy.problem.ProblemMother.badRequestProblem;
 import static com.tietoevry.quarkus.resteasy.problem.ProblemMother.badRequestProblemBuilder;
+import static com.tietoevry.quarkus.resteasy.problem.postprocessing.ProblemContextMother.simpleContext;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.common.collect.Sets;
