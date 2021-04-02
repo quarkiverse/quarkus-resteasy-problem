@@ -1,9 +1,12 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
+import javax.ws.rs.core.MediaType;
 import org.zalando.problem.Problem;
 import org.zalando.problem.ProblemBuilder;
 
 public final class ProblemUtils {
+
+    public static final MediaType APPLICATION_PROBLEM_JSON = new MediaType("application", "problem+json");
 
     private ProblemUtils() {
     }
