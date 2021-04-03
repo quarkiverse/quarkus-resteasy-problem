@@ -8,7 +8,7 @@ import org.zalando.problem.Problem;
 /**
  * Container for prioritised list of Problem post-processors.
  */
-public class PostProcessorsRegistry {
+public final class PostProcessorsRegistry {
 
     private final List<ProblemPostProcessor> processors = new ArrayList<>();
 

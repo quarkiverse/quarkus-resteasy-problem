@@ -12,7 +12,7 @@ import org.zalando.problem.Problem;
  * Mapper for Jackson payload processing exceptions.
  */
 @Priority(Priorities.USER)
-public class JsonProcessingExceptionMapper extends ExceptionMapperBase<JsonProcessingException> {
+public final class JsonProcessingExceptionMapper extends ExceptionMapperBase<JsonProcessingException> {
 
     @Override
     public Problem toProblem(JsonProcessingException exception) {

@@ -2,7 +2,10 @@ package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
 import org.jboss.resteasy.specimpl.ResteasyUriInfo;
 
-class ProblemContextMother {
+final class ProblemContextMother {
+
+    private ProblemContextMother() {
+    }
 
     static ProblemContext simpleContext() {
         return withCause(new RuntimeException());

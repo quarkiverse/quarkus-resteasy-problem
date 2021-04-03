@@ -10,7 +10,7 @@ import org.zalando.problem.ThrowableProblem;
  * Mapper for ThrowableProblem exception from Zalando Problem library.
  */
 @Priority(Priorities.USER)
-public class ProblemMapper extends ExceptionMapperBase<ThrowableProblem> {
+public final class ProblemMapper extends ExceptionMapperBase<ThrowableProblem> {
 
     @Override
     protected Problem toProblem(ThrowableProblem exception) {

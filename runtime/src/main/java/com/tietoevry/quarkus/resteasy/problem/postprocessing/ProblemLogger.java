@@ -13,7 +13,7 @@ import org.zalando.problem.Problem;
  * Logs problems with ERROR (for HTTP 5XX) or INFO (other exceptions) log level. In case of ERROR (HTTP 5XX) stack trace is
  * printed as well.
  */
-class ProblemLogger implements ProblemPostProcessor {
+final class ProblemLogger implements ProblemPostProcessor {
 
     private final Logger logger;
     private final ObjectMapper mapper = new ObjectMapper();

@@ -9,7 +9,7 @@ import org.zalando.problem.Problem;
 /**
  * Low level JsonB serializer for Problem type.
  */
-public class JsonbProblemSerializer implements JsonbSerializer<Problem> {
+public final class JsonbProblemSerializer implements JsonbSerializer<Problem> {
 
     private static final URI DEFAULT_URI = URI.create("about:blank");
 

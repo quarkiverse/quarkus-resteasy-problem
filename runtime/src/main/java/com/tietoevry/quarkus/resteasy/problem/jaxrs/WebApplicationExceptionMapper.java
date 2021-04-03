@@ -21,7 +21,7 @@ import org.zalando.problem.Status;
  * Generic exception mapper for JaxRS WebApplicationExceptions - it passes status and message to application/problem response.
  */
 @Priority(Priorities.USER)
-public class WebApplicationExceptionMapper implements ExceptionMapper<WebApplicationException> {
+public final class WebApplicationExceptionMapper implements ExceptionMapper<WebApplicationException> {
 
     private static final Logger logger = LoggerFactory.getLogger(WebApplicationExceptionMapper.class);
 

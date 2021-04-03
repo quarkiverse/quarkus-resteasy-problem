@@ -15,7 +15,7 @@ import org.zalando.problem.Problem;
  * application_http_error_total{status="500"} 5.0
  * </pre>
  */
-class MicroprofileMetricsCollector implements ProblemPostProcessor {
+final class MicroprofileMetricsCollector implements ProblemPostProcessor {
 
     private static final String METRIC_NAME = "http.error";
     private static final String STATUS_TAG = "status";

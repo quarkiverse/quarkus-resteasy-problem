@@ -12,7 +12,7 @@ import org.zalando.problem.Problem;
  * Low level Jackson serializer for Problem type. We could use ProblemModule from Zalando library, but in order to minimize
  * dependencies and to have more control over serialization process we decided to provide our own serializer.
  */
-public class JacksonProblemSerializer extends StdSerializer<Problem> {
+public final class JacksonProblemSerializer extends StdSerializer<Problem> {
 
     private static final URI DEFAULT_URI = URI.create("about:blank");
 

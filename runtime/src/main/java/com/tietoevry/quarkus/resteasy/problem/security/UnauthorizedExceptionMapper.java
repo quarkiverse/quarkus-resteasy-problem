@@ -14,7 +14,7 @@ import org.zalando.problem.Problem;
  * @see io.quarkus.resteasy.runtime.UnauthorizedExceptionMapper
  */
 @Priority(Priorities.USER)
-public class UnauthorizedExceptionMapper extends ExceptionMapperBase<UnauthorizedException> {
+public final class UnauthorizedExceptionMapper extends ExceptionMapperBase<UnauthorizedException> {
 
     @Override
     protected Problem toProblem(UnauthorizedException exception) {

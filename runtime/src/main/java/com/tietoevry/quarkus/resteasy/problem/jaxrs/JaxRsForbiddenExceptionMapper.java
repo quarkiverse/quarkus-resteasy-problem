@@ -14,7 +14,7 @@ import org.zalando.problem.Problem;
  * @see io.quarkus.resteasy.runtime.ForbiddenExceptionMapper
  */
 @Priority(Priorities.USER)
-public class JaxRsForbiddenExceptionMapper extends ExceptionMapperBase<ForbiddenException> {
+public final class JaxRsForbiddenExceptionMapper extends ExceptionMapperBase<ForbiddenException> {
 
     @Override
     protected Problem toProblem(ForbiddenException e) {

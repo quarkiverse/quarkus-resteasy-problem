@@ -6,10 +6,13 @@ import org.zalando.problem.ProblemBuilder;
 import org.zalando.problem.Status;
 import org.zalando.problem.ThrowableProblem;
 
-public class ProblemMother {
+public final class ProblemMother {
 
     public static final String SERIALIZED_BAD_REQUEST_PROBLEM = "{\"status\":400,\"title\":\"Something wrong in the dirt\"}";
     public static final String SERIALIZED_COMPLEX_PROBLEM = "{\"type\":\"URI:goeshere\",\"status\":400,\"title\":\"Something wrong in the dirt\",\"detail\":\"Deep down wrongness, zażółć gęślą jaźń for Håkensth\",\"custom_field_1\":\"too long\",\"custom_field_2\":\"too short\"}";
+
+    private ProblemMother() {
+    }
 
     public static ThrowableProblem badRequestProblem() {
         return badRequestProblemBuilder().build();

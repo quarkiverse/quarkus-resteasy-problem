@@ -12,7 +12,7 @@ import org.zalando.problem.Problem;
  * More generic Exception Mapper compared to ConstraintViolationException - does not provide any details except the message.
  */
 @Priority(Priorities.USER)
-public class ValidationExceptionMapper extends ExceptionMapperBase<ValidationException> {
+public final class ValidationExceptionMapper extends ExceptionMapperBase<ValidationException> {
 
     @Override
     public Problem toProblem(ValidationException exception) {

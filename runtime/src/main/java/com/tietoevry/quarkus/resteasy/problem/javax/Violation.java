@@ -1,6 +1,6 @@
 package com.tietoevry.quarkus.resteasy.problem.javax;
 
-public class Violation {
+public final class Violation {
 
     public final String error;
     public final String field;
