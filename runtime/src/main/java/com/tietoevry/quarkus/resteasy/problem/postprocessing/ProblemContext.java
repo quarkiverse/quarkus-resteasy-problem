@@ -8,7 +8,7 @@ import javax.ws.rs.core.UriInfo;
  *
  * @see ProblemPostProcessor
  */
-public class ProblemContext {
+public final class ProblemContext {
 
     /**
      * * Original exception caught by ExceptionMapper.

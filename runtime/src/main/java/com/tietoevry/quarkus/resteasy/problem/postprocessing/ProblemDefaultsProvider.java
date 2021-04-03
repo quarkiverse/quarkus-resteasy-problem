@@ -10,7 +10,7 @@ import org.zalando.problem.ProblemBuilder;
  * Replaces <code>null</code> value of <code>instance</code> with URI of currently served endpoint, i.e
  * <code>/products/123</code>
  */
-class ProblemDefaultsProvider implements ProblemPostProcessor {
+final class ProblemDefaultsProvider implements ProblemPostProcessor {
 
     @Override
     public int priority() {

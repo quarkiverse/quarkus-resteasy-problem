@@ -13,7 +13,7 @@ import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
 import org.zalando.problem.StatusType;
 
-class ConstraintViolationProblem implements Problem {
+final class ConstraintViolationProblem implements Problem {
 
     private final Set<ConstraintViolation<?>> constraintViolations;
 

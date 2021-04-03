@@ -10,7 +10,7 @@ import org.zalando.problem.ProblemBuilder;
  * Injects existing MDC properties listed in the configuration into final response. Missing MDC values and properties already
  * defined in Problem instance are skipped.
  */
-class MdcPropertiesInjector implements ProblemPostProcessor {
+final class MdcPropertiesInjector implements ProblemPostProcessor {
 
     private final Set<String> properties;
 

@@ -13,7 +13,7 @@ import org.zalando.problem.Problem;
  * these exceptions. Adds 'violations' field into `application/problem` responses.
  */
 @Priority(Priorities.USER)
-public class ConstraintViolationExceptionMapper extends ExceptionMapperBase<ConstraintViolationException> {
+public final class ConstraintViolationExceptionMapper extends ExceptionMapperBase<ConstraintViolationException> {
 
     @Override
     public Problem toProblem(ConstraintViolationException exception) {

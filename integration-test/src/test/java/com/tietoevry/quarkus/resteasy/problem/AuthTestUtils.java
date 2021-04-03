@@ -16,7 +16,7 @@ import org.eclipse.microprofile.config.ConfigProvider;
 /**
  * Utilities for testing application with quarkus-smallrye-jwt based application using RestAssured.
  */
-public class AuthTestUtils {
+public final class AuthTestUtils {
 
     private static final PrivateKey pk = readPrivateKey("/jwt/privateKey.pem");
 

@@ -12,7 +12,7 @@ import org.zalando.problem.Problem;
  * Mapper overriding default Quarkus exception mapper to make all error responses compliant with RFC7807.
  */
 @Priority(Priorities.USER)
-public class ForbiddenExceptionMapper extends ExceptionMapperBase<ForbiddenException> {
+public final class ForbiddenExceptionMapper extends ExceptionMapperBase<ForbiddenException> {
 
     @Override
     protected Problem toProblem(ForbiddenException e) {

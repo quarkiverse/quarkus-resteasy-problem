@@ -14,7 +14,7 @@ import org.zalando.problem.Problem;
  * @see io.quarkus.resteasy.runtime.NotFoundExceptionMapper
  */
 @Priority(Priorities.USER)
-public class NotFoundExceptionMapper extends ExceptionMapperBase<NotFoundException> {
+public final class NotFoundExceptionMapper extends ExceptionMapperBase<NotFoundException> {
 
     @Override
     public Problem toProblem(NotFoundException exception) {

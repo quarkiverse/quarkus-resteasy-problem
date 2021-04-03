@@ -10,7 +10,7 @@ import org.zalando.problem.Problem;
  * Default exception mapper processing all exceptions not matching any more specific mapper.
  */
 @Priority(Priorities.USER)
-public class DefaultExceptionMapper extends ExceptionMapperBase<Exception> {
+public final class DefaultExceptionMapper extends ExceptionMapperBase<Exception> {
 
     @Override
     protected Problem toProblem(Exception exception) {

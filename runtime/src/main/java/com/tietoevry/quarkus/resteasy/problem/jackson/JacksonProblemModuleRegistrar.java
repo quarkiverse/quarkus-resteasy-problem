@@ -7,7 +7,7 @@ import javax.inject.Singleton;
 import org.zalando.problem.Problem;
 
 @Singleton
-public class JacksonProblemModuleRegistrar implements ObjectMapperCustomizer {
+public final class JacksonProblemModuleRegistrar implements ObjectMapperCustomizer {
 
     @Override
     public void customize(ObjectMapper mapper) {

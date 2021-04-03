@@ -14,7 +14,7 @@ import org.zalando.problem.Problem;
  * @see io.quarkus.resteasy.runtime.AuthenticationFailedExceptionMapper
  */
 @Priority(Priorities.USER)
-public class AuthenticationFailedExceptionMapper extends ExceptionMapperBase<AuthenticationFailedException> {
+public final class AuthenticationFailedExceptionMapper extends ExceptionMapperBase<AuthenticationFailedException> {
 
     @Override
     protected Problem toProblem(AuthenticationFailedException exception) {
