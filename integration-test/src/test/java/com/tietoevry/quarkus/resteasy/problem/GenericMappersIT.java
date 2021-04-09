@@ -52,4 +52,22 @@ class GenericMappersIT {
                 .body("stacktrace", nullValue());
     }
 
+    @Test
+    void httpProblemShouldReturnHeaders() {
+        final int status = 418;
+        given()
+                .queryParam("status", status)
+                .queryParam("title", SAMPLE_TITLE)
+                .queryParam("detail", SAMPLE_DETAIL)
+                .get("/throw/generic/http-problem")
+                .then()
+                .log().all()
+                .statusCode(status)
+                .header("X-RFC7807", equalTo("IsAlive"))
+                .body("title", equalTo(SAMPLE_TITLE))
+                .body("status", equalTo(status))
+                .body("detail", equalTo(SAMPLE_DETAIL))
+                .body("stacktrace", nullValue());
+    }
+
 }
