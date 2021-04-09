@@ -27,7 +27,7 @@ exception mappers extending this class.
 
 Exception lifecycle:
 1. JaxRS implementation (RESTeasy) catches exception, and immediately looks for best matching `ExceptionMapper`. Hopefully it will be one of our mappers :)
-2. `ExceptionMapperBase::toResponse` method is called, where original exception is turned into Zalando's `Problem` object by a specific subclass mapper (e.g `WebApplicationExceptionMapper`).
+2. `ExceptionMapperBase::toResponse` method is called, where original exception is turned into `HttpProblem` object by a specific subclass mapper (e.g `WebApplicationExceptionMapper`).
 3. `Problem` goes into post-processing phase to apply logging, metrics generation, MCD properties injection etc.
 4. Enhanced `Problem` is turned into JaxRS `Response` object, with `Problem` object placed as entity (response body). This is where `ExceptionMapper` work is finished.
 5. RESTeasy serializes `Response` object into raw HTTP response, with little help from our JSON serializer (either `JacksonProblemSerializer` or `JsonBProblemSerializer`)

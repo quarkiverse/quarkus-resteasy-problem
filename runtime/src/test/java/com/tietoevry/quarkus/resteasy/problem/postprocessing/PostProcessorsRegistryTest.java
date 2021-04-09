@@ -1,13 +1,13 @@
 package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
-import static com.tietoevry.quarkus.resteasy.problem.ProblemMother.badRequestProblem;
+import static com.tietoevry.quarkus.resteasy.problem.HttpProblemMother.badRequestProblem;
 import static com.tietoevry.quarkus.resteasy.problem.postprocessing.ProblemContextMother.simpleContext;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.zalando.problem.Problem;
 
 class PostProcessorsRegistryTest {
 
@@ -54,7 +54,7 @@ class PostProcessorsRegistryTest {
         }
 
         @Override
-        public Problem apply(Problem problem, ProblemContext problemContext) {
+        public HttpProblem apply(HttpProblem problem, ProblemContext problemContext) {
             invocations.add(priority);
             return problem;
         }

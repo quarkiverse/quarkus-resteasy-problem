@@ -1,8 +1,10 @@
 package com.tietoevry.quarkus.resteasy.problem.jsonb;
 
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.tietoevry.quarkus.resteasy.problem.ProblemMother;
+import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
+import com.tietoevry.quarkus.resteasy.problem.HttpProblemMother;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -14,8 +16,6 @@ import org.eclipse.yasson.internal.JsonbContext;
 import org.eclipse.yasson.internal.Marshaller;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.zalando.problem.Problem;
-import org.zalando.problem.Status;
 
 class JsonbProblemSerializerTest {
 
@@ -28,20 +28,20 @@ class JsonbProblemSerializerTest {
     @Test
     @DisplayName("Should serialize all provided fields")
     void shouldSerializeAllFields() throws IOException {
-        Problem problem = ProblemMother.complexProblem().build();
+        HttpProblem problem = HttpProblemMother.complexProblem().build();
 
         serializer.serialize(problem, jsonGenerator, context);
 
         jsonGenerator.close();
         assertThat(outputStream.toString(StandardCharsets.UTF_8.name()))
-                .isEqualTo(ProblemMother.SERIALIZED_COMPLEX_PROBLEM);
+                .isEqualTo(HttpProblemMother.SERIALIZED_COMPLEX_PROBLEM);
     }
 
     @Test
     @DisplayName("Should serialize only not null fields")
     void shouldSerializeOnlyNotNullFields() throws IOException {
-        Problem problem = Problem.builder()
-                .withStatus(Status.BAD_REQUEST)
+        HttpProblem problem = HttpProblem.builder()
+                .withStatus(BAD_REQUEST)
                 .withTitle("Something wrong in the dirt")
                 .build();
 
@@ -49,7 +49,7 @@ class JsonbProblemSerializerTest {
 
         jsonGenerator.close();
         assertThat(outputStream.toString(StandardCharsets.UTF_8.name()))
-                .isEqualTo(ProblemMother.SERIALIZED_BAD_REQUEST_PROBLEM);
+                .isEqualTo(HttpProblemMother.SERIALIZED_BAD_REQUEST_PROBLEM);
     }
 
 }

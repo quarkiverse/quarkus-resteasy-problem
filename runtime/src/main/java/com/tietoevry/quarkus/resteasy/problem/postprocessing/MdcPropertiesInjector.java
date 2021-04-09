@@ -1,10 +1,8 @@
 package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
-import com.tietoevry.quarkus.resteasy.problem.ProblemUtils;
+import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 import java.util.Set;
 import org.slf4j.MDC;
-import org.zalando.problem.Problem;
-import org.zalando.problem.ProblemBuilder;
 
 /**
  * Injects existing MDC properties listed in the configuration into final response. Missing MDC values and properties already
@@ -24,12 +22,12 @@ final class MdcPropertiesInjector implements ProblemPostProcessor {
     }
 
     @Override
-    public Problem apply(Problem problem, ProblemContext context) {
+    public HttpProblem apply(HttpProblem problem, ProblemContext context) {
         if (properties.isEmpty()) {
             return problem;
         }
 
-        ProblemBuilder builder = ProblemUtils.toBuilder(problem);
+        HttpProblem.Builder builder = HttpProblem.builder(problem);
 
         properties.stream()
                 .filter(propertyName -> !problem.getParameters().containsKey(propertyName))

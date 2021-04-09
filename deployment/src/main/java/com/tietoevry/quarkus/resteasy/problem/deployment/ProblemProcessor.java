@@ -24,7 +24,6 @@ public class ProblemProcessor {
 
     private static final List<String> EXCEPTION_MAPPER_CLASSES = Arrays.asList(
             "com.tietoevry.quarkus.resteasy.problem.DefaultExceptionMapper",
-            "com.tietoevry.quarkus.resteasy.problem.ProblemMapper",
             "com.tietoevry.quarkus.resteasy.problem.HttpProblemMapper",
 
             // JAXRS
@@ -70,6 +69,11 @@ public class ProblemProcessor {
         EXCEPTION_MAPPER_CLASSES.stream()
                 .map(ResteasyJaxrsProviderBuildItem::new)
                 .forEach(providers::produce);
+    }
+
+    @BuildStep(onlyIf = ZalandoProblemDetector.class)
+    void registerZalandoProblemMapper(BuildProducer<ResteasyJaxrsProviderBuildItem> providers) {
+        providers.produce(new ResteasyJaxrsProviderBuildItem("com.tietoevry.quarkus.resteasy.problem.ZalandoProblemMapper"));
     }
 
     @BuildStep

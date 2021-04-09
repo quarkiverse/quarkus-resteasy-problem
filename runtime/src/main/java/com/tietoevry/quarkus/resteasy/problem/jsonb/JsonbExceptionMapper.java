@@ -1,14 +1,14 @@
 package com.tietoevry.quarkus.resteasy.problem.jsonb;
 
-import static org.zalando.problem.Status.BAD_REQUEST;
-import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
 
 import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
+import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 import javax.annotation.Priority;
 import javax.json.bind.JsonbException;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.ProcessingException;
-import org.zalando.problem.Problem;
 
 @Priority(Priorities.USER)
 public final class JsonbExceptionMapper extends ExceptionMapperBase<ProcessingException> {
@@ -18,11 +18,11 @@ public final class JsonbExceptionMapper extends ExceptionMapperBase<ProcessingEx
      * needs to be checked explicitly.
      */
     @Override
-    public Problem toProblem(ProcessingException exception) {
+    public HttpProblem toProblem(ProcessingException exception) {
         if (exception.getCause() instanceof JsonbException) {
-            return Problem.valueOf(BAD_REQUEST, exception.getCause().getMessage());
+            return HttpProblem.valueOf(BAD_REQUEST, exception.getCause().getMessage());
         } else {
-            return Problem.valueOf(INTERNAL_SERVER_ERROR);
+            return HttpProblem.valueOf(INTERNAL_SERVER_ERROR);
         }
     }
 }

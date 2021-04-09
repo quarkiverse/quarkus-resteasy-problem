@@ -3,32 +3,28 @@ package com.tietoevry.quarkus.resteasy.problem.jackson;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 import java.io.IOException;
-import java.net.URI;
 import java.util.Map;
-import org.zalando.problem.Problem;
 
 /**
- * Low level Jackson serializer for Problem type. We could use ProblemModule from Zalando library, but in order to minimize
- * dependencies and to have more control over serialization process we decided to provide our own serializer.
+ * Low level Jackson serializer for HttpProblem type.
  */
-public final class JacksonProblemSerializer extends StdSerializer<Problem> {
-
-    private static final URI DEFAULT_URI = URI.create("about:blank");
+public final class JacksonProblemSerializer extends StdSerializer<HttpProblem> {
 
     public JacksonProblemSerializer() {
         this(null);
     }
 
-    public JacksonProblemSerializer(Class<Problem> t) {
+    public JacksonProblemSerializer(Class<HttpProblem> t) {
         super(t);
     }
 
     @Override
-    public void serialize(final Problem problem, final JsonGenerator json, final SerializerProvider serializers)
+    public void serialize(final HttpProblem problem, final JsonGenerator json, final SerializerProvider serializers)
             throws IOException {
         json.writeStartObject();
-        if (problem.getType() != null && !problem.getType().equals(DEFAULT_URI)) {
+        if (problem.getType() != null) {
             json.writeStringField("type", problem.getType().toASCIIString());
         }
         if (problem.getStatus() != null) {

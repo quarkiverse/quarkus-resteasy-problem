@@ -2,12 +2,12 @@ package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
-import org.zalando.problem.Problem;
 
 /**
  * Logs problems with ERROR (for HTTP 5XX) or INFO (other exceptions) log level. In case of ERROR (HTTP 5XX) stack trace is
@@ -23,7 +23,7 @@ final class ProblemLogger implements ProblemPostProcessor {
     }
 
     @Override
-    public Problem apply(Problem problem, ProblemContext context) {
+    public HttpProblem apply(HttpProblem problem, ProblemContext context) {
         if (!logger.isErrorEnabled()) {
             return problem;
         }
@@ -42,16 +42,14 @@ final class ProblemLogger implements ProblemPostProcessor {
         return problem;
     }
 
-    private String serialize(Problem problem) {
+    private String serialize(HttpProblem problem) {
         return Stream.concat(
                 Stream.of(
                         (problem.getStatus() == null) ? null : ("status=" + problem.getStatus().getStatusCode()),
                         (problem.getTitle() == null) ? null : ("title=\"" + problem.getTitle() + "\""),
                         (problem.getDetail() == null) ? null : ("detail=\"" + problem.getDetail() + "\""),
                         (problem.getInstance() == null) ? null : ("instance=\"" + problem.getInstance() + "\""),
-                        "about:blank".equals(problem.getType().toString())
-                                ? null
-                                : "type=" + problem.getType().toString()),
+                        (problem.getType() == null) ? null : "type=" + problem.getType().toString()),
                 problem.getParameters().entrySet().stream().map(this::serializeParameter))
                 .filter(Objects::nonNull)
                 .collect(Collectors.joining(", "));

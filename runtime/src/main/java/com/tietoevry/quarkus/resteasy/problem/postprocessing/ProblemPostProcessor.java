@@ -1,14 +1,14 @@
 package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
+import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 import java.util.Comparator;
 import java.util.function.BiFunction;
-import org.zalando.problem.Problem;
 
 /**
  * Post-processors use, change or enhance Problems created by ExceptionMappers via 'apply' method, before they get passed on to
  * serializers.
  */
-public interface ProblemPostProcessor extends BiFunction<Problem, ProblemContext, Problem> {
+public interface ProblemPostProcessor extends BiFunction<HttpProblem, ProblemContext, HttpProblem> {
 
     Comparator<ProblemPostProcessor> DEFAULT_ORDERING = Comparator.comparingInt(ProblemPostProcessor::priority).reversed();
 

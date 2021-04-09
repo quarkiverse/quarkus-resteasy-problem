@@ -1,10 +1,8 @@
 package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
-import com.tietoevry.quarkus.resteasy.problem.ProblemUtils;
+import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 import java.net.URI;
 import javax.ws.rs.core.UriInfo;
-import org.zalando.problem.Problem;
-import org.zalando.problem.ProblemBuilder;
 
 /**
  * Replaces <code>null</code> value of <code>instance</code> with URI of currently served endpoint, i.e
@@ -18,14 +16,14 @@ final class ProblemDefaultsProvider implements ProblemPostProcessor {
     }
 
     @Override
-    public Problem apply(Problem problem, ProblemContext context) {
+    public HttpProblem apply(HttpProblem problem, ProblemContext context) {
         if (problem.getInstance() != null) {
             return problem;
         }
 
-        ProblemBuilder builder = ProblemUtils.toBuilder(problem);
-        builder.withInstance(defaultInstance(context));
-        return builder.build();
+        return HttpProblem.builder(problem)
+                .withInstance(defaultInstance(context))
+                .build();
     }
 
     private URI defaultInstance(ProblemContext context) {

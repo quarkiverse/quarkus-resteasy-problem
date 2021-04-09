@@ -22,6 +22,12 @@
             <artifactId>quarkus-resteasy</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+
+        <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-jackson</artifactId>
             <optional>true</optional>
@@ -40,12 +46,7 @@
             <groupId>org.zalando</groupId>
             <artifactId>problem</artifactId>
             <version>${zalando-problem.version}</version>
-        </dependency>
-        <!-- fix missing javax.annotation.concurrent.Immutable -->
-        <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
-            <version>3.0.2</version>
+            <optional>true</optional>
         </dependency>
 
         <dependency>

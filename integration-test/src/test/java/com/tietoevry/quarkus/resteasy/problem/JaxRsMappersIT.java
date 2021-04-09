@@ -1,26 +1,24 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
 import static io.restassured.RestAssured.given;
+import static javax.ws.rs.core.Response.Status.FORBIDDEN;
+import static javax.ws.rs.core.Response.Status.MOVED_PERMANENTLY;
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.nullValue;
-import static org.zalando.problem.Status.FORBIDDEN;
-import static org.zalando.problem.Status.INTERNAL_SERVER_ERROR;
-import static org.zalando.problem.Status.MOVED_PERMANENTLY;
-import static org.zalando.problem.Status.NOT_FOUND;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.zalando.problem.Status;
 
 @QuarkusTest
 class JaxRsMappersIT {
 
-    static final int INVALID_HTTP_CODE = 701;
     static final String SAMPLE_DETAIL = "A small one";
 
     static {
@@ -35,7 +33,7 @@ class JaxRsMappersIT {
                 .get("/throw/jax-rs/web-application-exception")
                 .then()
                 .statusCode(status)
-                .body("title", equalTo(Status.valueOf(status).getReasonPhrase()))
+                .body("title", equalTo(Response.Status.fromStatusCode(status).getReasonPhrase()))
                 .body("status", equalTo(status))
                 .body("stacktrace", nullValue());
     }
@@ -50,20 +48,8 @@ class JaxRsMappersIT {
                 .log().all()
                 .statusCode(status)
                 .header(HttpHeaders.RETRY_AFTER, equalTo("120"))
-                .body("title", equalTo(Status.valueOf(status).getReasonPhrase()))
+                .body("title", equalTo(Response.Status.fromStatusCode(status).getReasonPhrase()))
                 .body("status", equalTo(status))
-                .body("stacktrace", nullValue());
-    }
-
-    @Test
-    void webApplicationExceptionWithInvalidCodeShould500() {
-        given()
-                .queryParam("status", INVALID_HTTP_CODE)
-                .get("/throw/jax-rs/web-application-exception")
-                .then()
-                .statusCode(500)
-                .body("title", equalTo(INTERNAL_SERVER_ERROR.getReasonPhrase()))
-                .body("status", equalTo(INTERNAL_SERVER_ERROR.getStatusCode()))
                 .body("stacktrace", nullValue());
     }
 

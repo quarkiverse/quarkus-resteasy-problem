@@ -1,9 +1,9 @@
 package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
+import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.LoggerFactory;
-import org.zalando.problem.Problem;
 
 /**
  * Container for prioritised list of Problem post-processors.
@@ -38,8 +38,8 @@ public final class PostProcessorsRegistry {
      * @param context Additional info on cause (original exception caught by ExceptionMapper) and HTTP request
      * @return Enhanced version of original Problem
      */
-    public Problem applyPostProcessing(Problem problem, ProblemContext context) {
-        Problem finalProblem = problem;
+    public HttpProblem applyPostProcessing(HttpProblem problem, ProblemContext context) {
+        HttpProblem finalProblem = problem;
         for (ProblemPostProcessor processor : processors) {
             finalProblem = processor.apply(finalProblem, context);
         }
