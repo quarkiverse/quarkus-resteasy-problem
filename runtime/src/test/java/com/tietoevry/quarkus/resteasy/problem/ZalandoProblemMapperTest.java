@@ -1,24 +1,27 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.zalando.problem.Status.BAD_REQUEST;
 
 import javax.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;
 import org.zalando.problem.Problem;
-import org.zalando.problem.Status;
 import org.zalando.problem.ThrowableProblem;
 
-class ProblemMapperTest {
+class ZalandoProblemMapperTest {
 
-    ProblemMapper mapper = new ProblemMapper();
+    ZalandoProblemMapper mapper = new ZalandoProblemMapper();
 
     @Test
     void responseShouldUseProblemStatus() {
-        ThrowableProblem problem = ProblemMother.badRequestProblem();
+        ThrowableProblem problem = Problem.builder()
+                .withTitle("There's something wrong with your request")
+                .withStatus(BAD_REQUEST)
+                .build();
 
         Response response = mapper.toResponse(problem);
 
-        assertThat(response.getStatus()).isEqualTo(Status.BAD_REQUEST.getStatusCode());
+        assertThat(response.getStatus()).isEqualTo(BAD_REQUEST.getStatusCode());
     }
 
     @Test

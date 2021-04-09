@@ -1,5 +1,7 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
+import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
+
 import io.smallrye.common.constraint.Nullable;
 import java.net.URI;
 import java.util.Arrays;
@@ -13,21 +15,20 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.concurrent.Immutable;
-import org.zalando.problem.Problem;
-import org.zalando.problem.StatusType;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
- * Extension to Zalando's Problem interface, which allows creating and throwing Problems with additional HTTP headers to be
- * included in final HTTP response.
- *
- * It can also replace Zalando's Problem class in the future releases, so that we can get rid of this dependency.
+ * Representation of RFC7807 Problem schema.
  */
 @Immutable
-public final class HttpProblem extends RuntimeException implements Problem {
+public final class HttpProblem extends RuntimeException {
+
+    public static final MediaType MEDIA_TYPE = new MediaType("application", "problem+json");
 
     private final URI type;
     private final String title;
-    private final StatusType status;
+    private final Response.StatusType status;
     private final String detail;
     private final URI instance;
     private final Map<String, Object> parameters;
@@ -35,19 +36,34 @@ public final class HttpProblem extends RuntimeException implements Problem {
 
     private HttpProblem(@Nullable final URI type,
             @Nullable final String title,
-            @Nullable final StatusType status,
+            @Nullable final Response.StatusType status,
             @Nullable final String detail,
             @Nullable final URI instance,
             @Nullable final Map<String, Object> parameters,
             @Nullable final Map<String, Object> headers) {
         super();
-        this.type = Optional.ofNullable(type).orElse(DEFAULT_TYPE);
+        this.type = type;
         this.title = title;
-        this.status = status;
+        this.status = Optional.ofNullable(status).orElse(INTERNAL_SERVER_ERROR);
         this.detail = detail;
         this.instance = instance;
         this.parameters = Collections.unmodifiableMap(Optional.ofNullable(parameters).orElseGet(LinkedHashMap::new));
         this.headers = Collections.unmodifiableMap(headers);
+    }
+
+    public static HttpProblem valueOf(final Response.Status status) {
+        return builder()
+                .withTitle(status.getReasonPhrase())
+                .withStatus(status)
+                .build();
+    }
+
+    public static HttpProblem valueOf(final Response.Status status, final String detail) {
+        return builder()
+                .withTitle(status.getReasonPhrase())
+                .withStatus(status)
+                .withDetail(detail)
+                .build();
     }
 
     public static Builder builder() {
@@ -72,32 +88,26 @@ public final class HttpProblem extends RuntimeException implements Problem {
         return builder;
     }
 
-    @Override
     public URI getType() {
         return this.type;
     }
 
-    @Override
     public String getTitle() {
         return this.title;
     }
 
-    @Override
-    public StatusType getStatus() {
+    public Response.StatusType getStatus() {
         return this.status;
     }
 
-    @Override
     public String getDetail() {
         return this.detail;
     }
 
-    @Override
     public URI getInstance() {
         return this.instance;
     }
 
-    @Override
     public Map<String, Object> getParameters() {
         return this.parameters;
     }
@@ -111,11 +121,6 @@ public final class HttpProblem extends RuntimeException implements Problem {
         return Stream.of(this.getTitle(), this.getDetail()).filter(Objects::nonNull).collect(Collectors.joining(": "));
     }
 
-    @Override
-    public String toString() {
-        return Problem.toString(this);
-    }
-
     public static class Builder {
 
         private static final Set<String> RESERVED_PROPERTIES = new HashSet<>(Arrays.asList(
@@ -123,7 +128,7 @@ public final class HttpProblem extends RuntimeException implements Problem {
 
         private URI type;
         private String title;
-        private StatusType status;
+        private Response.StatusType status;
         private String detail;
         private URI instance;
         private final Map<String, Object> headers = new LinkedHashMap<>();
@@ -142,7 +147,7 @@ public final class HttpProblem extends RuntimeException implements Problem {
             return this;
         }
 
-        public Builder withStatus(@Nullable final StatusType status) {
+        public Builder withStatus(@Nullable final Response.StatusType status) {
             this.status = status;
             return this;
         }

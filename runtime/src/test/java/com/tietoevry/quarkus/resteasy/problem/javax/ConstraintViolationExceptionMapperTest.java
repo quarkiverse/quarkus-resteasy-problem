@@ -1,8 +1,8 @@
 package com.tietoevry.quarkus.resteasy.problem.javax;
 
-import static com.tietoevry.quarkus.resteasy.problem.ProblemUtils.APPLICATION_PROBLEM_JSON;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 import java.util.List;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
@@ -13,7 +13,6 @@ import javax.ws.rs.core.Response;
 import org.hibernate.validator.HibernateValidator;
 import org.hibernate.validator.constraints.Length;
 import org.junit.jupiter.api.Test;
-import org.zalando.problem.Problem;
 
 class ConstraintViolationExceptionMapperTest {
 
@@ -31,8 +30,8 @@ class ConstraintViolationExceptionMapperTest {
         Response response = mapper.toResponse(exception);
 
         assertThat(response.getStatus()).isEqualTo(400);
-        assertThat(response.getMediaType()).isEqualTo(APPLICATION_PROBLEM_JSON);
-        Problem problem = (Problem) response.getEntity();
+        assertThat(response.getMediaType()).isEqualTo(HttpProblem.MEDIA_TYPE);
+        HttpProblem problem = (HttpProblem) response.getEntity();
         List<Violation> violations = (List<Violation>) problem.getParameters().get("violations");
         assertThat(violations)
                 .usingFieldByFieldElementComparator()

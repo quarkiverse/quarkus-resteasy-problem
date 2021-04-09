@@ -6,7 +6,7 @@
 ![JVM](https://img.shields.io/badge/JVM-1.8+-green.svg)
 ![Quarkus](https://img.shields.io/badge/Quarkus-1.4.2%20+-green.svg)
 
-[RFC7807 Problem](https://tools.ietf.org/html/rfc7807) extension for Quarkus RESTeasy/JaxRS applications, inspired and based on [Zalando Problem library](https://github.com/zalando/problem). \
+[RFC7807 Problem](https://tools.ietf.org/html/rfc7807) extension for Quarkus RESTeasy/JaxRS applications, inspired by [Zalando Problem library](https://github.com/zalando/problem). \
 This extension registers few JaxRS Exceptions Mappers for common exceptions thrown by Quarkus apps, which turn exceptions into standardized HTTP responses described in RFC, with content type `application/problem+json`. See [Built-in exception mappers](#built-in-exception-mappers) section for more details.
 
 Supports:
@@ -55,7 +55,7 @@ Run the application with: `./mvnw compile quarkus:dev`, and you will find `reste
 Installed features: [cdi, resteasy, resteasy-jackson, <b><u>resteasy-problem</u></b>]
 </pre>
 
-Now you can throw JaxRS or custom exceptions (or ThrowableProblems from Zalando library) in your code:
+Now you can throw JaxRS or custom exceptions (or HttpProblems, or ThrowableProblems from Zalando library) in your code:
 
 ```java
 @Path("/country")
@@ -94,17 +94,18 @@ This extension provides mappers for common exceptions thrown by Quarkus apps.\
 Some of them are thrown by Quarkus itself in certain situations (i.e failed authorization).
 You can throw them from controllers or business logic as well (i.e `NotFoundException` as in the example above).
 
-| Exception                                | Thrown by / when                 | Example JSON response                           |
+| Exception                                | Thrown by / when                 | Example JSON response                        |
 |------------------------------------------|--------------------------------|------------------------------------------------|
 | `sec.AuthenticationFailedException`      | Missing or invalid JWT         | `{ "status" : 401, ... }`                      |
 | `sec.UnauthorizedException`              | Missing or invalid JWT         | `{ "status" : 401, ... }`                      |
 | `sec.ForbiddenException`                 | `@RolesAllowed` not satisfied  | `{ "status" : 403, ... }`                      |
 | `javax.ConstraintViolationException`     | Hibernate Validator (`@Valid`) | `{ "status" : 400, violations : [{...}] }`     |
 | `javax.ValidationException`              | user or Quarkus                | `{ "status" : 400, ... }`                      |
-| `javax.RedirectionException`             | user or Quarkus                | `{ "status" : 3XX, ... }` + `Location` header    |
+| `javax.RedirectionException`             | user or Quarkus                | `{ "status" : 3XX, ... }` + `Location` header  |
 | `jaxrs.NotFoundException`                | RESTeasy, user                 | `{ "status" : 404, ... }`                      |
 | `jaxrs.WebApplicationException(status)`  | user or Quarkus                | `{ "status" : <status>, ... }`                 |
-| `zalando.Problem(status)`                | user or Quarkus                | `{ "status" : <status>, ... }`                 |
+| `HttpProblem(status)`                    | user                           | `{ "status" : <status>, ... }`                 |
+| `zalando.Problem(status)`                | user                           | `{ "status" : <status>, ... }`                 |
 | `Exception`                              | user or Quarkus                | `{ "status" : 500, ... }`                      |
 
 There's also top-level mapper for `Exception` class, which will convert all unhandled exceptions to HTTP 500 response.

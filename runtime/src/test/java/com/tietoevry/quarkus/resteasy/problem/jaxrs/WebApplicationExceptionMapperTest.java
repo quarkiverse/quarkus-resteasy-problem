@@ -1,16 +1,16 @@
 package com.tietoevry.quarkus.resteasy.problem.jaxrs;
 
-import static com.tietoevry.quarkus.resteasy.problem.ProblemUtils.APPLICATION_PROBLEM_JSON;
+import static com.tietoevry.quarkus.resteasy.problem.HttpProblem.MEDIA_TYPE;
 import static javax.ws.rs.core.HttpHeaders.RETRY_AFTER;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 import java.net.URI;
 import javax.ws.rs.RedirectionException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;
-import org.zalando.problem.Problem;
 
 class WebApplicationExceptionMapperTest {
 
@@ -20,14 +20,15 @@ class WebApplicationExceptionMapperTest {
 
     @Test
     void shouldMapAllBasicFields() {
-        WebApplicationException exception = new WebApplicationException("Hello world", 418);
+        WebApplicationException exception = new WebApplicationException("Hello world", 400);
 
         Response response = mapper.toResponse(exception);
 
-        assertThat(response.getStatus()).isEqualTo(418);
-        assertThat(response.getMediaType()).isEqualTo(APPLICATION_PROBLEM_JSON);
+        assertThat(response.getStatus()).isEqualTo(400);
+        assertThat(response.getMediaType()).isEqualTo(MEDIA_TYPE);
         assertThat(response.getEntity())
-                .isInstanceOf(Problem.class)
+                .isInstanceOf(HttpProblem.class)
+                .hasFieldOrPropertyWithValue("title", "Bad Request")
                 .hasFieldOrPropertyWithValue("detail", "Hello world");
     }
 
@@ -42,10 +43,10 @@ class WebApplicationExceptionMapperTest {
         Response response = mapper.toResponse(exception);
 
         assertThat(response.getStatus()).isEqualTo(429);
-        assertThat(response.getMediaType()).isEqualTo(APPLICATION_PROBLEM_JSON);
+        assertThat(response.getMediaType()).isEqualTo(MEDIA_TYPE);
         assertThat(response.getHeaderString(RETRY_AFTER)).isEqualTo("120");
         assertThat(response.getEntity())
-                .isInstanceOf(Problem.class)
+                .isInstanceOf(HttpProblem.class)
                 .hasFieldOrPropertyWithValue("detail", "HTTP 429 Too Many Requests");
     }
 
@@ -58,10 +59,10 @@ class WebApplicationExceptionMapperTest {
         Response response = mapper.toResponse(exception);
 
         assertThat(response.getStatus()).isEqualTo(301);
-        assertThat(response.getMediaType()).isEqualTo(APPLICATION_PROBLEM_JSON);
+        assertThat(response.getMediaType()).isEqualTo(MEDIA_TYPE);
         assertThat(response.getHeaderString("Location")).endsWith("/new-location");
         assertThat(response.getEntity())
-                .isInstanceOf(Problem.class)
+                .isInstanceOf(HttpProblem.class)
                 .hasFieldOrPropertyWithValue("detail", "HTTP 301 Moved Permanently");
     }
 }

@@ -1,22 +1,19 @@
 package com.tietoevry.quarkus.resteasy.problem.jsonb;
 
-import java.net.URI;
+import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 import javax.json.bind.serializer.JsonbSerializer;
 import javax.json.bind.serializer.SerializationContext;
 import javax.json.stream.JsonGenerator;
-import org.zalando.problem.Problem;
 
 /**
  * Low level JsonB serializer for Problem type.
  */
-public final class JsonbProblemSerializer implements JsonbSerializer<Problem> {
-
-    private static final URI DEFAULT_URI = URI.create("about:blank");
+public final class JsonbProblemSerializer implements JsonbSerializer<HttpProblem> {
 
     @Override
-    public void serialize(Problem problem, JsonGenerator generator, SerializationContext ctx) {
+    public void serialize(HttpProblem problem, JsonGenerator generator, SerializationContext ctx) {
         generator.writeStartObject();
-        if (problem.getType() != null && !problem.getType().equals(DEFAULT_URI)) {
+        if (problem.getType() != null) {
             generator.write("type", problem.getType().toASCIIString());
         }
         if (problem.getStatus() != null) {

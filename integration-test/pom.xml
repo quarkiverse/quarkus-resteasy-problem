@@ -29,6 +29,11 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-smallrye-metrics</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.zalando</groupId>
+            <artifactId>problem</artifactId>
+            <version>${zalando-problem.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>io.rest-assured</groupId>

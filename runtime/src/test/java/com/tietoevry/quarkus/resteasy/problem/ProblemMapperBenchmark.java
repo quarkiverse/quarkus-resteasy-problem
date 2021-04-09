@@ -28,7 +28,6 @@ import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
-import org.zalando.problem.ThrowableProblem;
 
 /**
  * JMH benchmark for selected exception Mapper with all post-processors enabled + junit runner test for convenience.
@@ -47,9 +46,9 @@ public class ProblemMapperBenchmark {
     @State(Scope.Thread)
     public static class BenchmarkState {
 
-        public final ProblemMapper mapper = new ProblemMapper();
+        public final HttpProblemMapper mapper = new HttpProblemMapper();
 
-        public final ThrowableProblem problem = ProblemMother.complexProblem().build();
+        public final HttpProblem problem = HttpProblemMother.complexProblem().build();
 
         @Setup(Level.Trial)
         public void initMapper() {

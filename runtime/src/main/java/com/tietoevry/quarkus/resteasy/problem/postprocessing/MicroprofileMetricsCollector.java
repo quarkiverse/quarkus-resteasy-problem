@@ -1,11 +1,11 @@
 package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
+import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 import io.smallrye.metrics.MetricRegistries;
 import java.util.Objects;
 import org.eclipse.microprofile.metrics.Metadata;
 import org.eclipse.microprofile.metrics.MetricRegistry;
 import org.eclipse.microprofile.metrics.Tag;
-import org.zalando.problem.Problem;
 
 /**
  * Provides simple metrics to Microprofile Metrics Registry. Example result:
@@ -39,7 +39,7 @@ final class MicroprofileMetricsCollector implements ProblemPostProcessor {
     }
 
     @Override
-    public Problem apply(Problem problem, ProblemContext context) {
+    public HttpProblem apply(HttpProblem problem, ProblemContext context) {
         Objects.requireNonNull(problem.getStatus());
 
         Tag tag = new Tag(STATUS_TAG, String.valueOf(problem.getStatus().getStatusCode()));

@@ -1,68 +1,37 @@
 package com.tietoevry.quarkus.resteasy.problem.jaxrs;
 
-import static com.tietoevry.quarkus.resteasy.problem.ProblemUtils.APPLICATION_PROBLEM_JSON;
+import java.util.Optional;
 
-import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
-import com.tietoevry.quarkus.resteasy.problem.postprocessing.ProblemContext;
-import java.util.Objects;
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.ext.ExceptionMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.zalando.problem.Problem;
-import org.zalando.problem.Status;
+
+import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
+import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 
 /**
  * Generic exception mapper for JaxRS WebApplicationExceptions - it passes status and message to application/problem response.
  */
 @Priority(Priorities.USER)
-public final class WebApplicationExceptionMapper implements ExceptionMapper<WebApplicationException> {
-
-    private static final Logger logger = LoggerFactory.getLogger(WebApplicationExceptionMapper.class);
-
-    @Context
-    UriInfo uriInfo;
+public final class WebApplicationExceptionMapper extends ExceptionMapperBase<WebApplicationException> {
 
     @Override
-    public final Response toResponse(WebApplicationException exception) {
-        Problem problem = toProblem(exception);
-        ProblemContext context = ProblemContext.of(exception, uriInfo);
-        Problem finalProblem = ExceptionMapperBase.postProcessorsRegistry.applyPostProcessing(problem, context);
-        return toResponse(finalProblem, exception);
-    }
+    protected HttpProblem toProblem(WebApplicationException exception) {
+        Response.StatusType status = Optional.ofNullable(exception.getResponse().getStatusInfo())
+                .orElse(Response.Status.INTERNAL_SERVER_ERROR);
 
-    private Problem toProblem(WebApplicationException exception) {
-        Status status = Status.INTERNAL_SERVER_ERROR;
-        try {
-            status = Status.valueOf(exception.getResponse().getStatus());
-        } catch (IllegalArgumentException e) {
-            logger.error("WebApplicationException status code is not a valid HTTP status: {}",
-                    exception.getResponse().getStatus());
-        }
-        return Problem.valueOf(status, exception.getMessage());
-    }
+        HttpProblem.Builder problem = HttpProblem.builder()
+                .withTitle(status.getReasonPhrase())
+                .withStatus(status)
+                .withDetail(exception.getMessage());
 
-    private Response toResponse(Problem problem, WebApplicationException originalException) {
-        Objects.requireNonNull(problem.getStatus());
+        exception
+                .getResponse()
+                .getHeaders()
+                .forEach((header, values) -> values.forEach(value -> problem.withHeader(header, value)));
 
-        Response.ResponseBuilder responseBuilder = Response
-                .status(problem.getStatus().getStatusCode())
-                .type(APPLICATION_PROBLEM_JSON)
-                .entity(problem);
-
-        if (originalException.getResponse() != null) {
-            originalException
-                    .getResponse()
-                    .getHeaders()
-                    .forEach((header, values) -> values.forEach(value -> responseBuilder.header(header, value)));
-        }
-
-        return responseBuilder.build();
+        return problem.build();
     }
 
 }

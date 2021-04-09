@@ -1,19 +1,20 @@
 package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
 import static com.tietoevry.quarkus.resteasy.problem.postprocessing.ProblemContextMother.simpleContext;
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 import com.tietoevry.quarkus.resteasy.problem.javax.Violation;
 import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.slf4j.Logger;
-import org.zalando.problem.Problem;
-import org.zalando.problem.Status;
 
 class ProblemLoggerTest {
 
@@ -28,9 +29,9 @@ class ProblemLoggerTest {
 
     @Test
     void shouldPrintOnlyNotNullFields() {
-        Problem problem = Problem.builder()
+        HttpProblem problem = HttpProblem.builder()
                 .withTitle("your fault")
-                .withStatus(Status.BAD_REQUEST)
+                .withStatus(BAD_REQUEST)
                 .build();
 
         processor.apply(problem, simpleContext());
@@ -40,9 +41,9 @@ class ProblemLoggerTest {
 
     @Test
     void shouldPrintCustomParameters() {
-        Problem problem = Problem.builder()
+        HttpProblem problem = HttpProblem.builder()
                 .withTitle("your fault")
-                .withStatus(Status.BAD_REQUEST)
+                .withStatus(BAD_REQUEST)
                 .with("custom-field", "123")
                 .with("violations", Collections.singletonList(new Violation("too small", "key")))
                 .build();
@@ -57,9 +58,9 @@ class ProblemLoggerTest {
 
     @Test
     void shouldPrintStackTraceFor500s() {
-        Problem problem = Problem.builder()
+        HttpProblem problem = HttpProblem.builder()
                 .withTitle("my fault")
-                .withStatus(Status.INTERNAL_SERVER_ERROR)
+                .withStatus(INTERNAL_SERVER_ERROR)
                 .build();
         RuntimeException cause = new RuntimeException("hey");
 

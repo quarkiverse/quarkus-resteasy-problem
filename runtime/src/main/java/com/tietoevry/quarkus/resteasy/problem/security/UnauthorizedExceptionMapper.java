@@ -1,12 +1,12 @@
 package com.tietoevry.quarkus.resteasy.problem.security;
 
-import static org.zalando.problem.Status.UNAUTHORIZED;
+import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
 import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
+import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 import io.quarkus.security.UnauthorizedException;
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
-import org.zalando.problem.Problem;
 
 /**
  * Mapper overriding default Quarkus exception mapper to make all error responses compliant with RFC7807.
@@ -17,8 +17,8 @@ import org.zalando.problem.Problem;
 public final class UnauthorizedExceptionMapper extends ExceptionMapperBase<UnauthorizedException> {
 
     @Override
-    protected Problem toProblem(UnauthorizedException exception) {
-        return Problem.valueOf(UNAUTHORIZED, exception.getMessage());
+    protected HttpProblem toProblem(UnauthorizedException exception) {
+        return HttpProblem.valueOf(UNAUTHORIZED, exception.getMessage());
     }
 
 }

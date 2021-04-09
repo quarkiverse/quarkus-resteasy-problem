@@ -1,7 +1,5 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
-import static com.tietoevry.quarkus.resteasy.problem.ProblemUtils.APPLICATION_PROBLEM_JSON;
-
 import com.tietoevry.quarkus.resteasy.problem.postprocessing.PostProcessorsRegistry;
 import com.tietoevry.quarkus.resteasy.problem.postprocessing.ProblemContext;
 import java.util.Objects;
@@ -9,7 +7,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.ExceptionMapper;
-import org.zalando.problem.Problem;
 
 /**
  * Base class for all ExceptionMappers in this extension, takes care of mapping Exceptions to Problems, triggering
@@ -24,24 +21,27 @@ public abstract class ExceptionMapperBase<E extends Throwable> implements Except
 
     @Override
     public final Response toResponse(E exception) {
-        Problem problem = toProblem(exception);
+        HttpProblem problem = toProblem(exception);
         Objects.requireNonNull(problem.getStatus(), "Status must not be null");
 
         ProblemContext context = ProblemContext.of(exception, uriInfo);
-        Problem finalProblem = postProcessorsRegistry.applyPostProcessing(problem, context);
-        return toResponse(finalProblem);
+        HttpProblem finalProblem = postProcessorsRegistry.applyPostProcessing(problem, context);
+        return toFinalResponse(finalProblem);
     }
 
-    protected abstract Problem toProblem(E exception);
+    protected abstract HttpProblem toProblem(E exception);
 
-    private Response toResponse(Problem problem) {
+    private Response toFinalResponse(HttpProblem problem) {
         Objects.requireNonNull(problem.getStatus());
 
-        return Response
+        Response.ResponseBuilder builder = Response
                 .status(problem.getStatus().getStatusCode())
-                .type(APPLICATION_PROBLEM_JSON)
-                .entity(problem)
-                .build();
+                .type(HttpProblem.MEDIA_TYPE)
+                .entity(problem);
+
+        problem.getHeaders().forEach(builder::header);
+
+        return builder.build();
     }
 
 }
