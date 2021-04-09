@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import javax.ws.rs.core.Response;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -31,8 +30,7 @@ class HttpProblemTest {
 
         HttpProblem copy = HttpProblem.builder(original).build();
 
-        assertThat(copy)
-                .isEqualToComparingFieldByField(original);
+        assertThat(copy).usingRecursiveComparison().isEqualTo(original);
     }
 
     @Test
