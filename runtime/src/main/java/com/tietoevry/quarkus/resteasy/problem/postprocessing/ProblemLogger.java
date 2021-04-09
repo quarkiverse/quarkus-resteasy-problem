@@ -43,14 +43,16 @@ final class ProblemLogger implements ProblemPostProcessor {
     }
 
     private String serialize(HttpProblem problem) {
-        return Stream.concat(
-                Stream.of(
-                        (problem.getStatus() == null) ? null : ("status=" + problem.getStatus().getStatusCode()),
-                        (problem.getTitle() == null) ? null : ("title=\"" + problem.getTitle() + "\""),
-                        (problem.getDetail() == null) ? null : ("detail=\"" + problem.getDetail() + "\""),
-                        (problem.getInstance() == null) ? null : ("instance=\"" + problem.getInstance() + "\""),
-                        (problem.getType() == null) ? null : "type=" + problem.getType().toString()),
-                problem.getParameters().entrySet().stream().map(this::serializeParameter))
+        Stream<String> basicFields = Stream.of(
+                (problem.getStatus() == null) ? null : ("status=" + problem.getStatus().getStatusCode()),
+                (problem.getTitle() == null) ? null : ("title=\"" + problem.getTitle() + "\""),
+                (problem.getDetail() == null) ? null : ("detail=\"" + problem.getDetail() + "\""),
+                (problem.getInstance() == null) ? null : ("instance=\"" + problem.getInstance() + "\""),
+                (problem.getType() == null) ? null : "type=" + problem.getType().toString());
+
+        Stream<String> parameters = problem.getParameters().entrySet().stream().map(this::serializeParameter);
+
+        return Stream.concat(basicFields, parameters)
                 .filter(Objects::nonNull)
                 .collect(Collectors.joining(", "));
     }

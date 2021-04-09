@@ -1,16 +1,16 @@
 package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import org.slf4j.LoggerFactory;
 
 /**
- * Container for prioritised list of Problem post-processors.
+ * Container for prioritised list of Problem post-processors. This class is thread-safe.
  */
 public final class PostProcessorsRegistry {
 
-    private final List<ProblemPostProcessor> processors = new ArrayList<>();
+    private final List<ProblemPostProcessor> processors = new CopyOnWriteArrayList<>();
 
     public PostProcessorsRegistry() {
         reset();
@@ -20,13 +20,13 @@ public final class PostProcessorsRegistry {
      * Removes all registered post-processors and registers default ones. Used mainly for Quarkus dev mode (live-reload) tests
      * where there's a need to reset registered processors because of config change.
      */
-    synchronized void reset() {
+    synchronized public void reset() {
         processors.clear();
         register(new ProblemLogger(LoggerFactory.getLogger("http-problem")));
         register(new ProblemDefaultsProvider());
     }
 
-    synchronized void register(ProblemPostProcessor processor) {
+    synchronized public void register(ProblemPostProcessor processor) {
         processors.add(processor);
         processors.sort(ProblemPostProcessor.DEFAULT_ORDERING);
     }
