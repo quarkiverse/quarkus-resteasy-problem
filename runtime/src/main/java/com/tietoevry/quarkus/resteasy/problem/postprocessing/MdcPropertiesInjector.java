@@ -1,6 +1,7 @@
 package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
+import java.util.Collections;
 import java.util.Set;
 import org.slf4j.MDC;
 
@@ -13,7 +14,7 @@ final class MdcPropertiesInjector implements ProblemPostProcessor {
     private final Set<String> properties;
 
     public MdcPropertiesInjector(Set<String> properties) {
-        this.properties = properties;
+        this.properties = Collections.unmodifiableSet(properties);
     }
 
     @Override

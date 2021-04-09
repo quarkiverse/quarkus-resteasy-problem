@@ -6,12 +6,11 @@ import io.smallrye.common.constraint.Nullable;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.concurrent.Immutable;
@@ -34,21 +33,27 @@ public final class HttpProblem extends RuntimeException {
     private final Map<String, Object> parameters;
     private final Map<String, Object> headers;
 
-    private HttpProblem(@Nullable final URI type,
-            @Nullable final String title,
-            @Nullable final Response.StatusType status,
-            @Nullable final String detail,
-            @Nullable final URI instance,
-            @Nullable final Map<String, Object> parameters,
-            @Nullable final Map<String, Object> headers) {
-        super();
+    private HttpProblem(
+            @Nullable URI type,
+            @Nullable String title,
+            @Nullable Response.StatusType status,
+            @Nullable String detail,
+            @Nullable URI instance,
+            @Nullable Map<String, Object> parameters,
+            @Nullable Map<String, Object> headers) {
+        super(createMessage(title, detail));
+
         this.type = type;
         this.title = title;
         this.status = Optional.ofNullable(status).orElse(INTERNAL_SERVER_ERROR);
         this.detail = detail;
         this.instance = instance;
         this.parameters = Collections.unmodifiableMap(Optional.ofNullable(parameters).orElseGet(LinkedHashMap::new));
-        this.headers = Collections.unmodifiableMap(headers);
+        this.headers = Collections.unmodifiableMap(Optional.ofNullable(headers).orElseGet(LinkedHashMap::new));
+    }
+
+    private static String createMessage(String title, String detail) {
+        return Stream.of(title, detail).filter(Objects::nonNull).collect(Collectors.joining(": "));
     }
 
     public static HttpProblem valueOf(final Response.Status status) {
@@ -116,14 +121,9 @@ public final class HttpProblem extends RuntimeException {
         return this.headers;
     }
 
-    @Override
-    public String getMessage() {
-        return Stream.of(this.getTitle(), this.getDetail()).filter(Objects::nonNull).collect(Collectors.joining(": "));
-    }
-
     public static class Builder {
 
-        private static final Set<String> RESERVED_PROPERTIES = new HashSet<>(Arrays.asList(
+        private static final List<String> RESERVED_PROPERTIES = Collections.unmodifiableList(Arrays.asList(
                 "type", "title", "status", "detail", "instance"));
 
         private URI type;
@@ -137,32 +137,32 @@ public final class HttpProblem extends RuntimeException {
         private Builder() {
         }
 
-        public Builder withType(@Nullable final URI type) {
+        public Builder withType(@Nullable URI type) {
             this.type = type;
             return this;
         }
 
-        public Builder withTitle(@Nullable final String title) {
+        public Builder withTitle(@Nullable String title) {
             this.title = title;
             return this;
         }
 
-        public Builder withStatus(@Nullable final Response.StatusType status) {
+        public Builder withStatus(@Nullable Response.StatusType status) {
             this.status = status;
             return this;
         }
 
-        public Builder withDetail(@Nullable final String detail) {
+        public Builder withDetail(@Nullable String detail) {
             this.detail = detail;
             return this;
         }
 
-        public Builder withInstance(@Nullable final URI instance) {
+        public Builder withInstance(@Nullable URI instance) {
             this.instance = instance;
             return this;
         }
 
-        public Builder withHeader(final String headerName, final Object value) {
+        public Builder withHeader(String headerName, Object value) {
             headers.put(headerName, value);
             return this;
         }
@@ -170,7 +170,7 @@ public final class HttpProblem extends RuntimeException {
         /**
          * @throws IllegalArgumentException if key is any of type, title, status, detail or instance
          */
-        public Builder with(final String key, final Object value) throws IllegalArgumentException {
+        public Builder with(String key, Object value) throws IllegalArgumentException {
             if (RESERVED_PROPERTIES.contains(key)) {
                 throw new IllegalArgumentException("Property " + key + " is reserved");
             }
