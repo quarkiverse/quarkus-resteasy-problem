@@ -25,6 +25,7 @@ public class ProblemProcessor {
     private static final List<String> EXCEPTION_MAPPER_CLASSES = Arrays.asList(
             "com.tietoevry.quarkus.resteasy.problem.DefaultExceptionMapper",
             "com.tietoevry.quarkus.resteasy.problem.ProblemMapper",
+            "com.tietoevry.quarkus.resteasy.problem.HttpProblemMapper",
 
             // JAXRS
             "com.tietoevry.quarkus.resteasy.problem.jaxrs.WebApplicationExceptionMapper",

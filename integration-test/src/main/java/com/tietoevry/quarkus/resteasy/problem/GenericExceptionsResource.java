@@ -20,6 +20,12 @@ public class GenericExceptionsResource {
         throw new TestRuntimeException(message);
     }
 
+    static final class TestRuntimeException extends RuntimeException {
+        TestRuntimeException(String message) {
+            super(message, new RuntimeException("Root cause"));
+        }
+    }
+
     @GET
     @Path("/problem")
     public void throwProblem(@QueryParam("status") int status, @QueryParam("title") String title,
@@ -33,10 +39,17 @@ public class GenericExceptionsResource {
         }
     }
 
-    static final class TestRuntimeException extends RuntimeException {
-        TestRuntimeException(String message) {
-            super(message, new RuntimeException("Root cause"));
-        }
+    @GET
+    @Path("/http-problem")
+    public void throwHttpProblem(@QueryParam("status") int status, @QueryParam("title") String title,
+            @QueryParam("detail") String detail) {
+
+        throw HttpProblem.builder()
+                .withHeader("X-RFC7807", "IsAlive")
+                .withStatus(Status.valueOf(status))
+                .withTitle(title)
+                .withDetail(detail)
+                .build();
     }
 
 }
