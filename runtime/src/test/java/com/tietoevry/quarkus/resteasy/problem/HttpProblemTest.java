@@ -1,9 +1,12 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.net.URI;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.zalando.problem.Status;
 
 class HttpProblemTest {
@@ -39,6 +42,13 @@ class HttpProblemTest {
 
         assertThat(copy)
                 .isEqualToComparingFieldByField(original);
+    }
+
+    @ParameterizedTest()
+    @ValueSource(strings = { "type", "instance", "detail", "status" })
+    void builderShouldNotAllowAddingReservedProperties(String property) {
+        assertThatThrownBy(() -> HttpProblem.builder().with(property, "not relevant"))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     private HttpProblem sampleHttpProblem() {

@@ -119,7 +119,7 @@ public final class HttpProblem extends RuntimeException implements Problem {
     public static class Builder {
 
         private static final Set<String> RESERVED_PROPERTIES = new HashSet<>(Arrays.asList(
-                "type", "title", "status", "detail", "instance", "cause"));
+                "type", "title", "status", "detail", "instance"));
 
         private URI type;
         private String title;
