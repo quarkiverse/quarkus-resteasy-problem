@@ -37,10 +37,10 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
     private Violation toViolation(ConstraintViolation<?> constraintViolation) {
         return new Violation(
                 constraintViolation.getMessage(),
-                dropFirstTwoPathElements(constraintViolation.getPropertyPath()));
+                dropMethodNameAndArgumentPostionFromPath(constraintViolation.getPropertyPath()));
     }
 
-    private String dropFirstTwoPathElements(Path propertyPath) {
+    private String dropMethodNameAndArgumentPostionFromPath(Path propertyPath) {
         Iterator<Path.Node> propertyPathIterator = propertyPath.iterator();
         propertyPathIterator.next();
         propertyPathIterator.next();
