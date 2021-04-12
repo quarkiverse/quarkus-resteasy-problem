@@ -45,7 +45,7 @@ class JavaxMappersIT {
                 .body("status", equalTo(BAD_REQUEST.getStatusCode()))
                 .body("violations", hasSize(1))
                 .body("violations[0].field", equalTo("key"))
-                .body("violations[0].error", equalTo("must be greater than or equal to 15"))
+                .body("violations[0].message", equalTo("must be greater than or equal to 15"))
                 .body("stacktrace", nullValue());
     }
 
