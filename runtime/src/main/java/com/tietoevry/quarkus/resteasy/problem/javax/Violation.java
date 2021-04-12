@@ -2,18 +2,26 @@ package com.tietoevry.quarkus.resteasy.problem.javax;
 
 public final class Violation {
 
-    public final String error;
     public final String field;
+    public final String message;
 
-    public Violation(String error, String field) {
-        this.error = error;
+    /**
+     * Deprecated, use message instead.
+     */
+    @Deprecated
+    public final String error;
+
+    public Violation(String message, String field) {
         this.field = field;
+        this.message = message;
+
+        this.error = message;
     }
 
     @Override
     public String toString() {
         return "Violation{" +
-                "error='" + error + '\'' +
+                "message='" + message + '\'' +
                 ", field='" + field + '\'' +
                 '}';
     }
