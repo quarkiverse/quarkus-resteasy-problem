@@ -2,17 +2,18 @@ package com.tietoevry.quarkus.resteasy.problem;
 
 import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
 
-import io.smallrye.common.constraint.Nullable;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -21,7 +22,7 @@ import javax.ws.rs.core.Response;
  * Representation of RFC7807 Problem schema.
  */
 @Immutable
-public final class HttpProblem extends RuntimeException {
+public class HttpProblem extends RuntimeException {
 
     public static final MediaType MEDIA_TYPE = new MediaType("application", "problem+json");
 
@@ -33,37 +34,32 @@ public final class HttpProblem extends RuntimeException {
     private final Map<String, Object> parameters;
     private final Map<String, Object> headers;
 
-    private HttpProblem(
-            @Nullable URI type,
-            @Nullable String title,
-            @Nullable Response.StatusType status,
-            @Nullable String detail,
-            @Nullable URI instance,
-            @Nullable Map<String, Object> parameters,
-            @Nullable Map<String, Object> headers) {
-        super(createMessage(title, detail));
+    protected HttpProblem(Builder builder) {
+        super(createMessage(builder.title, builder.detail));
 
-        this.type = type;
-        this.title = title;
-        this.status = Optional.ofNullable(status).orElse(INTERNAL_SERVER_ERROR);
-        this.detail = detail;
-        this.instance = instance;
-        this.parameters = Collections.unmodifiableMap(Optional.ofNullable(parameters).orElseGet(LinkedHashMap::new));
-        this.headers = Collections.unmodifiableMap(Optional.ofNullable(headers).orElseGet(LinkedHashMap::new));
+        this.type = builder.type;
+        this.title = builder.title;
+        this.status = Optional.ofNullable(builder.status).orElse(INTERNAL_SERVER_ERROR);
+        this.detail = builder.detail;
+        this.instance = builder.instance;
+        this.parameters = Collections.unmodifiableMap(Optional.ofNullable(builder.parameters).orElseGet(LinkedHashMap::new));
+        this.headers = Collections.unmodifiableMap(Optional.ofNullable(builder.headers).orElseGet(LinkedHashMap::new));
     }
 
     private static String createMessage(String title, String detail) {
-        return Stream.of(title, detail).filter(Objects::nonNull).collect(Collectors.joining(": "));
+        return Stream.of(title, detail)
+                .filter(Objects::nonNull)
+                .collect(Collectors.joining(": "));
     }
 
-    public static HttpProblem valueOf(final Response.Status status) {
+    public static HttpProblem valueOf(Response.Status status) {
         return builder()
                 .withTitle(status.getReasonPhrase())
                 .withStatus(status)
                 .build();
     }
 
-    public static HttpProblem valueOf(final Response.Status status, final String detail) {
+    public static HttpProblem valueOf(Response.Status status, String detail) {
         return builder()
                 .withTitle(status.getReasonPhrase())
                 .withStatus(status)
@@ -76,20 +72,20 @@ public final class HttpProblem extends RuntimeException {
     }
 
     /**
-     * Kind of copy constructor
+     * Creates Builder instance and initializes it with fields from given HttpProblem
      *
-     * @param origin
+     * @param original Problem 'prototype'
      * @return Builder object with values taken from origin HttpProblem
      */
-    public static Builder builder(HttpProblem origin) {
+    public static Builder builder(HttpProblem original) {
         Builder builder = builder()
-                .withType(origin.getType())
-                .withInstance(origin.getInstance())
-                .withTitle(origin.getTitle())
-                .withStatus(origin.getStatus())
-                .withDetail(origin.getDetail());
-        origin.parameters.forEach(builder::with);
-        origin.headers.forEach(builder::withHeader);
+                .withType(original.getType())
+                .withInstance(original.getInstance())
+                .withTitle(original.getTitle())
+                .withStatus(original.getStatus())
+                .withDetail(original.getDetail());
+        original.parameters.forEach(builder::with);
+        original.headers.forEach(builder::withHeader);
         return builder;
     }
 
@@ -123,8 +119,8 @@ public final class HttpProblem extends RuntimeException {
 
     public static class Builder {
 
-        private static final List<String> RESERVED_PROPERTIES = Collections.unmodifiableList(Arrays.asList(
-                "type", "title", "status", "detail", "instance"));
+        private static final Set<String> RESERVED_PROPERTIES = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+                "type", "title", "status", "detail", "instance")));
 
         private URI type;
         private String title;
@@ -179,8 +175,7 @@ public final class HttpProblem extends RuntimeException {
         }
 
         public HttpProblem build() {
-            return new HttpProblem(type, title, status, detail, instance, new LinkedHashMap<>(parameters),
-                    new LinkedHashMap<>(headers));
+            return new HttpProblem(this);
         }
 
     }

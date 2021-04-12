@@ -55,29 +55,37 @@ Run the application with: `./mvnw compile quarkus:dev`, and you will find `reste
 Installed features: [cdi, resteasy, resteasy-jackson, <b><u>resteasy-problem</u></b>]
 </pre>
 
-Now you can throw JaxRS or custom exceptions (or HttpProblems, or ThrowableProblems from Zalando library) in your code:
+Now you can throw your own `HttpProblem`s (using builder or by extending it), JaxRS exceptions (e.g `NotFoundException`) or ThrowableProblems from Zalando library:
 
 ```java
-@Path("/country")
-public class CountriesResource {
-    @GET
-    public String hello() {
-        throw new NotFoundException("Country not found");
+@Path("/order")
+public class OrderResource {
+    @POST
+    public void order() {
+        throw new OutOfStock("rfc7807-by-example");
+    }
+
+    static class OutOfStock extends HttpProblem {
+        OutOfStock(String product) {
+            super(builder()
+                    .withTitle("Product is out of stock")
+                    .withStatus(Response.Status.CONFLICT)
+                    .with("product", product));
+        }
     }
 }
 ```
 
 Which will be translated to HTTP 404 response with body:
 ```json
-HTTP/1.1 404 Not Found
-Content-Length: XX
+HTTP/1.1 409 Conflict
 Content-Type: application/problem+json
         
 {
-  "title": "Not Found",
-  "status": 404,
-  "detail": "Country not found",
-  "instance": "/country"
+  "title": "Product is out of stock",
+  "status": 409,
+  "instance": "/order",
+  "product": "rfc7807-by-example"
 }
 ```
 

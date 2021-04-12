@@ -25,15 +25,20 @@ public class GenericExceptionsResource {
 
     @GET
     @Path("/http-problem")
-    public void throwHttpProblem(@QueryParam("status") int status, @QueryParam("title") String title,
-            @QueryParam("detail") String detail) {
+    public void throwHttpProblem() {
+        throw new OutOfStock("rfc7807");
+    }
 
-        throw HttpProblem.builder()
-                .withHeader("X-RFC7807", "IsAlive")
-                .withStatus(Response.Status.fromStatusCode(status))
-                .withTitle(title)
-                .withDetail(detail)
-                .build();
+    static class OutOfStock extends HttpProblem {
+
+        OutOfStock(String product) {
+            super(builder()
+                    .withTitle("Product is out of stock")
+                    .withStatus(Response.Status.CONFLICT)
+                    .withHeader("X-RFC7807", "IsAlive")
+                    .with("product", product));
+        }
+
     }
 
 }

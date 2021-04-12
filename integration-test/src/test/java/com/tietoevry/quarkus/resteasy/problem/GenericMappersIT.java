@@ -1,6 +1,7 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.when;
 import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.nullValue;
@@ -35,19 +36,15 @@ class GenericMappersIT {
 
     @Test
     void httpProblemShouldReturnHeaders() {
-        final int status = 429;
-        given()
-                .queryParam("status", status)
-                .queryParam("title", SAMPLE_TITLE)
-                .queryParam("detail", SAMPLE_DETAIL)
+        when()
                 .get("/throw/generic/http-problem")
                 .then()
                 .log().all()
-                .statusCode(status)
+                .statusCode(409)
                 .header("X-RFC7807", equalTo("IsAlive"))
-                .body("title", equalTo(SAMPLE_TITLE))
-                .body("status", equalTo(status))
-                .body("detail", equalTo(SAMPLE_DETAIL))
+                .body("title", equalTo("Product is out of stock"))
+                .body("status", equalTo(409))
+                .body("product", equalTo("rfc7807"))
                 .body("stacktrace", nullValue());
     }
 
