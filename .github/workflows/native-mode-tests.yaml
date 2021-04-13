@@ -1,0 +1,47 @@
+name: Native Mode Tests
+
+on:
+  push:
+    tags: [ v* ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+            ${{ runner.os }}-
+
+      - name: Compile
+        run: ./mvnw clean install -Pquick
+
+      - uses: DeLaGuardo/setup-graalvm@master
+        with:
+          graalvm-version: '21.0.0.2.java11'
+
+      - name: Integration Tests (native - classic - jackson)
+        run: ./mvnw clean verify -Pnative,jackson -pl integration-test
+
+      - name: Integration Tests (native - classic - jsonb)
+        run: ./mvnw clean verify -Pnative,jsonb -pl integration-test
+
+      - name: Publish Test Results
+        uses: docker://ghcr.io/enricomi/publish-unit-test-result-action:v1
+        if: always()
+        with:
+          check_name: Native Test Results
+          files: "**/target/*-reports/**/TEST-*.xml"
+          github_token: ${{ github.token }}
