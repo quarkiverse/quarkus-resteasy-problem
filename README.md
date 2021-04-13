@@ -32,13 +32,13 @@ You may also want to check [this article](https://dzone.com/articles/when-http-s
 ## Usage
 Create a new Quarkus project with the following command (you can also use `jsonb` instead of `jackson`):
 ```shell
-mvn io.quarkus:quarkus-maven-plugin:1.13.0.Final:create \
-    -DprojectGroupId=org.acme \
-    -DprojectArtifactId=rest-client-quickstart \
-    -DclassName="org.acme.rest.client.CountriesResource" \
-    -Dpath="/country" \
+mvn io.quarkus:quarkus-maven-plugin:1.13.1.Final:create \
+    -DprojectGroupId=problem \
+    -DprojectArtifactId=quarkus-resteasy-problem-playground \
+    -DclassName="problem.HelloResource" \
+    -Dpath="/hello" \
     -Dextensions="resteasy,resteasy-jackson"
-cd rest-client-quickstart
+cd quarkus-resteasy-problem-playground
 ```
 
 Now add this to your `pom.xml`:
@@ -55,43 +55,56 @@ Run the application with: `./mvnw compile quarkus:dev`, and you will find `reste
 Installed features: [cdi, resteasy, resteasy-jackson, <b><u>resteasy-problem</u></b>]
 </pre>
 
-Now you can throw your own `HttpProblem`s (using builder or by extending it), JaxRS exceptions (e.g `NotFoundException`) or ThrowableProblems from Zalando library:
+Now you can throw `HttpProblem`s (using builder or a subclass), JaxRS exceptions (e.g `NotFoundException`) or `ThrowableProblem`s from Zalando library:
 
 ```java
-@Path("/order")
-public class OrderResource {
-    @POST
-    public void order() {
-        throw new OutOfStock("rfc7807-by-example");
+package problem;
+
+import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Response;
+
+@Path("/hello")
+public class HelloResource {
+
+    @GET
+    public String hello() {
+        throw new HelloProblem("rfc7807-by-example");
     }
 
-    static class OutOfStock extends HttpProblem {
-        OutOfStock(String product) {
+    static class HelloProblem extends HttpProblem {
+        HelloProblem(String message) {
             super(builder()
-                    .withTitle("Product is out of stock")
-                    .withStatus(Response.Status.CONFLICT)
-                    .with("product", product));
+                    .withTitle("Bad hello request")
+                    .withStatus(Response.Status.BAD_REQUEST)
+                    .withDetail(message)
+                    .withHeader("X-RFC7807-Message", message)
+                    .with("hello", "world"));
         }
     }
 }
 ```
 
-Which will be translated to HTTP 404 response with body:
+Open [http://localhost:8080/hello](http://localhost:8080/hello) in your browser, and you should see this response:
+
 ```json
-HTTP/1.1 409 Conflict
+HTTP/1.1 400 Bad Request
+X-RFC7807-Message: rfc7807-by-example
 Content-Type: application/problem+json
         
 {
-  "title": "Product is out of stock",
-  "status": 409,
-  "instance": "/order",
-  "product": "rfc7807-by-example"
+    "status": 400,
+    "title": "Bad hello request",
+    "detail": "rfc7807-by-example",
+    "instance": "/hello",
+    "hello": "world"
 }
 ```
 
 This extension will also produce the following log message:
 ```
-10:53:48 INFO [http-problem] (executor-thread-1) status=404, title="Not Found", detail="Test resource not found"
+10:53:48 INFO [http-problem] (executor-thread-1) status=400, title="Bad hello request", detail="rfc7807-by-example"
 ```
 Exceptions transformed into http 500s (aka server errors) will be logged as `ERROR`, including full stacktrace.
 
