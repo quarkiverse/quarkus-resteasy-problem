@@ -13,73 +13,138 @@ import io.quarkus.deployment.builditem.LiveReloadBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.ReflectiveClassBuildItem;
 import io.quarkus.jsonb.spi.JsonbSerializerBuildItem;
 import io.quarkus.resteasy.common.spi.ResteasyJaxrsProviderBuildItem;
-import java.util.Arrays;
-import java.util.List;
+import io.quarkus.resteasy.reactive.spi.ExceptionMapperBuildItem;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import javax.ws.rs.Priorities;
 import org.jboss.logging.Logger;
 
 public class ProblemProcessor {
 
     private static final String FEATURE_NAME = "resteasy-problem";
+    private static final String PACKAGE = "com.tietoevry.quarkus.resteasy.problem.";
+
+    private static final Map<String, String> DEFAULT_MAPPERS = defaultMappers();
+
+    private static Map<String, String> defaultMappers() {
+        Map<String, String> mappers = new LinkedHashMap<>();
+        mappers.put("java.lang.Exception", "DefaultExceptionMapper");
+        mappers.put(PACKAGE + "HttpProblem", "HttpProblemMapper");
+        mappers.put("javax.ws.rs.WebApplicationException", "jaxrs.WebApplicationExceptionMapper");
+        mappers.put("javax.ws.rs.ForbiddenException", "jaxrs.JaxRsForbiddenExceptionMapper");
+        mappers.put("javax.ws.rs.NotFoundException", "jaxrs.NotFoundExceptionMapper");
+        mappers.put("io.quarkus.security.UnauthorizedException", "security.UnauthorizedExceptionMapper");
+        mappers.put("io.quarkus.security.AuthenticationFailedException", "security.AuthenticationFailedExceptionMapper");
+        mappers.put("io.quarkus.security.ForbiddenException", "security.ForbiddenExceptionMapper");
+        return Collections.unmodifiableMap(mappers);
+    }
+
+    private static final Map<String, String> VALIDATION_MAPPERS = validationMappers();
+
+    private static Map<String, String> validationMappers() {
+        Map<String, String> mappers = new LinkedHashMap<>();
+        mappers.put("javax.validation.ValidationException", "javax.ValidationExceptionMapper");
+        mappers.put("javax.validation.ConstraintViolationException", "javax.ConstraintViolationExceptionMapper");
+        return Collections.unmodifiableMap(mappers);
+    }
+
     private static final Logger logger = Logger.getLogger(FEATURE_NAME);
-
-    private static final List<String> EXCEPTION_MAPPER_CLASSES = Arrays.asList(
-            "com.tietoevry.quarkus.resteasy.problem.DefaultExceptionMapper",
-            "com.tietoevry.quarkus.resteasy.problem.HttpProblemMapper",
-
-            // JAXRS
-            "com.tietoevry.quarkus.resteasy.problem.jaxrs.WebApplicationExceptionMapper",
-            "com.tietoevry.quarkus.resteasy.problem.jaxrs.JaxRsForbiddenExceptionMapper",
-            "com.tietoevry.quarkus.resteasy.problem.jaxrs.NotFoundExceptionMapper",
-
-            // SECURITY
-            "com.tietoevry.quarkus.resteasy.problem.security.UnauthorizedExceptionMapper",
-            "com.tietoevry.quarkus.resteasy.problem.security.AuthenticationFailedExceptionMapper",
-            "com.tietoevry.quarkus.resteasy.problem.security.ForbiddenExceptionMapper",
-
-            // JAVAX
-            "com.tietoevry.quarkus.resteasy.problem.javax.ValidationExceptionMapper",
-            "com.tietoevry.quarkus.resteasy.problem.javax.ConstraintViolationExceptionMapper");
 
     @BuildStep
     FeatureBuildItem createFeature() {
         return new FeatureBuildItem(FEATURE_NAME);
     }
 
-    @BuildStep(onlyIf = JacksonDetector.class)
-    void registerJacksonItems(BuildProducer<AdditionalBeanBuildItem> additionalBeans,
-            BuildProducer<ResteasyJaxrsProviderBuildItem> providers) {
-        additionalBeans.produce(new AdditionalBeanBuildItem(
-                "com.tietoevry.quarkus.resteasy.problem.jackson.JacksonProblemModuleRegistrar"));
+    @BuildStep(onlyIf = RESTeasyClassicDetector.class)
+    void registerDefaultMappersForClassic(BuildProducer<ResteasyJaxrsProviderBuildItem> providers) {
+        DEFAULT_MAPPERS.forEach(
+                (exceptionClass, mapperClass) -> providers
+                        .produce(new ResteasyJaxrsProviderBuildItem(PACKAGE + mapperClass)));
+    }
 
-        providers.produce(new ResteasyJaxrsProviderBuildItem(
-                "com.tietoevry.quarkus.resteasy.problem.jackson.JsonProcessingExceptionMapper"));
+    @BuildStep(onlyIf = RESTeasyReactiveDetector.class)
+    void registerDefaultMappersForReactive(BuildProducer<ExceptionMapperBuildItem> providers) {
+        DEFAULT_MAPPERS.forEach(
+                (exceptionClass, mapperClass) -> providers.produce(
+                        new ExceptionMapperBuildItem(PACKAGE + mapperClass, exceptionClass,
+                                Priorities.AUTHENTICATION - 1, true)));
+    }
+
+    @BuildStep(onlyIf = BeanValidationApiDetector.class)
+    void registerValidationMappersForClassic(BuildProducer<ResteasyJaxrsProviderBuildItem> providers) {
+        VALIDATION_MAPPERS.forEach(
+                (exceptionClass, mapperClass) -> providers
+                        .produce(new ResteasyJaxrsProviderBuildItem(PACKAGE + mapperClass)));
+    }
+
+    @BuildStep(onlyIf = BeanValidationApiDetector.class)
+    void registerValidationMappersForReactive(BuildProducer<ExceptionMapperBuildItem> providers) {
+        VALIDATION_MAPPERS.forEach(
+                (exceptionClass, mapperClass) -> providers.produce(
+                        new ExceptionMapperBuildItem(PACKAGE + mapperClass, exceptionClass,
+                                Priorities.AUTHENTICATION - 1, true)));
+    }
+
+    @BuildStep(onlyIf = JacksonDetector.class)
+    void registerJacksonItems(BuildProducer<AdditionalBeanBuildItem> additionalBeans) {
+        additionalBeans.produce(new AdditionalBeanBuildItem(
+                PACKAGE + "jackson.JacksonProblemModuleRegistrar"));
+    }
+
+    @BuildStep(onlyIf = { JacksonDetector.class, RESTeasyClassicDetector.class })
+    void registerJacksonItemsClassic(BuildProducer<ResteasyJaxrsProviderBuildItem> classicProviders) {
+        classicProviders.produce(new ResteasyJaxrsProviderBuildItem(
+                PACKAGE + "jackson.JsonProcessingExceptionMapper"));
+    }
+
+    @BuildStep(onlyIf = { JacksonDetector.class, RESTeasyReactiveDetector.class })
+    void registerJacksonItemsForReactive(BuildProducer<ExceptionMapperBuildItem> reactiveProviders) {
+        reactiveProviders.produce(new ExceptionMapperBuildItem(
+                PACKAGE + "jackson.JsonProcessingExceptionMapper",
+                "com.fasterxml.jackson.core.JsonProcessingException", Priorities.USER, true));
     }
 
     @BuildStep(onlyIf = JsonBDetector.class)
-    void registerJsonbItems(BuildProducer<JsonbSerializerBuildItem> serializers,
-            BuildProducer<ResteasyJaxrsProviderBuildItem> providers) {
+    void registerJsonbItems(BuildProducer<JsonbSerializerBuildItem> serializers) {
         serializers.produce(
-                new JsonbSerializerBuildItem("com.tietoevry.quarkus.resteasy.problem.jsonb.JsonbProblemSerializer"));
-        providers.produce(
-                new ResteasyJaxrsProviderBuildItem("com.tietoevry.quarkus.resteasy.problem.jsonb.JsonbExceptionMapper"));
+                new JsonbSerializerBuildItem(PACKAGE + "jsonb.JsonbProblemSerializer"));
     }
 
-    @BuildStep
-    void registerCommonProviders(BuildProducer<ResteasyJaxrsProviderBuildItem> providers) {
-        EXCEPTION_MAPPER_CLASSES.stream()
-                .map(ResteasyJaxrsProviderBuildItem::new)
-                .forEach(providers::produce);
+    @BuildStep(onlyIf = { JsonBDetector.class, RESTeasyClassicDetector.class })
+    void registerJsonbItemsForClassic(BuildProducer<ResteasyJaxrsProviderBuildItem> classicProviders) {
+        classicProviders.produce(
+                new ResteasyJaxrsProviderBuildItem(PACKAGE + "jsonb.JsonbExceptionMapper"));
     }
 
-    @BuildStep(onlyIf = ZalandoProblemDetector.class)
-    void registerZalandoProblemMapper(BuildProducer<ResteasyJaxrsProviderBuildItem> providers) {
-        providers.produce(new ResteasyJaxrsProviderBuildItem("com.tietoevry.quarkus.resteasy.problem.ZalandoProblemMapper"));
+    @BuildStep(onlyIf = { JsonBDetector.class, RESTeasyReactiveDetector.class })
+    void registerJsonbItemsReactive(BuildProducer<ExceptionMapperBuildItem> reactiveProviders) {
+        reactiveProviders.produce(new ExceptionMapperBuildItem(
+                PACKAGE + "jsonb.JsonbExceptionMapper", "javax.ws.rs.ProcessingException",
+                Priorities.USER, true));
+
+        reactiveProviders.produce(new ExceptionMapperBuildItem(
+                PACKAGE + "jsonb.ReactiveJsonbExceptionMapper", "javax.json.bind.JsonbException",
+                Priorities.USER, true));
+
+    }
+
+    @BuildStep(onlyIf = { ZalandoProblemDetector.class, RESTeasyClassicDetector.class })
+    void registerZalandoProblemMapperClassic(BuildProducer<ResteasyJaxrsProviderBuildItem> classicProviders) {
+        classicProviders
+                .produce(new ResteasyJaxrsProviderBuildItem(PACKAGE + "ZalandoProblemMapper"));
+    }
+
+    @BuildStep(onlyIf = { ZalandoProblemDetector.class, RESTeasyReactiveDetector.class })
+    void registerZalandoProblemMapperForReactive(BuildProducer<ExceptionMapperBuildItem> reactiveProviders) {
+        reactiveProviders.produce(new ExceptionMapperBuildItem(
+                PACKAGE + "ZalandoProblemMapper", "org.zalando.problem.ThrowableProblem",
+                Priorities.USER, true));
     }
 
     @BuildStep
     ReflectiveClassBuildItem registerPojosForReflection() {
-        return new ReflectiveClassBuildItem(true, true,
-                "com.tietoevry.quarkus.resteasy.problem.javax.Violation");
+        return new ReflectiveClassBuildItem(true, true, PACKAGE + "javax.Violation");
     }
 
     @Record(STATIC_INIT)

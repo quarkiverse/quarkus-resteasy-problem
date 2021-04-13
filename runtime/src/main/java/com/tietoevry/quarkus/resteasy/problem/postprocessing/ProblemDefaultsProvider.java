@@ -27,8 +27,12 @@ final class ProblemDefaultsProvider implements ProblemPostProcessor {
     }
 
     private URI defaultInstance(ProblemContext context) {
-        UriInfo uriInfo = context.uriInfo;
-        return (uriInfo == null) ? null : URI.create(uriInfo.getPath());
+        try {
+            UriInfo uriInfo = context.uriInfo;
+            return (uriInfo == null) ? null : URI.create(uriInfo.getPath());
+        } catch (Exception e) { // quarkus-reactive throws ContextNotActiveException or NullPointerException when json request payload is malformed
+            return null;
+        }
     }
 
 }
