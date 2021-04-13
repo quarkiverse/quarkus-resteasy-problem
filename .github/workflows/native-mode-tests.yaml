@@ -33,10 +33,16 @@ jobs:
           graalvm-version: '21.0.0.2.java11'
 
       - name: Integration Tests (native - classic - jackson)
-        run: ./mvnw clean verify -Pnative,jackson -pl integration-test
+        run: ./mvnw clean verify -Pnative,jackson-classic -pl integration-test
 
       - name: Integration Tests (native - classic - jsonb)
-        run: ./mvnw clean verify -Pnative,jsonb -pl integration-test
+        run: ./mvnw clean verify -Pnative,jsonb-classic -pl integration-test
+
+      - name: Integration Tests (native - reactive - jackson)
+        run: ./mvnw clean verify -Pnative,jackson-reactive -pl integration-test
+
+      - name: Integration Tests (native - reactive - jsonb)
+        run: ./mvnw clean verify -Pnative,jsonb-reactive -pl integration-test
 
       - name: Publish Test Results
         uses: docker://ghcr.io/enricomi/publish-unit-test-result-action:v1
