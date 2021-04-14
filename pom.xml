@@ -23,7 +23,7 @@
         <developerConnection>scm:git:git@github.com:TietoEVRY/quarkus-resteasy-problem.git
         </developerConnection>
         <url>https://github.com/TietoEVRY/quarkus-resteasy-problem/tree/master</url>
-        <tag>v0.9.3</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <developers>
