@@ -56,14 +56,14 @@ public class ProblemProcessor {
         return new FeatureBuildItem(FEATURE_NAME);
     }
 
-    @BuildStep(onlyIf = RESTeasyClassicDetector.class)
+    @BuildStep(onlyIf = RestEasyClassicDetector.class)
     void registerDefaultMappersForClassic(BuildProducer<ResteasyJaxrsProviderBuildItem> providers) {
         DEFAULT_MAPPERS.forEach(
                 (exceptionClass, mapperClass) -> providers
                         .produce(new ResteasyJaxrsProviderBuildItem(PACKAGE + mapperClass)));
     }
 
-    @BuildStep(onlyIf = RESTeasyReactiveDetector.class)
+    @BuildStep(onlyIf = RestEasyReactiveDetector.class)
     void registerDefaultMappersForReactive(BuildProducer<ExceptionMapperBuildItem> providers) {
         DEFAULT_MAPPERS.forEach(
                 (exceptionClass, mapperClass) -> providers.produce(
@@ -92,13 +92,13 @@ public class ProblemProcessor {
                 PACKAGE + "jackson.JacksonProblemModuleRegistrar"));
     }
 
-    @BuildStep(onlyIf = { JacksonDetector.class, RESTeasyClassicDetector.class })
+    @BuildStep(onlyIf = { JacksonDetector.class, RestEasyClassicDetector.class })
     void registerJacksonItemsClassic(BuildProducer<ResteasyJaxrsProviderBuildItem> classicProviders) {
         classicProviders.produce(new ResteasyJaxrsProviderBuildItem(
                 PACKAGE + "jackson.JsonProcessingExceptionMapper"));
     }
 
-    @BuildStep(onlyIf = { JacksonDetector.class, RESTeasyReactiveDetector.class })
+    @BuildStep(onlyIf = { JacksonDetector.class, RestEasyReactiveDetector.class })
     void registerJacksonItemsForReactive(BuildProducer<ExceptionMapperBuildItem> reactiveProviders) {
         reactiveProviders.produce(new ExceptionMapperBuildItem(
                 PACKAGE + "jackson.JsonProcessingExceptionMapper",
@@ -111,31 +111,31 @@ public class ProblemProcessor {
                 new JsonbSerializerBuildItem(PACKAGE + "jsonb.JsonbProblemSerializer"));
     }
 
-    @BuildStep(onlyIf = { JsonBDetector.class, RESTeasyClassicDetector.class })
+    @BuildStep(onlyIf = { JsonBDetector.class, RestEasyClassicDetector.class })
     void registerJsonbItemsForClassic(BuildProducer<ResteasyJaxrsProviderBuildItem> classicProviders) {
         classicProviders.produce(
-                new ResteasyJaxrsProviderBuildItem(PACKAGE + "jsonb.JsonbExceptionMapper"));
+                new ResteasyJaxrsProviderBuildItem(PACKAGE + "jsonb.RestEasyClassicJsonbExceptionMapper"));
     }
 
-    @BuildStep(onlyIf = { JsonBDetector.class, RESTeasyReactiveDetector.class })
+    @BuildStep(onlyIf = { JsonBDetector.class, RestEasyReactiveDetector.class })
     void registerJsonbItemsReactive(BuildProducer<ExceptionMapperBuildItem> reactiveProviders) {
         reactiveProviders.produce(new ExceptionMapperBuildItem(
-                PACKAGE + "jsonb.JsonbExceptionMapper", "javax.ws.rs.ProcessingException",
+                PACKAGE + "jsonb.RestEasyClassicJsonbExceptionMapper", "javax.ws.rs.ProcessingException",
                 Priorities.USER, true));
 
         reactiveProviders.produce(new ExceptionMapperBuildItem(
-                PACKAGE + "jsonb.ReactiveJsonbExceptionMapper", "javax.json.bind.JsonbException",
+                PACKAGE + "jsonb.JsonbExceptionMapper", "javax.json.bind.JsonbException",
                 Priorities.USER, true));
 
     }
 
-    @BuildStep(onlyIf = { ZalandoProblemDetector.class, RESTeasyClassicDetector.class })
+    @BuildStep(onlyIf = { ZalandoProblemDetector.class, RestEasyClassicDetector.class })
     void registerZalandoProblemMapperClassic(BuildProducer<ResteasyJaxrsProviderBuildItem> classicProviders) {
         classicProviders
                 .produce(new ResteasyJaxrsProviderBuildItem(PACKAGE + "ZalandoProblemMapper"));
     }
 
-    @BuildStep(onlyIf = { ZalandoProblemDetector.class, RESTeasyReactiveDetector.class })
+    @BuildStep(onlyIf = { ZalandoProblemDetector.class, RestEasyReactiveDetector.class })
     void registerZalandoProblemMapperForReactive(BuildProducer<ExceptionMapperBuildItem> reactiveProviders) {
         reactiveProviders.produce(new ExceptionMapperBuildItem(
                 PACKAGE + "ZalandoProblemMapper", "org.zalando.problem.ThrowableProblem",
