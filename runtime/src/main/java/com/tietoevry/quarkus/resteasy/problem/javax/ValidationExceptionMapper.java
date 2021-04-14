@@ -15,7 +15,7 @@ import javax.ws.rs.Priorities;
 public final class ValidationExceptionMapper extends ExceptionMapperBase<ValidationException> {
 
     @Override
-    public HttpProblem toProblem(ValidationException exception) {
+    protected HttpProblem toProblem(ValidationException exception) {
         return HttpProblem.valueOf(BAD_REQUEST, exception.getMessage());
     }
 }

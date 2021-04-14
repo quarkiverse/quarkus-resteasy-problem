@@ -15,7 +15,7 @@ import javax.ws.rs.Priorities;
 public final class JsonProcessingExceptionMapper extends ExceptionMapperBase<JsonProcessingException> {
 
     @Override
-    public HttpProblem toProblem(JsonProcessingException exception) {
+    protected HttpProblem toProblem(JsonProcessingException exception) {
         return HttpProblem.valueOf(BAD_REQUEST, exception.getMessage());
     }
 }
