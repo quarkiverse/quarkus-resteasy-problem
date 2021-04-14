@@ -87,6 +87,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${surefire-plugin.version}</version>
                 <configuration>
+                    <argLine>-Duser.language=en -Duser.region=US</argLine>
                     <systemProperties>
                         <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
                     </systemProperties>
@@ -252,6 +253,7 @@
                         <artifactId>maven-surefire-plugin</artifactId>
                         <version>${surefire-plugin.version}</version>
                         <configuration>
+                            <argLine>-Duser.language=en -Duser.region=US</argLine>
                             <skip>true</skip>
                         </configuration>
                     </plugin>
