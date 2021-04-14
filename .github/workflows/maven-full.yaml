@@ -31,15 +31,29 @@ jobs:
       - name: Unit Tests
         run: ./mvnw -B test
 
-      - name: Integration Tests (oldest)
-        run: |
-          ./mvnw -B clean verify -Pjackson,quarkus-1.4 -pl integration-test
-          ./mvnw -B clean verify -Pjsonb,quarkus-1.4 -pl integration-test
+      - name: Integration Tests (lastest - classic - jackson)
+        run: ./mvnw -B clean verify -Pjackson-classic -pl integration-test
 
-      - name: Integration Tests (lastest)
-        run: |
-          ./mvnw -B clean verify -Pjackson -pl integration-test
-          ./mvnw -B clean verify -Pjsonb -pl integration-test
+      - name: Integration Tests (lastest - classic - jsonb)
+        run: ./mvnw -B clean verify -Pjsonb-classic -pl integration-test
+
+      - name: Integration Tests (lastest - reactive - jackson)
+        run: ./mvnw -B clean verify -Pjackson-reactive -pl integration-test
+
+      - name: Integration Tests (lastest - reactive - jsonb)
+        run: ./mvnw -B clean verify -Pjsonb-reactive -pl integration-test
+
+      - name: Integration Tests (oldest - classic - jackson)
+        run: ./mvnw -B clean verify -Pjackson-classic,quarkus-1.4 -pl integration-test
+
+      - name: Integration Tests (oldest - classic - jsonb)
+        run: ./mvnw -B clean verify -Pjsonb-classic,quarkus-1.4 -pl integration-test
+
+      - name: Integration Tests (oldest - reactive - jackson)
+        run: ./mvnw -B clean verify -Pjackson-reactive,quarkus-1.12 -pl integration-test
+
+      - name: Integration Tests (oldest - reactive - jsonb)
+        run: ./mvnw -B clean verify -Pjsonb-reactive,quarkus-1.12 -pl integration-test
 
       - name: Publish Test Results
         uses: docker://ghcr.io/enricomi/publish-unit-test-result-action:v1

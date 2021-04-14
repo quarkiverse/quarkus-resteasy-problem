@@ -2,7 +2,6 @@ package com.tietoevry.quarkus.resteasy.problem.jaxrs;
 
 import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
-import java.util.Optional;
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.WebApplicationException;
@@ -16,8 +15,7 @@ public final class WebApplicationExceptionMapper extends ExceptionMapperBase<Web
 
     @Override
     protected HttpProblem toProblem(WebApplicationException exception) {
-        Response.StatusType status = Optional.ofNullable(exception.getResponse().getStatusInfo())
-                .orElse(Response.Status.INTERNAL_SERVER_ERROR);
+        Response.StatusType status = Response.Status.fromStatusCode(exception.getResponse().getStatus());
 
         HttpProblem.Builder problem = HttpProblem.builder()
                 .withTitle(status.getReasonPhrase())

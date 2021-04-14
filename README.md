@@ -10,10 +10,10 @@
 This extension registers few JaxRS Exceptions Mappers for common exceptions thrown by Quarkus apps, which turn exceptions into standardized HTTP responses described in RFC, with content type `application/problem+json`. See [Built-in exception mappers](#built-in-exception-mappers) section for more details.
 
 Supports:
-- _resteasy-jackson_ and _resteasy-jsonb_
+- _quarkus-resteasy-jackson_ and _quarkus-resteasy-jsonb_ for Quarkus 1.4.2 and newer
+- _quarkus-resteasy-reactive-jackson_ and _quarkus-resteasy-reactive-jsonb_ for Quarkus 1.12.2 and newer
 - JVM and native mode
 - Java 8+
-- Quarkus 1.4.2 +
 
 ## Why you should use it?
 This extension unifies (and simplifies) the way services handle and return REST API error messages.
@@ -30,7 +30,7 @@ so-called "HTTP APIs" are usually not.
 You may also want to check [this article](https://dzone.com/articles/when-http-status-codes-are-not-enough-tackling-web) on RFC7807 practical usage.
 
 ## Usage
-Create a new Quarkus project with the following command (you can also use `jsonb` instead of `jackson`):
+Create a new Quarkus project with the following command (you can also use `quarkus-resteasy-jsonb` or reactive equivalents: `quarkus-resteasy-reactive-jackson` / `quarkus-resteasy-reactive-jsonb`):
 ```shell
 mvn io.quarkus:quarkus-maven-plugin:1.13.1.Final:create \
     -DprojectGroupId=problem \
@@ -120,7 +120,7 @@ You can throw them from controllers or business logic as well (i.e `NotFoundExce
 | `sec.AuthenticationFailedException`      | Missing or invalid JWT         | `{ "status" : 401, ... }`                      |
 | `sec.UnauthorizedException`              | Missing or invalid JWT         | `{ "status" : 401, ... }`                      |
 | `sec.ForbiddenException`                 | `@RolesAllowed` not satisfied  | `{ "status" : 403, ... }`                      |
-| `javax.ConstraintViolationException`     | Hibernate Validator (`@Valid`) | `{ "status" : 400, violations : [{...}] }`     |
+| `javax.ConstraintViolationException`     | Hibernate Validator (`@Valid`) | `{ "status" : 400, "violations" : [{...}] }`     |
 | `javax.ValidationException`              | user or Quarkus                | `{ "status" : 400, ... }`                      |
 | `javax.RedirectionException`             | user or Quarkus                | `{ "status" : 3XX, ... }` + `Location` header  |
 | `jaxrs.NotFoundException`                | RESTeasy, user                 | `{ "status" : 404, ... }`                      |

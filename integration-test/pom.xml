@@ -97,7 +97,7 @@
 
     <profiles>
         <profile>
-            <id>jackson</id>
+            <id>jackson-classic</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
@@ -108,9 +108,18 @@
                 </dependency>
             </dependencies>
         </profile>
+        <profile>
+            <id>jackson-reactive</id>
+            <dependencies>
+                <dependency>
+                    <groupId>io.quarkus</groupId>
+                    <artifactId>quarkus-resteasy-reactive-jackson</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
 
         <profile>
-            <id>jsonb</id>
+            <id>jsonb-classic</id>
             <dependencies>
                 <dependency>
                     <groupId>io.quarkus</groupId>
@@ -118,7 +127,15 @@
                 </dependency>
             </dependencies>
         </profile>
-
+        <profile>
+            <id>jsonb-reactive</id>
+            <dependencies>
+                <dependency>
+                    <groupId>io.quarkus</groupId>
+                    <artifactId>quarkus-resteasy-reactive-jsonb</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
 
         <profile>
             <id>quarkus-1.12</id>
