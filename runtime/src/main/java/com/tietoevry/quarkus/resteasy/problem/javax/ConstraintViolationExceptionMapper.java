@@ -21,7 +21,7 @@ import javax.ws.rs.core.Response;
 public final class ConstraintViolationExceptionMapper extends ExceptionMapperBase<ConstraintViolationException> {
 
     @Override
-    public HttpProblem toProblem(ConstraintViolationException exception) {
+    protected HttpProblem toProblem(ConstraintViolationException exception) {
         List<Violation> violations = exception.getConstraintViolations()
                 .stream()
                 .map(this::toViolation)

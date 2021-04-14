@@ -12,7 +12,7 @@ import javax.ws.rs.Priorities;
 public final class JsonbExceptionMapper extends ExceptionMapperBase<JsonbException> {
 
     @Override
-    public HttpProblem toProblem(JsonbException exception) {
+    protected HttpProblem toProblem(JsonbException exception) {
         return HttpProblem.valueOf(BAD_REQUEST, exception.getCause().getMessage());
     }
 }

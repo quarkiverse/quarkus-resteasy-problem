@@ -17,7 +17,7 @@ import javax.ws.rs.Priorities;
 public final class NotFoundExceptionMapper extends ExceptionMapperBase<NotFoundException> {
 
     @Override
-    public HttpProblem toProblem(NotFoundException exception) {
+    protected HttpProblem toProblem(NotFoundException exception) {
         return HttpProblem.valueOf(NOT_FOUND, exception.getMessage());
     }
 }
