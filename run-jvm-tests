@@ -4,7 +4,7 @@ if [[ "$java_ver" != "8" ]]; then
     exit;
 fi
 
-./mvnw clean install -DskipTests
+./mvnw clean install -Pquick
 
 ./mvnw clean verify -Pjackson-classic -pl integration-test
 ./mvnw clean verify -Pjackson-reactive -pl integration-test
