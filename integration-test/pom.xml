@@ -198,13 +198,6 @@
             <properties>
                 <quarkus.version>1.4.2.Final</quarkus.version>
             </properties>
-            <dependencies>
-                <dependency>
-                    <groupId>com.google.code.findbugs</groupId>
-                    <artifactId>jsr305</artifactId>
-                    <version>3.0.2</version>
-                </dependency>
-            </dependencies>
         </profile>
 
         <profile>
