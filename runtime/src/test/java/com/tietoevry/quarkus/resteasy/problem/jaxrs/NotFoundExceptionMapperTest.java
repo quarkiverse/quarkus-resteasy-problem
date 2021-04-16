@@ -13,7 +13,7 @@ class NotFoundExceptionMapperTest {
 
     @Test
     void shouldHaveHigherPriorityThanBuiltInMapper() {
-        assertThat(NotFoundExceptionMapper.class)
+        assertThat(mapper.getClass())
                 .hasPrecedenceOver(io.quarkus.resteasy.runtime.NotFoundExceptionMapper.class);
     }
 

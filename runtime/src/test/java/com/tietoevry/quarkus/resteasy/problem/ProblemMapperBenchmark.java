@@ -72,7 +72,7 @@ public class ProblemMapperBenchmark {
     @EnabledIfSystemProperty(named = "performance-test", matches = "true")
     public void mapperShouldBeFasterThanTarget() throws RunnerException {
         Options jmhOptions = new OptionsBuilder()
-                .include(ProblemMapperBenchmark.class.getSimpleName())
+                .include(this.getClass().getSimpleName())
                 .build();
 
         Collection<RunResult> runResults = new Runner(jmhOptions).run();
