@@ -1,5 +1,7 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.validation.Valid;
 import javax.validation.ValidationException;
 import javax.validation.constraints.Min;
@@ -26,9 +28,12 @@ public class JavaxExceptionsResource {
     }
 
     public static final class TestRequestBody {
-
         @Min(15)
         public int key;
+    }
 
+    @GET
+    @Path("/constraint-violation-exception-primitive")
+    public void throwConstraintViolationException(@Valid @Length(min = 10) String phrase) {
     }
 }

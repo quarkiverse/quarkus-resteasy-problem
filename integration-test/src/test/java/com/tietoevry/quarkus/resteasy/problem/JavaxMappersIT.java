@@ -49,4 +49,18 @@ class JavaxMappersIT {
                 .body("stacktrace", nullValue());
     }
 
+    @Test
+    void constraintViolationForArgumentsShouldProvideErrorDetails() {
+        given()
+                .queryParam("phrase", "too-short")
+                .get("/throw/javax/constraint-violation-exception-primitive")
+                .then()
+                .statusCode(BAD_REQUEST.getStatusCode())
+                .body("title", equalTo(BAD_REQUEST.getReasonPhrase()))
+                .body("status", equalTo(BAD_REQUEST.getStatusCode()))
+                .body("violations", hasSize(1))
+                .body("violations[0].field", equalTo("phrase"))
+                .body("violations[0].message", equalTo("must be greater than or equal to 15"));
+    }
+
 }
