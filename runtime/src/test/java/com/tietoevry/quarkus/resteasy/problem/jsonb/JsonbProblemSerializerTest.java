@@ -1,6 +1,5 @@
 package com.tietoevry.quarkus.resteasy.problem.jsonb;
 
-import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
@@ -40,10 +39,7 @@ class JsonbProblemSerializerTest {
     @Test
     @DisplayName("Should serialize only not null fields")
     void shouldSerializeOnlyNotNullFields() throws IOException {
-        HttpProblem problem = HttpProblem.builder()
-                .withStatus(BAD_REQUEST)
-                .withTitle("Something wrong in the dirt")
-                .build();
+        HttpProblem problem = HttpProblemMother.badRequestProblem();
 
         serializer.serialize(problem, jsonGenerator, context);
 

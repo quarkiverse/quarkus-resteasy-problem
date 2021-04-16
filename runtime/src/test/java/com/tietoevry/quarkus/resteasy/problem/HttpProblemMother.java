@@ -6,7 +6,7 @@ import java.net.URI;
 
 public final class HttpProblemMother {
 
-    public static final String SERIALIZED_BAD_REQUEST_PROBLEM = "{\"status\":400,\"title\":\"Something wrong in the dirt\"}";
+    public static final String SERIALIZED_BAD_REQUEST_PROBLEM = "{\"status\":400,\"title\":\"There's something wrong with your request\"}";
     public static final String SERIALIZED_COMPLEX_PROBLEM = "{\"type\":\"http://tietoevry.com/problem\",\"status\":400,\"title\":\"Something wrong in the dirt\",\"detail\":\"Deep down wrongness, zażółć gęślą jaźń for Håkensth\",\"instance\":\"/endpoint\",\"custom_field_1\":\"too long\",\"custom_field_2\":\"too short\"}";
 
     private HttpProblemMother() {
