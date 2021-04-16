@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import javax.json.bind.JsonbException;
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.core.Response;
-
 import org.junit.jupiter.api.Test;
 
 class RestEasyClassicJsonbExceptionMapperTest {

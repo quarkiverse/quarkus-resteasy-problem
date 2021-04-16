@@ -20,7 +20,8 @@ public final class RestEasyClassicJsonbExceptionMapper extends ExceptionMapperBa
      */
     @Override
     protected HttpProblem toProblem(ProcessingException exception) {
-        if (exception.getCause() != null && exception.getCause().getClass().getName().equals("javax.json.bind.JsonbException")) {
+        if (exception.getCause() != null
+                && exception.getCause().getClass().getName().equals("javax.json.bind.JsonbException")) {
             return HttpProblem.valueOf(BAD_REQUEST, exception.getCause().getMessage());
         } else {
             return HttpProblem.valueOf(INTERNAL_SERVER_ERROR);
