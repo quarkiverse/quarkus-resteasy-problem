@@ -31,14 +31,14 @@ jobs:
             ${{ runner.os }}-
 
       - name: Compile
-        run: ./mvnw clean install -Pquick
+        run: ./mvnw clean install -Pquick -pl '!integration-test'
 
       - uses: DeLaGuardo/setup-graalvm@master
         with:
           graalvm-version: '21.0.0.2.java11'
 
       - name: Native Tests
-        run: ./mvnw clean verify -Pnative,${{ matrix.json-provider }}-${{ matrix.paradigm }} -pl integration-test -Dformatter.skip=true
+        run: ./mvnw clean verify -Pnative,${{ matrix.json-provider }}-${{ matrix.paradigm }} -pl integration-test
 
       - name: Publish Test Results
         uses: docker://ghcr.io/enricomi/publish-unit-test-result-action:v1

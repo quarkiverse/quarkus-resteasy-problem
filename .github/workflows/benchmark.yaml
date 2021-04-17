@@ -24,10 +24,10 @@ jobs:
             ${{ runner.os }}-
 
       - name: Compile
-        run: ./mvnw -B install -Pquick -pl '!integration-test'
+        run: ./mvnw install -Pquick -pl '!integration-test'
 
       - name: Performance Benchmark
-        run: ./mvnw -B test-compile failsafe:integration-test -pl runtime
+        run: ./mvnw test-compile failsafe:integration-test -pl runtime
 
       - name: Publish Performance Benchmark Results
         uses: docker://ghcr.io/enricomi/publish-unit-test-result-action:v1

@@ -1,15 +1,28 @@
+#!/bin/bash
+
 java_ver=$(java -version 2>&1 | head -1 | cut -d'"' -f2 | sed '/^1\./s///' | cut -d'.' -f1)
+
 if [[ "$java_ver" != "8" ]]; then
-    echo "Expected Java version is 1.8, while $java_ver was found"
+  read -p "Expected Java version is 1.8, while $java_ver was found. Switch to java 1.8 (y/n)? " choice
+  if [[ "$choice" != "y" ]]; then
     exit;
+  fi
+
+  echo "Switching Java to 1.8"
+  export JAVA_HOME=$(/usr/libexec/java_home -v 1.8);
 fi
 
-./mvnw clean install -Pquick
+set -x
+set -e
+
+./mvnw clean install -Pquick -pl '!integration-test'
 
 ./mvnw clean verify -Pjackson-classic -pl integration-test
-./mvnw clean verify -Pjackson-reactive -pl integration-test
 ./mvnw clean verify -Pjsonb-classic -pl integration-test
+./mvnw clean verify -Pjackson-reactive -pl integration-test
 ./mvnw clean verify -Pjsonb-reactive -pl integration-test
 
 ./mvnw clean verify -Pjackson-classic,quarkus-1.4 -pl integration-test
 ./mvnw clean verify -Pjsonb-classic,quarkus-1.4 -pl integration-test
+./mvnw clean verify -Pjackson-reactive,quarkus-1.11 -pl integration-test
+./mvnw clean verify -Pjsonb-reactive,quarkus-1.11 -pl integration-test

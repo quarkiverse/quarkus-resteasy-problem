@@ -1,10 +1,22 @@
+#!/bin/bash
+
 java_ver=$(java -version 2>&1 | head -1 | cut -d'"' -f2 | sed '/^1\./s///' | cut -d'.' -f1)
+
 if [[ "$java_ver" != "11" ]]; then
-    echo "Expected Java version is 11, while $java_ver was found"
+  read -p "Expected Java version is 11, while $java_ver was found. Switch to java 11 (y/n)? " choice
+  if [[ "$choice" != "y" ]]; then
     exit;
+  fi
+
+  echo "Switching java version to 11"
+  export JAVA_HOME=$(/usr/libexec/java_home -v 11);
 fi
 
-./mvnw clean install -Pquick
+set -e
+set -x
+
+./mvnw clean install -Pquick -pl '!integration-test'
+
 ./mvnw clean verify -Pnative,jackson-classic -pl integration-test
 ./mvnw clean verify -Pnative,jackson-reactive -pl integration-test
 ./mvnw clean verify -Pnative,jsonb-classic -pl integration-test

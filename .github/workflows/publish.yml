@@ -31,7 +31,7 @@ jobs:
           servers: '[{ "id": "ossrh", "username": "${{ secrets.NEXUS_USERNAME }}", "password": "${{ secrets.NEXUS_PASSWORD }}" }]'
 
       - name: Package, Sign and Publish to OSSRH Nexus Staging
-        run: ./mvnw -B -ntp deploy -Pdeploy
+        run: ./mvnw deploy -Pdeploy,quick -pl '!integration-test'
         env:
           SIGN_KEY: ${{ secrets.SIGN_KEY }}
           SIGN_KEY_PASS: ${{ secrets.SIGN_KEY_PASS }}

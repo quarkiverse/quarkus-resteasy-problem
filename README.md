@@ -11,7 +11,7 @@ This extension registers few JaxRS Exceptions Mappers for common exceptions thro
 
 Supports:
 - _quarkus-resteasy-jackson_ and _quarkus-resteasy-jsonb_ for Quarkus 1.4.2 and newer
-- _quarkus-resteasy-reactive-jackson_ and _quarkus-resteasy-reactive-jsonb_ for Quarkus 1.12.2 and newer
+- _quarkus-resteasy-reactive-jackson_ and _quarkus-resteasy-reactive-jsonb_ for Quarkus 1.11.6 and newer
 - JVM and native mode
 - Java 8+
 
@@ -30,7 +30,7 @@ so-called "HTTP APIs" are usually not.
 You may also want to check [this article](https://dzone.com/articles/when-http-status-codes-are-not-enough-tackling-web) on RFC7807 practical usage.
 
 ## Usage
-Create a new Quarkus project with the following command (you can also use `quarkus-resteasy-jsonb` or reactive equivalents: `quarkus-resteasy-reactive-jackson` / `quarkus-resteasy-reactive-jsonb`):
+Create a new Quarkus project with the following command (you can also use `resteasy-jsonb` or reactive equivalents: `resteasy-reactive-jackson` / `resteasy-reactive-jsonb`):
 ```shell
 mvn io.quarkus:quarkus-maven-plugin:1.13.1.Final:create \
     -DprojectGroupId=problem \

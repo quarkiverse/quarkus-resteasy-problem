@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.tietoevry.quarkus</groupId>
@@ -8,43 +9,9 @@
     <packaging>pom</packaging>
 
     <name>Quarkus - RESTeasy - Problem - Parent</name>
-    <description>Problem Details for HTTP APIs (RFC-7807) implementation for Quarkus / RESTeasy.</description>
+    <description>Problem Details for HTTP APIs (RFC-7807) implementation for Quarkus / RESTeasy - Parent POM.
+    </description>
     <url>https://github.com/TietoEVRY/quarkus-resteasy-problem</url>
-
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
-        </license>
-    </licenses>
-
-    <scm>
-        <connection>scm:git:git@github.com:TietoEVRY/quarkus-resteasy-problem.git</connection>
-        <developerConnection>scm:git:git@github.com:TietoEVRY/quarkus-resteasy-problem.git
-        </developerConnection>
-        <url>https://github.com/TietoEVRY/quarkus-resteasy-problem/tree/master</url>
-        <tag>HEAD</tag>
-    </scm>
-
-    <developers>
-        <developer>
-            <name>Data Platforms</name>
-            <organization>TietoEVRY</organization>
-            <organizationUrl>https://tietoevry.com</organizationUrl>
-            <timezone>UTC+01:00</timezone>
-        </developer>
-    </developers>
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -52,15 +19,25 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <!-- runtime/test dependencies -->
         <quarkus.version>1.13.2.Final</quarkus.version>
         <zalando-problem.version>0.25.0</zalando-problem.version>
         <assertj.version>3.19.0</assertj.version>
+        <jmh.version>1.29</jmh.version>
+        <jsr305.version>3.0.2</jsr305.version>
 
+        <!-- maven plugins -->
         <maven.compiler-plugin.version>3.8.1</maven.compiler-plugin.version>
+        <maven.release-plugin.version>3.0.0-M1</maven.release-plugin.version>
+        <maven.source-plugin.version>2.2.1</maven.source-plugin.version>
+        <maven.deploy-plugin.version>2.8.2</maven.deploy-plugin.version>
+        <maven.javadoc-plugin.version>2.9.1</maven.javadoc-plugin.version>
+        <sign-maven-plugin.version>0.3.1</sign-maven-plugin.version>
         <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
         <failsafe-plugin.version>3.0.0-M5</failsafe-plugin.version>
         <forbiddenapis-maven-plugin.version>3.1</forbiddenapis-maven-plugin.version>
-        <jmh.version>1.29</jmh.version>
+        <formatter-maven-plugin.version>2.14.0</formatter-maven-plugin.version>
+        <impsort-maven-plugin.version>1.6.0</impsort-maven-plugin.version>
     </properties>
 
     <modules>
@@ -78,6 +55,18 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <dependency>
+                <groupId>org.zalando</groupId>
+                <artifactId>problem</artifactId>
+                <version>${zalando-problem.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>${assertj.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -85,19 +74,11 @@
         <plugins>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>${surefire-plugin.version}</version>
-                <configuration>
-                    <argLine>-Duser.language=en -Duser.region=US</argLine>
-                    <systemProperties>
-                        <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-                    </systemProperties>
-                </configuration>
             </plugin>
 
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>3.0.0-M1</version>
+                <version>${maven.release-plugin.version}</version>
                 <configuration>
                     <tagNameFormat>v@{project.version}</tagNameFormat>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
@@ -109,7 +90,7 @@
             <plugin>
                 <groupId>net.revelc.code.formatter</groupId>
                 <artifactId>formatter-maven-plugin</artifactId>
-                <version>2.14.0</version>
+                <version>${formatter-maven-plugin.version}</version>
                 <configuration>
                     <configFile>${maven.multiModuleProjectDirectory}/ide-config/eclipse-format.xml</configFile>
                 </configuration>
@@ -127,7 +108,7 @@
             <plugin>
                 <groupId>net.revelc.code</groupId>
                 <artifactId>impsort-maven-plugin</artifactId>
-                <version>1.6.0</version>
+                <version>${impsort-maven-plugin.version}</version>
                 <configuration>
                     <removeUnused>true</removeUnused>
                 </configuration>
@@ -150,6 +131,43 @@
 
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven.compiler-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>${maven.deploy-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${surefire-plugin.version}</version>
+                    <configuration>
+                        <argLine>-Duser.language=en -Duser.region=US</argLine>
+                        <systemProperties>
+                            <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+                            <quarkus.log.console.level>OFF</quarkus.log.console.level>
+                        </systemProperties>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${failsafe-plugin.version}</version>
+                    <configuration>
+                        <systemPropertyVariables>
+                            <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+                            <quarkus.log.console.level>OFF</quarkus.log.console.level>
+                        </systemPropertyVariables>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>integration-test</goal>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
                 <plugin>
                     <groupId>de.thetaphi</groupId>
                     <artifactId>forbiddenapis</artifactId>
@@ -202,9 +220,8 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>2.2.1</version>
+                        <version>${maven.source-plugin.version}</version>
                         <executions>
                             <execution>
                                 <id>attach-sources</id>
@@ -215,9 +232,8 @@
                         </executions>
                     </plugin>
                     <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>2.9.1</version>
+                        <version>${maven.javadoc-plugin.version}</version>
                         <executions>
                             <execution>
                                 <id>attach-javadocs</id>
@@ -230,7 +246,7 @@
                     <plugin>
                         <groupId>org.simplify4u.plugins</groupId>
                         <artifactId>sign-maven-plugin</artifactId>
-                        <version>0.3.1</version>
+                        <version>${sign-maven-plugin.version}</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -251,15 +267,12 @@
                 <plugins>
                     <plugin>
                         <artifactId>maven-surefire-plugin</artifactId>
-                        <version>${surefire-plugin.version}</version>
                         <configuration>
-                            <argLine>-Duser.language=en -Duser.region=US</argLine>
                             <skip>true</skip>
                         </configuration>
                     </plugin>
                     <plugin>
                         <artifactId>maven-failsafe-plugin</artifactId>
-                        <version>${failsafe-plugin.version}</version>
                         <configuration>
                             <skip>true</skip>
                         </configuration>
@@ -291,4 +304,39 @@
             </build>
         </profile>
     </profiles>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:git@github.com:TietoEVRY/quarkus-resteasy-problem.git</connection>
+        <developerConnection>scm:git:git@github.com:TietoEVRY/quarkus-resteasy-problem.git
+        </developerConnection>
+        <url>https://github.com/TietoEVRY/quarkus-resteasy-problem/tree/master</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>Data Platforms</name>
+            <organization>TietoEVRY</organization>
+            <organizationUrl>https://tietoevry.com</organizationUrl>
+            <timezone>UTC+01:00</timezone>
+        </developer>
+    </developers>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 </project>
