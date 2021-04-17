@@ -23,7 +23,7 @@ import org.jboss.logging.Logger;
 public class ProblemProcessor {
 
     private static final String FEATURE_NAME = "resteasy-problem";
-    private static final String PACKAGE = "com.tietoevry.quarkus.resteasy.problem.";
+    private static final String EXTENSION_MAIN_PACKAGE = "com.tietoevry.quarkus.resteasy.problem.";
 
     private static final Logger logger = Logger.getLogger(FEATURE_NAME);
 
@@ -47,18 +47,18 @@ public class ProblemProcessor {
 
         return mappers.entrySet().stream()
                 .filter(mapper -> {
-                    String exceptionClass = mapper.getKey();
-                    return classAvailable(exceptionClass);
+                    String exceptionClassName = mapper.getKey();
+                    return isClassAvailable(exceptionClassName);
                 })
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    private static boolean classAvailable(String exceptionClass) {
+    private static boolean isClassAvailable(String className) {
         try {
-            Class.forName(exceptionClass);
+            Class.forName(className);
             return true;
         } catch (ClassNotFoundException e) {
-            logger.debugf("%s not found in classpath, skipping", exceptionClass);
+            logger.debugf("%s not found in classpath, skipping", className);
             return false;
         }
     }
@@ -72,32 +72,32 @@ public class ProblemProcessor {
     void registerMappersForClassic(BuildProducer<ResteasyJaxrsProviderBuildItem> providers) {
         neededExceptionMappers().forEach(
                 (exceptionClass, mapperClass) -> providers
-                        .produce(new ResteasyJaxrsProviderBuildItem(PACKAGE + mapperClass)));
+                        .produce(new ResteasyJaxrsProviderBuildItem(EXTENSION_MAIN_PACKAGE + mapperClass)));
     }
 
     @BuildStep(onlyIf = RestEasyReactiveDetector.class)
     void registerMappersForReactive(BuildProducer<ExceptionMapperBuildItem> providers) {
         neededExceptionMappers().forEach(
                 (exceptionClass, mapperClass) -> providers.produce(
-                        new ExceptionMapperBuildItem(PACKAGE + mapperClass, exceptionClass,
+                        new ExceptionMapperBuildItem(EXTENSION_MAIN_PACKAGE + mapperClass, exceptionClass,
                                 Priorities.AUTHENTICATION - 1, true)));
     }
 
     @BuildStep(onlyIf = JacksonDetector.class)
     void registerJacksonItems(BuildProducer<AdditionalBeanBuildItem> additionalBeans) {
         additionalBeans.produce(new AdditionalBeanBuildItem(
-                PACKAGE + "jackson.JacksonProblemModuleRegistrar"));
+                EXTENSION_MAIN_PACKAGE + "jackson.JacksonProblemModuleRegistrar"));
     }
 
     @BuildStep(onlyIf = JsonBDetector.class)
     void registerJsonbItems(BuildProducer<JsonbSerializerBuildItem> serializers) {
         serializers.produce(
-                new JsonbSerializerBuildItem(PACKAGE + "jsonb.JsonbProblemSerializer"));
+                new JsonbSerializerBuildItem(EXTENSION_MAIN_PACKAGE + "jsonb.JsonbProblemSerializer"));
     }
 
     @BuildStep
     ReflectiveClassBuildItem registerPojosForReflection() {
-        return new ReflectiveClassBuildItem(true, true, PACKAGE + "javax.Violation");
+        return new ReflectiveClassBuildItem(true, true, EXTENSION_MAIN_PACKAGE + "javax.Violation");
     }
 
     @Record(STATIC_INIT)
