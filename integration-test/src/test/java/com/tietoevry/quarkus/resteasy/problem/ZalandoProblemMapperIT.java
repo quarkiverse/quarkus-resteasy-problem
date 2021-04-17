@@ -27,7 +27,6 @@ class ZalandoProblemMapperIT {
                 .queryParam("detail", SAMPLE_DETAIL)
                 .get("/throw/zalando-problem")
                 .then()
-                .log().all()
                 .statusCode(status)
                 .body("type", equalTo("/business-problem"))
                 .body("instance", equalTo("/problem/special-case"))

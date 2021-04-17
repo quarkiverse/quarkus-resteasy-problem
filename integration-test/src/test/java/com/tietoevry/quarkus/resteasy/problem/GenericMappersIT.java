@@ -39,7 +39,6 @@ class GenericMappersIT {
         when()
                 .get("/throw/generic/http-problem")
                 .then()
-                .log().all()
                 .statusCode(409)
                 .header("X-RFC7807", equalTo("IsAlive"))
                 .body("title", equalTo("Product is out of stock"))
