@@ -12,7 +12,7 @@ import javax.ws.rs.core.HttpHeaders;
  *
  * @see io.quarkus.resteasy.runtime.AuthenticationRedirectExceptionMapper
  */
-@Priority(Priorities.USER)
+@Priority(Priorities.USER - 1)
 public final class AuthenticationRedirectExceptionMapper extends ExceptionMapperBase<AuthenticationRedirectException> {
 
     @Override
