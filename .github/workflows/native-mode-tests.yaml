@@ -8,6 +8,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        paradigm: [ "classic", "reactive" ]
+        json-provider: [ "jsonb", "jackson" ]
+
     steps:
       - uses: actions/checkout@v2
 
@@ -32,17 +37,8 @@ jobs:
         with:
           graalvm-version: '21.0.0.2.java11'
 
-      - name: Integration Tests (native - classic - jackson)
-        run: ./mvnw clean verify -Pnative,jackson-classic -pl integration-test
-
-      - name: Integration Tests (native - classic - jsonb)
-        run: ./mvnw clean verify -Pnative,jsonb-classic -pl integration-test
-
-      - name: Integration Tests (native - reactive - jackson)
-        run: ./mvnw clean verify -Pnative,jackson-reactive -pl integration-test
-
-      - name: Integration Tests (native - reactive - jsonb)
-        run: ./mvnw clean verify -Pnative,jsonb-reactive -pl integration-test
+      - name: Native Tests
+        run: ./mvnw clean verify -Pnative,${{ matrix.json-provider }}-${{ matrix.paradigm }} -pl integration-test -Dformatter.skip=true
 
       - name: Publish Test Results
         uses: docker://ghcr.io/enricomi/publish-unit-test-result-action:v1
