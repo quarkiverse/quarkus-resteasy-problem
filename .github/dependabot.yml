@@ -9,16 +9,12 @@ updates:
     labels:
       - dependencies
     allow:
-      # Quarkus
+      # Runtime / test dependencies
       - dependency-name: io.quarkus:*
-      # Zalando
-      - dependency-name: org.zalando:problem
-      # Assertj
-      - dependency-name: org.assertj:assertj-core
-      # Jmh
-      - dependency-name: org.openjdk.jmh:*
-      # jsr305
       - dependency-name: com.google.code.findbugs:jsr305
+      - dependency-name: org.zalando:problem
+      - dependency-name: org.assertj:assertj-core
+      - dependency-name: org.openjdk.jmh:*
       # Maven plugins
       - dependency-name: org.apache.maven.plugins:*
       - dependency-name: org.simplify4u.plugins:sign-maven-plugin
