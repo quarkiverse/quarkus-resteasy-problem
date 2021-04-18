@@ -1,0 +1,24 @@
+version: 2
+updates:
+  - package-ecosystem: maven
+    directory: "/"
+    schedule:
+      interval: daily
+      time: "04:00"
+      timezone: Europe/Warsaw
+    labels:
+      - dependencies
+    allow:
+      # Runtime / test dependencies
+      - dependency-name: io.quarkus:*
+      - dependency-name: com.google.code.findbugs:jsr305
+      - dependency-name: org.zalando:problem
+      - dependency-name: org.assertj:assertj-core
+      - dependency-name: org.openjdk.jmh:*
+      # Maven plugins
+      - dependency-name: org.apache.maven.plugins:*
+      - dependency-name: org.simplify4u.plugins:sign-maven-plugin
+      - dependency-name: de.thetaphi:forbiddenapis
+      - dependency-name: net.revelc.code.formatter:formatter-maven-plugin
+      - dependency-name: net.revelc.code:impsort-maven-plugin
+    rebase-strategy: disabled
