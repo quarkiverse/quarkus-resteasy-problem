@@ -33,7 +33,7 @@ class UnrecognizedPropertyExceptionMapperTest {
         assertThat(response.getEntity())
                 .isInstanceOf(HttpProblem.class)
                 .hasFieldOrPropertyWithValue("detail",
-                        "Unrecognized field \"unknown_field\" (class com.tietoevry.quarkus.resteasy.problem.jackson.UnrecognizedPropertyExceptionMapperTest), not marked as ignorable");
+                        "Unrecognized field \"unknown_field\", not marked as ignorable");
     }
 
 }
