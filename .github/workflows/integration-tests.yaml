@@ -37,7 +37,7 @@ jobs:
             ${{ runner.os }}-
 
       - name: Compile
-        run: ./mvnw install -Dquick -pl '!integration-test'
+        run: ./mvnw install -Pquick -pl '!integration-test'
 
       - name: Integration Tests (lastest - classic - jackson)
         run: ./mvnw clean verify -P${{ matrix.maven_profiles }} -pl integration-test
