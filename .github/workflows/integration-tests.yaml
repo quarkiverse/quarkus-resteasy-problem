@@ -1,0 +1,45 @@
+name: Integration Tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        maven_profiles: [
+            "jackson-classic", "jsonb-classic",
+            "jackson-reactive", "jsonb-reactive",
+            "jackson-classic,quarkus-1.4", "jsonb-classic,quarkus-1.4",
+            "jackson-reactive,quarkus-1.11", "jsonb-reactive,quarkus-1.11"
+        ]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+            ${{ runner.os }}-
+
+      - name: Compile
+        run: ./mvnw install -Dquick -pl '!integration-test'
+
+      - name: Integration Tests (lastest - classic - jackson)
+        run: ./mvnw clean verify -P${{ matrix.maven_profiles }} -pl integration-test
+
+

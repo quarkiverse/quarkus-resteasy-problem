@@ -39,11 +39,3 @@ jobs:
 
       - name: Native Tests
         run: ./mvnw clean verify -Pnative,${{ matrix.json-provider }}-${{ matrix.paradigm }} -pl integration-test
-
-      - name: Publish Test Results
-        uses: docker://ghcr.io/enricomi/publish-unit-test-result-action:v1
-        if: always()
-        with:
-          check_name: Native Test Results
-          files: "**/target/*-reports/**/TEST-*.xml"
-          github_token: ${{ github.token }}
