@@ -13,7 +13,7 @@ class ForbiddenExceptionMapperTest {
 
     @Test
     void shouldHaveHigherPriorityThanBuiltInMapper() {
-        assertThat(ForbiddenExceptionMapper.class)
+        assertThat(mapper.getClass())
                 .hasPrecedenceOver(io.quarkus.resteasy.runtime.ForbiddenExceptionMapper.class);
     }
 

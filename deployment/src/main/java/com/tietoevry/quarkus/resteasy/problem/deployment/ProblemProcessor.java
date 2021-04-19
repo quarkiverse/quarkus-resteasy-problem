@@ -29,17 +29,22 @@ public class ProblemProcessor {
 
     private static Map<String, String> neededExceptionMappers() {
         Map<String, String> mappers = new LinkedHashMap<>();
-        mappers.put("java.lang.Exception", "DefaultExceptionMapper");
         mappers.put("com.tietoevry.quarkus.resteasy.problem.HttpProblem", "HttpProblemMapper");
+
         mappers.put("javax.ws.rs.WebApplicationException", "jaxrs.WebApplicationExceptionMapper");
         mappers.put("javax.ws.rs.ForbiddenException", "jaxrs.JaxRsForbiddenExceptionMapper");
         mappers.put("javax.ws.rs.NotFoundException", "jaxrs.NotFoundExceptionMapper");
+        mappers.put("javax.ws.rs.ProcessingException", "jsonb.RestEasyClassicJsonbExceptionMapper");
+
         mappers.put("io.quarkus.security.UnauthorizedException", "security.UnauthorizedExceptionMapper");
         mappers.put("io.quarkus.security.AuthenticationFailedException", "security.AuthenticationFailedExceptionMapper");
+        mappers.put("io.quarkus.security.AuthenticationRedirectException", "security.AuthenticationRedirectExceptionMapper");
+        mappers.put("io.quarkus.security.AuthenticationCompletionException",
+                "security.AuthenticationCompletionExceptionMapper");
         mappers.put("io.quarkus.security.ForbiddenException", "security.ForbiddenExceptionMapper");
+
         mappers.put("javax.validation.ValidationException", "javax.ValidationExceptionMapper");
         mappers.put("javax.validation.ConstraintViolationException", "javax.ConstraintViolationExceptionMapper");
-        mappers.put("org.zalando.problem.ThrowableProblem", "ZalandoProblemMapper");
 
         mappers.put("com.fasterxml.jackson.core.JsonProcessingException", "jackson.JsonProcessingExceptionMapper");
         mappers.put("com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException",
@@ -47,6 +52,10 @@ public class ProblemProcessor {
         mappers.put("com.fasterxml.jackson.databind.exc.InvalidFormatException", "jackson.InvalidFormatExceptionMapper");
         mappers.put("javax.ws.rs.ProcessingException", "jsonb.RestEasyClassicJsonbExceptionMapper");
         mappers.put("javax.json.bind.JsonbException", "jsonb.JsonbExceptionMapper");
+
+        mappers.put("org.zalando.problem.ThrowableProblem", "ZalandoProblemMapper");
+
+        mappers.put("java.lang.Exception", "DefaultExceptionMapper");
 
         return mappers.entrySet().stream()
                 .filter(mapper -> {

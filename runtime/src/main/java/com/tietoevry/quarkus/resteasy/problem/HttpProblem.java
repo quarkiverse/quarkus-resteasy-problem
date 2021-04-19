@@ -148,6 +148,11 @@ public class HttpProblem extends RuntimeException {
             return this;
         }
 
+        public Builder withStatus(int statusCode) {
+            this.status = Response.Status.fromStatusCode(statusCode);
+            return this;
+        }
+
         public Builder withDetail(@Nullable String detail) {
             this.detail = detail;
             return this;
