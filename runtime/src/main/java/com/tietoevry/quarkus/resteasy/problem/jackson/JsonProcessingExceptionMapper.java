@@ -16,6 +16,6 @@ public final class JsonProcessingExceptionMapper extends ExceptionMapperBase<Jso
 
     @Override
     protected HttpProblem toProblem(JsonProcessingException exception) {
-        return HttpProblem.valueOf(BAD_REQUEST, exception.getMessage());
+        return HttpProblem.valueOf(BAD_REQUEST, exception.getOriginalMessage());
     }
 }

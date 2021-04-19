@@ -59,7 +59,7 @@ jobs:
 
       - name: Publish Test Results
         uses: docker://ghcr.io/enricomi/publish-unit-test-result-action:v1
-        if: always()
+        if: always() && github.event.sender.login != 'dependabot[bot]'
         with:
           check_name: Test Results
           files: "**/target/*-reports/**/TEST-*.xml"
