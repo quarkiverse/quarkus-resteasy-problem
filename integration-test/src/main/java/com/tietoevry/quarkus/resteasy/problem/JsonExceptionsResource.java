@@ -5,6 +5,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.UUID;
 
 @Path("/throw/json/")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -16,7 +17,13 @@ public class JsonExceptionsResource {
     }
 
     public static final class TestRequestBody {
-        public int key;
+        public UUID uuid_field_1;
+
+        public Nested nested;
+
+        public static final class Nested {
+            public UUID uuid_field_2;
+        }
     }
 
 }
