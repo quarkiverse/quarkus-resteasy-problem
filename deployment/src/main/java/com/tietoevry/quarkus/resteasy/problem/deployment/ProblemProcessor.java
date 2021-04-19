@@ -42,6 +42,7 @@ public class ProblemProcessor {
         mappers.put("org.zalando.problem.ThrowableProblem", "ZalandoProblemMapper");
 
         mappers.put("com.fasterxml.jackson.core.JsonProcessingException", "jackson.JsonProcessingExceptionMapper");
+        mappers.put("com.fasterxml.jackson.databind.exc.InvalidFormatException", "jackson.InvalidFormatExceptionMapper");
         mappers.put("javax.ws.rs.ProcessingException", "jsonb.RestEasyClassicJsonbExceptionMapper");
         mappers.put("javax.json.bind.JsonbException", "jsonb.JsonbExceptionMapper");
 
