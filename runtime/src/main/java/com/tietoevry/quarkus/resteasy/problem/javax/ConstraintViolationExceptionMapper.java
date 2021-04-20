@@ -2,10 +2,9 @@ package com.tietoevry.quarkus.resteasy.problem.javax;
 
 import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import javax.annotation.Priority;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -41,16 +40,10 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
     }
 
     private String dropMethodNameAndArgumentPositionFromPath(Path propertyPath) {
-        Iterator<Path.Node> propertyPathIterator = propertyPath.iterator();
-        propertyPathIterator.next();
-        propertyPathIterator.next();
-
-        List<String> allNamesExceptFirstTwo = new ArrayList<>();
-        while (propertyPathIterator.hasNext()) {
-            allNamesExceptFirstTwo.add(propertyPathIterator.next().getName());
-        }
-
-        return String.join(".", allNamesExceptFirstTwo);
+        return StreamSupport.stream(propertyPath.spliterator(), false)
+                .reduce((first, second) -> second)
+                .map(Path.Node::getName)
+                .orElse("");
     }
 
 }

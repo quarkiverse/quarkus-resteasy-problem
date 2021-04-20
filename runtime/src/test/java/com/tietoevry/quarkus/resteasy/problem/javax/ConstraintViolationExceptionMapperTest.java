@@ -8,6 +8,7 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Min;
 import javax.ws.rs.core.Response;
 import org.hibernate.validator.HibernateValidator;
@@ -16,7 +17,7 @@ import org.junit.jupiter.api.Test;
 
 class ConstraintViolationExceptionMapperTest {
 
-    static final Validator VALIDATOR = Validation.byProvider(HibernateValidator.class)
+    private static final Validator VALIDATOR = Validation.byProvider(HibernateValidator.class)
             .configure()
             .buildValidatorFactory()
             .getValidator();
@@ -31,13 +32,19 @@ class ConstraintViolationExceptionMapperTest {
 
         assertThat(response.getStatus()).isEqualTo(400);
         assertThat(response.getMediaType()).isEqualTo(HttpProblem.MEDIA_TYPE);
-        HttpProblem problem = (HttpProblem) response.getEntity();
-        List<Violation> violations = (List<Violation>) problem.getParameters().get("violations");
+        final List<Violation> violations = getViolations(response);
         assertThat(violations)
                 .usingFieldByFieldElementComparator()
                 .containsExactlyInAnyOrder(
                         new Violation("must be greater than or equal to 20", "numericField"),
-                        new Violation("length must be between 10 and 30", "stringField"));
+                        new Violation("must be true", "booleanField"),
+                        new Violation("length must be between 10 and 30", "stringField"),
+                        new Violation("must be greater than or equal to 20", "numericField"));
+    }
+
+    private List<Violation> getViolations(Response response) {
+        HttpProblem problem = response.readEntity(HttpProblem.class);
+        return (List<Violation>) problem.getParameters().get("violations");
     }
 
     private ConstraintViolationException createValidationException() {
@@ -50,7 +57,6 @@ class ConstraintViolationExceptionMapperTest {
      * but we want only the last part of the path in our responses.
      */
     static class EndpointPayloadWrapper {
-
         @Valid
         final Wrapper throwConstraintViolationException = new Wrapper();
 
@@ -58,13 +64,24 @@ class ConstraintViolationExceptionMapperTest {
             @Valid
             final InvalidPayload arg0 = new InvalidPayload();
 
+            @AssertTrue
+            final boolean booleanField = false;
+
             static class InvalidPayload {
+
+                @Valid
+                final InvalidInnerPayload arg1 = new InvalidInnerPayload();
 
                 @Min(20)
                 final int numericField = 10;
 
                 @Length(min = 10, max = 30)
                 final String stringField = "";
+
+                static class InvalidInnerPayload {
+                    @Min(20)
+                    final int numericField = 10;
+                }
             }
         }
     }
