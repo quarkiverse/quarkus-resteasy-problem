@@ -30,23 +30,12 @@ jobs:
       - name: Compile
         run: |
           ./mvnw install -Pquick -pl '!integration-test'
-          PROJECT_VERSION=(./mvnw -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
 
-      - name: Setup Quickstart App
+      - name: Create JsonB App and Run Tests
         run: |
-          mvn io.quarkus:quarkus-maven-plugin:1.13.2.Final:create
-              -DprojectGroupId=problem
-              -DprojectArtifactId=quarkus-resteasy-problem-playground
-              -DclassName="problem.HelloResource"
-              -Dpath="/hello"
-              -Dextensions="resteasy,resteasy-jsonb"
-          ls -all
-          cd code-with-quarkus
+          EXTENSION_VERSION=$(./mvnw -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
 
-          sed 's/<dependencies>/<dependencies><dependency><groupId>com.tietoevry.quarkus<\/groupId><artifactId>quarkus-resteasy-problem<\/artifactId><version>'"$PROJECT_VERSION"'<\/version><\/dependency>/g' pom.xml > pom.xml
-          cat pom.xml
+          mvn io.quarkus:quarkus-maven-plugin:1.13.2.Final:create -Dextensions="resteasy,resteasy-jsonb" -DprojectGroupId=problem -DprojectArtifactId=quarkus-resteasy-problem-playground -DclassName="problem.HelloResource" -Dpath="/hello"
+          sed 's/<dependencies>/<dependencies><dependency><groupId>com.tietoevry.quarkus<\/groupId><artifactId>quarkus-resteasy-problem<\/artifactId><version>'"$EXTENSION_VERSION"'<\/version><\/dependency>/g' quarkus-resteasy-problem-playground/pom.xml > quarkus-resteasy-problem-playground/pom2.xml
 
-      - name: Integration test
-        run: |
-          cd code-with-quarkus
-          ./mvnw clean verify
+          ./mvnw verify -f quarkus-resteasy-problem-playground/pom2.xml
