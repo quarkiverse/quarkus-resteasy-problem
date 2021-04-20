@@ -34,19 +34,12 @@ jobs:
 
       - name: Setup Quickstart App
         run: |
-          mvn io.quarkus:quarkus-maven-plugin:1.13.2.Final:create
-              -DprojectGroupId=problem
-              -DprojectArtifactId=quarkus-resteasy-problem-playground
-              -DclassName="problem.HelloResource"
-              -Dpath="/hello"
-              -Dextensions="resteasy,resteasy-jsonb"
-          ls -all
-          cd code-with-quarkus
-
-          sed 's/<dependencies>/<dependencies><dependency><groupId>com.tietoevry.quarkus<\/groupId><artifactId>quarkus-resteasy-problem<\/artifactId><version>'"$PROJECT_VERSION"'<\/version><\/dependency>/g' pom.xml > pom.xml
-          cat pom.xml
+          mvn io.quarkus:quarkus-maven-plugin:1.13.2.Final:create -Dextensions="resteasy,resteasy-jsonb" -DprojectGroupId=problem -DprojectArtifactId=quarkus-resteasy-problem-playground -DclassName="problem.HelloResource" -Dpath="/hello"
+          cd quarkus-resteasy-problem-playground
+          sed 's/<dependencies>/<dependencies><dependency><groupId>com.tietoevry.quarkus<\/groupId><artifactId>quarkus-resteasy-problem<\/artifactId><version>$PROJECT_VERSION<\/version><\/dependency>/g' pom.xml > pom.xml
+          ls --all
 
       - name: Integration test
         run: |
-          cd code-with-quarkus
+          cd quarkus-resteasy-problem-playground
           ./mvnw clean verify
