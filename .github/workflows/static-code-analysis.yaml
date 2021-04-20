@@ -1,18 +1,16 @@
-name: Regression Tests
+name: Static Code Analysis
 
 on:
   push:
+    branches:
+      - master
+  pull_request:
     branches: [ master ]
   workflow_dispatch:
-
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        version: [ "1.5", "1.6", "1.7", "1.8", "1.9", "1.10", "1.11", "1.12" ]
-        json-provider: [ "jsonb-classic", "jackson-classic" ]
 
     steps:
       - uses: actions/checkout@v2
@@ -31,9 +29,5 @@ jobs:
             ${{ runner.os }}-maven-
             ${{ runner.os }}-
 
-      - name: Build project
-        run: ./mvnw install -Pquick -pl '!integration-test'
-
-      - name: Integration tests
-        run: |
-          ./mvnw clean verify -P${{ matrix.json-provider }},quarkus-${{ matrix.version }} -pl integration-test
+      - name: Check formatting
+        run: ./mvnw formatter:validate

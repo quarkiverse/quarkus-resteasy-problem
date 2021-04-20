@@ -1,11 +1,25 @@
-name: Performance benchmark
+name: Integration Tests
 
 on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches: [ master ]
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        maven_profiles: [
+            "jackson-classic", "jsonb-classic",
+            "jackson-reactive", "jsonb-reactive",
+            "jackson-classic,quarkus-1.4", "jsonb-classic,quarkus-1.4",
+            "jackson-reactive,quarkus-1.11", "jsonb-reactive,quarkus-1.11"
+        ]
+
     steps:
       - uses: actions/checkout@v2
 
@@ -26,13 +40,7 @@ jobs:
       - name: Compile
         run: ./mvnw install -Pquick -pl '!integration-test'
 
-      - name: Performance Benchmark
-        run: ./mvnw test-compile failsafe:integration-test -pl runtime
+      - name: Integration Tests (lastest - classic - jackson)
+        run: ./mvnw clean verify -P${{ matrix.maven_profiles }} -pl integration-test
 
-      - name: Publish Performance Benchmark Results
-        uses: docker://ghcr.io/enricomi/publish-unit-test-result-action:v1
-        if: always()
-        with:
-          check_name: Performance Benchmark Results
-          files: "**/target/*-reports/**/TEST-*.xml"
-          github_token: ${{ github.token }}
+
