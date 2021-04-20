@@ -43,8 +43,7 @@ jobs:
         working-directory: ./quickstart/quarkus-resteasy-problem-playground
         run: |
           EXTENSION_VERSION=$(./mvnw -f ../../pom.xml -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
-          sed 's/<dependencies>/<dependencies><dependency><groupId>com.tietoevry.quarkus<\/groupId><artifactId>quarkus-resteasy-problem<\/artifactId><version>'"$EXTENSION_VERSION"'<\/version><\/dependency>/g' pom.xml > pom_new.xml
-          mv pom_new.xml pom.xml
+          sed -i 's/<dependencies>/<dependencies><dependency><groupId>com.tietoevry.quarkus<\/groupId><artifactId>quarkus-resteasy-problem<\/artifactId><version>'"$EXTENSION_VERSION"'<\/version><\/dependency>/g' pom.xml
 
       - name: Run tests
         working-directory: ./quickstart/quarkus-resteasy-problem-playground
