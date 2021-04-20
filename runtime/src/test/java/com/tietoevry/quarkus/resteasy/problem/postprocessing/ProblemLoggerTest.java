@@ -53,7 +53,7 @@ class ProblemLoggerTest {
         assertThat(capturedInfoMessage())
                 .contains(
                         "custom-field=\"123\"",
-                        "violations=[{\"field\":\"key\",\"message\":\"too small\",\"error\":\"too small\"}]");
+                        "violations=[Violation{message='too small', field='key'}]");
     }
 
     @Test
