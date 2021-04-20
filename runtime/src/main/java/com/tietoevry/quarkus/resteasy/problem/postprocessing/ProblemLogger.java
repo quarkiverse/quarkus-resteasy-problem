@@ -3,6 +3,7 @@ package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
@@ -55,10 +56,16 @@ final class ProblemLogger implements ProblemPostProcessor {
     }
 
     private String serializeParameter(Map.Entry<String, Object> param) {
-        String serializedValue = param.getValue().toString();
-        if (param.getValue() instanceof String) {
-            serializedValue = "\"" + serializedValue + "\"";
-        }
+        String serializedValue = Optional.ofNullable(param.getValue())
+                .map(value -> {
+                    if (value instanceof String) {
+                        return "\"" + value + "\"";
+                    } else {
+                        return value.toString();
+                    }
+                })
+                .orElse("null");
+
         return param.getKey() + "=" + serializedValue;
     }
 
