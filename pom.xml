@@ -44,8 +44,6 @@
         <module>runtime</module>
         <module>deployment</module>
         <module>integration-test</module>
-        <module>integration-test-jackson</module>
-        <module>integration-test-jsonb</module>
     </modules>
 
     <dependencyManagement>
