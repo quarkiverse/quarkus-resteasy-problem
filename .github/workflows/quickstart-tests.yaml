@@ -1,0 +1,52 @@
+name: Quickstart Flow Tests
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+            ${{ runner.os }}-
+
+      - name: Compile
+        run: |
+          ./mvnw install -Pquick -pl '!integration-test'
+          PROJECT_VERSION=(./mvnw -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+
+      - name: Setup Quickstart App
+        run: |
+          mvn io.quarkus:quarkus-maven-plugin:1.13.2.Final:create
+              -DprojectGroupId=problem
+              -DprojectArtifactId=quarkus-resteasy-problem-playground
+              -DclassName="problem.HelloResource"
+              -Dpath="/hello"
+              -Dextensions="resteasy,resteasy-jsonb"
+          ls -all
+          cd code-with-quarkus
+
+          sed 's/<dependencies>/<dependencies><dependency><groupId>com.tietoevry.quarkus<\/groupId><artifactId>quarkus-resteasy-problem<\/artifactId><version>'"$PROJECT_VERSION"'<\/version><\/dependency>/g' pom.xml > pom.xml
+          cat pom.xml
+
+      - name: Integration test
+        run: |
+          cd code-with-quarkus
+          ./mvnw clean verify
