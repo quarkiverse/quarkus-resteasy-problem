@@ -2,7 +2,7 @@ package com.tietoevry.quarkus.resteasy.problem.deployment;
 
 final class JsonBDetector extends ClasspathDetector {
 
-    public JsonBDetector() {
+    JsonBDetector() {
         super("io.quarkus.jsonb.JsonbProducer");
     }
 

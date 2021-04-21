@@ -2,22 +2,14 @@ package com.tietoevry.quarkus.resteasy.problem.deployment;
 
 import java.util.function.BooleanSupplier;
 
-class ExceptionMapperDefinition {
+final class ExceptionMapperDefinition {
 
-    static MapperDefinitionFor mapper(String mapper) {
-        return new MapperDefinitionFor(mapper);
+    static ExceptionClassSupplier mapper(String mapper) {
+        return exception -> new ExceptionMapperDefinition(exception, mapper, new ClasspathDetector(exception));
     }
 
-    static class MapperDefinitionFor {
-        private final String mapper;
-
-        private MapperDefinitionFor(String mapper) {
-            this.mapper = mapper;
-        }
-
-        ExceptionMapperDefinition handling(String exception) {
-            return new ExceptionMapperDefinition(exception, mapper, new ClasspathDetector(exception));
-        }
+    interface ExceptionClassSupplier {
+        ExceptionMapperDefinition handling(String exception);
     }
 
     final String exceptionClassName;
