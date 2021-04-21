@@ -27,13 +27,13 @@ public class ProblemProcessor {
     private static final String FEATURE_NAME = "resteasy-problem";
     private static final String EXTENSION_MAIN_PACKAGE = "com.tietoevry.quarkus.resteasy.problem.";
 
-    private static final Logger logger = Logger.getLogger(FEATURE_NAME);
-
     /**
      * Don't change this to Capability.RESTEASY_JSON for the sake of older Quarkus versions
      */
     private static final String RESTEASY_JSON_CAPABILITY = "io.quarkus.resteasy.json";
     private static final String RESTEASY_JSON_LEGACY_CAPABILITY = "io.quarkus.resteasy-json";
+
+    private static final Logger logger = Logger.getLogger(FEATURE_NAME);
 
     private static List<ExceptionMapperDefinition> neededExceptionMappers() {
         List<ExceptionMapperDefinition> mappers = new ArrayList<>();
@@ -74,7 +74,7 @@ public class ProblemProcessor {
         mappers.add(mapper("DefaultExceptionMapper").handling("java.lang.Exception"));
 
         return mappers.stream()
-                .filter(mapper -> mapper.detector.getAsBoolean())
+                .filter(ExceptionMapperDefinition::isNeeded)
                 .collect(Collectors.toList());
     }
 
@@ -83,7 +83,7 @@ public class ProblemProcessor {
         if (!capabilities.isCapabilityPresent(RESTEASY_JSON_CAPABILITY)
                 && !capabilities.isCapabilityPresent(RESTEASY_JSON_LEGACY_CAPABILITY)) {
             logger.error("This extension is useless without RESTeasy Json Provider. Please add "
-                    + "`quarkus-resteasy-jackson` or `quarkus-resteasy-jsonb` to your pom.xml.");
+                    + "`quarkus-resteasy-jackson` or `quarkus-resteasy-jsonb` (or reactive versions) to your pom.xml.");
         }
         return new FeatureBuildItem(FEATURE_NAME);
     }

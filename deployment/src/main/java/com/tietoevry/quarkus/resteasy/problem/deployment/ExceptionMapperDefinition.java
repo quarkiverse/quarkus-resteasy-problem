@@ -1,20 +1,31 @@
 package com.tietoevry.quarkus.resteasy.problem.deployment;
 
+import java.util.Objects;
 import java.util.function.BooleanSupplier;
 
 final class ExceptionMapperDefinition {
 
     static ExceptionClassSupplier mapper(String mapper) {
-        return exception -> new ExceptionMapperDefinition(exception, mapper, new ClasspathDetector(exception));
+        Objects.requireNonNull(mapper);
+        return new ExceptionClassSupplier(mapper);
     }
 
-    interface ExceptionClassSupplier {
-        ExceptionMapperDefinition handling(String exception);
+    static class ExceptionClassSupplier {
+        private final String mapper;
+
+        private ExceptionClassSupplier(String mapper) {
+            this.mapper = mapper;
+        }
+
+        ExceptionMapperDefinition handling(String exception) {
+            Objects.requireNonNull(exception);
+            return new ExceptionMapperDefinition(exception, this.mapper, new ClasspathDetector(exception));
+        }
     }
 
     final String exceptionClassName;
     final String mapperClassName;
-    final BooleanSupplier detector;
+    private final BooleanSupplier detector;
 
     private ExceptionMapperDefinition(String exceptionClassName, String mapperClassName, BooleanSupplier detector) {
         this.exceptionClassName = exceptionClassName;
@@ -22,7 +33,11 @@ final class ExceptionMapperDefinition {
         this.detector = detector;
     }
 
-    ExceptionMapperDefinition onlyIf(BooleanSupplier detector) {
-        return new ExceptionMapperDefinition(exceptionClassName, mapperClassName, detector);
+    ExceptionMapperDefinition onlyIf(BooleanSupplier newDetector) {
+        return new ExceptionMapperDefinition(this.exceptionClassName, this.mapperClassName, newDetector);
+    }
+
+    boolean isNeeded() {
+        return this.detector.getAsBoolean();
     }
 }

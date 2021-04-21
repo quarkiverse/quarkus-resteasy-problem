@@ -13,7 +13,7 @@ class ClasspathDetector implements BooleanSupplier {
     @Override
     public boolean getAsBoolean() {
         try {
-            Class.forName(className);
+            Class.forName(this.className);
             return true;
         } catch (ClassNotFoundException e) {
             return false;
