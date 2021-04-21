@@ -17,7 +17,7 @@ final class ExceptionMapperDefinition {
             this.mapper = mapper;
         }
 
-        ExceptionMapperDefinition handling(String exception) {
+        ExceptionMapperDefinition thatHandles(String exception) {
             Objects.requireNonNull(exception);
             return new ExceptionMapperDefinition(exception, this.mapper, new ClasspathDetector(exception));
         }

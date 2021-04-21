@@ -16,11 +16,13 @@ import io.quarkus.deployment.builditem.nativeimage.ReflectiveClassBuildItem;
 import io.quarkus.jsonb.spi.JsonbSerializerBuildItem;
 import io.quarkus.resteasy.common.spi.ResteasyJaxrsProviderBuildItem;
 import io.quarkus.resteasy.reactive.spi.ExceptionMapperBuildItem;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.ws.rs.Priorities;
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ProblemProcessor {
 
@@ -28,61 +30,62 @@ public class ProblemProcessor {
     private static final String EXTENSION_MAIN_PACKAGE = "com.tietoevry.quarkus.resteasy.problem.";
 
     /**
-     * Don't change this to Capability.RESTEASY_JSON for the sake of older Quarkus versions
+     * Don't change this to constants from Capability for the sake of older Quarkus versions
      */
-    private static final String RESTEASY_JSON_CAPABILITY = "io.quarkus.resteasy.json";
-    private static final String RESTEASY_JSON_LEGACY_CAPABILITY = "io.quarkus.resteasy-json";
-
-    private static final Logger logger = Logger.getLogger(FEATURE_NAME);
+    private static final List<String> RESTEASY_JSON_CAPABILITIES = Arrays.asList(
+            "io.quarkus.resteasy.json",
+            "io.quarkus.resteasy-json",
+            "io.quarkus.jsonb",
+            "io.quarkus.jackson");
 
     private static List<ExceptionMapperDefinition> neededExceptionMappers() {
-        List<ExceptionMapperDefinition> mappers = new ArrayList<>();
-        mappers.add(mapper("HttpProblemMapper").handling("com.tietoevry.quarkus.resteasy.problem.HttpProblem"));
+        Stream<ExceptionMapperDefinition> allMappers = Stream.of(
+                mapper("HttpProblemMapper").thatHandles("com.tietoevry.quarkus.resteasy.problem.HttpProblem"),
 
-        mappers.add(mapper("jaxrs.WebApplicationExceptionMapper").handling("javax.ws.rs.WebApplicationException"));
-        mappers.add(mapper("jaxrs.JaxRsForbiddenExceptionMapper").handling("javax.ws.rs.ForbiddenException"));
-        mappers.add(mapper("jaxrs.NotFoundExceptionMapper").handling("javax.ws.rs.NotFoundException"));
-        mappers.add(mapper("jsonb.RestEasyClassicJsonbExceptionMapper").handling("javax.ws.rs.ProcessingException"));
+                mapper("jaxrs.WebApplicationExceptionMapper").thatHandles("javax.ws.rs.WebApplicationException"),
+                mapper("jaxrs.JaxRsForbiddenExceptionMapper").thatHandles("javax.ws.rs.ForbiddenException"),
+                mapper("jaxrs.NotFoundExceptionMapper").thatHandles("javax.ws.rs.NotFoundException"),
+                mapper("jsonb.RestEasyClassicJsonbExceptionMapper").thatHandles("javax.ws.rs.ProcessingException"),
 
-        mappers.add(mapper("security.UnauthorizedExceptionMapper").handling("io.quarkus.security.UnauthorizedException"));
-        mappers.add(mapper("security.AuthenticationFailedExceptionMapper")
-                .handling("io.quarkus.security.AuthenticationFailedException"));
-        mappers.add(mapper("security.AuthenticationRedirectExceptionMapper")
-                .handling("io.quarkus.security.AuthenticationRedirectException"));
-        mappers.add(mapper("security.AuthenticationCompletionExceptionMapper")
-                .handling("io.quarkus.security.AuthenticationCompletionException"));
-        mappers.add(mapper("security.ForbiddenExceptionMapper").handling("io.quarkus.security.ForbiddenException"));
+                mapper("security.UnauthorizedExceptionMapper").thatHandles("io.quarkus.security.UnauthorizedException"),
+                mapper("security.AuthenticationFailedExceptionMapper")
+                        .thatHandles("io.quarkus.security.AuthenticationFailedException"),
+                mapper("security.AuthenticationRedirectExceptionMapper")
+                        .thatHandles("io.quarkus.security.AuthenticationRedirectException"),
+                mapper("security.AuthenticationCompletionExceptionMapper")
+                        .thatHandles("io.quarkus.security.AuthenticationCompletionException"),
+                mapper("security.ForbiddenExceptionMapper").thatHandles("io.quarkus.security.ForbiddenException"),
 
-        mappers.add(mapper("javax.ValidationExceptionMapper").handling("javax.validation.ValidationException"));
-        mappers.add(
-                mapper("javax.ConstraintViolationExceptionMapper").handling("javax.validation.ConstraintViolationException"));
+                mapper("javax.ValidationExceptionMapper").thatHandles("javax.validation.ValidationException"),
 
-        mappers.add(mapper("jackson.JsonProcessingExceptionMapper")
-                .handling("com.fasterxml.jackson.core.JsonProcessingException").onlyIf(new JacksonDetector()));
-        mappers.add(mapper("jackson.UnrecognizedPropertyExceptionMapper")
-                .handling("com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException").onlyIf(new JacksonDetector()));
-        mappers.add(mapper("jackson.InvalidFormatExceptionMapper")
-                .handling("com.fasterxml.jackson.databind.exc.InvalidFormatException").onlyIf(new JacksonDetector()));
+                mapper("javax.ConstraintViolationExceptionMapper").thatHandles("javax.validation.ConstraintViolationException"),
 
-        mappers.add(mapper("jsonb.RestEasyClassicJsonbExceptionMapper").handling("javax.ws.rs.ProcessingException")
-                .onlyIf(new JsonBDetector()));
-        mappers.add(
-                mapper("jsonb.JsonbExceptionMapper").handling("javax.json.bind.JsonbException").onlyIf(new JsonBDetector()));
+                mapper("jackson.JsonProcessingExceptionMapper")
+                        .thatHandles("com.fasterxml.jackson.core.JsonProcessingException").onlyIf(new JacksonDetector()),
+                mapper("jackson.UnrecognizedPropertyExceptionMapper")
+                        .thatHandles("com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException")
+                        .onlyIf(new JacksonDetector()),
+                mapper("jackson.InvalidFormatExceptionMapper")
+                        .thatHandles("com.fasterxml.jackson.databind.exc.InvalidFormatException").onlyIf(new JacksonDetector()),
 
-        mappers.add(mapper("ZalandoProblemMapper").handling("org.zalando.problem.ThrowableProblem"));
+                mapper("jsonb.RestEasyClassicJsonbExceptionMapper").thatHandles("javax.ws.rs.ProcessingException")
+                        .onlyIf(new JsonBDetector()),
 
-        mappers.add(mapper("DefaultExceptionMapper").handling("java.lang.Exception"));
+                mapper("jsonb.JsonbExceptionMapper").thatHandles("javax.json.bind.JsonbException").onlyIf(new JsonBDetector()),
 
-        return mappers.stream()
+                mapper("ZalandoProblemMapper").thatHandles("org.zalando.problem.ThrowableProblem"),
+
+                mapper("DefaultExceptionMapper").thatHandles("java.lang.Exception"));
+
+        return allMappers
                 .filter(ExceptionMapperDefinition::isNeeded)
                 .collect(Collectors.toList());
     }
 
     @BuildStep
     FeatureBuildItem createFeature(Capabilities capabilities) {
-        if (!capabilities.isCapabilityPresent(RESTEASY_JSON_CAPABILITY)
-                && !capabilities.isCapabilityPresent(RESTEASY_JSON_LEGACY_CAPABILITY)) {
-            logger.error("This extension is useless without RESTeasy Json Provider. Please add "
+        if (RESTEASY_JSON_CAPABILITIES.stream().noneMatch(capabilities::isCapabilityPresent)) {
+            logger().error("`quarkus-resteasy-problem` extension is useless without RESTeasy Json Provider. Please add "
                     + "`quarkus-resteasy-jackson` or `quarkus-resteasy-jsonb` (or reactive versions) to your pom.xml.");
         }
         return new FeatureBuildItem(FEATURE_NAME);
@@ -143,9 +146,12 @@ public class ProblemProcessor {
     @BuildStep(onlyIfNot = QuarkusSmallryeMetricsDetector.class)
     void warnOnMissingSmallryeMetricsDependency(ProblemBuildConfig config) {
         if (config.metricsEnabled) {
-            logger.warn("quarkus.resteasy.problem.metrics.enabled is set to true, but quarkus-smallrye-metrics not "
+            logger().warn("quarkus.resteasy.problem.metrics.enabled is set to true, but quarkus-smallrye-metrics not "
                     + "found in the classpath");
         }
     }
 
+    protected Logger logger() {
+        return LoggerFactory.getLogger(FEATURE_NAME);
+    }
 }
