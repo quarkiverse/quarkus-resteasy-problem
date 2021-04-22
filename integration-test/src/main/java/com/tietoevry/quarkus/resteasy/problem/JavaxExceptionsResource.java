@@ -1,16 +1,16 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
-import org.hibernate.validator.constraints.Length;
-
 import javax.validation.Valid;
 import javax.validation.ValidationException;
 import javax.validation.constraints.Min;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import org.hibernate.validator.constraints.Length;
 
 @Path("/throw/javax/")
 @Produces(MediaType.APPLICATION_JSON)
@@ -27,13 +27,17 @@ public class JavaxExceptionsResource {
     public void throwConstraintViolationException(@Valid TestRequestBody body) {
     }
 
-    public static final class TestRequestBody {
-        @Min(15)
-        public int key;
+    @GET
+    @Path("/constraint-violation-exception/{phrase_name}")
+    public void throwConstraintViolationException(
+            @Valid @QueryParam("phrase_name") @Length(min = 10, max = 15) String phraseName,
+            @Valid @PathParam("phrase_name") @Length(min = 10, max = 15) String phraseName2,
+            @Valid TestRequestBody payloadBody) {
     }
 
-    @GET
-    @Path("/constraint-violation-exception-primitive")
-    public void throwConstraintViolationException(@Valid @Length(min = 10) String phrase) {
+    public static final class TestRequestBody {
+        @Min(15)
+        public int phraseName;
     }
+
 }
