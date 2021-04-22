@@ -36,7 +36,7 @@ class JavaxMappersIT {
     @Test
     void constraintViolationShouldProvideErrorDetails() {
         given()
-                .body("{\"key\": 10 }")
+                .body("{\"phraseName\": 10 }")
                 .contentType(APPLICATION_JSON)
                 .post("/throw/javax/constraint-violation-exception")
                 .then()
@@ -44,7 +44,7 @@ class JavaxMappersIT {
                 .body("title", equalTo(BAD_REQUEST.getReasonPhrase()))
                 .body("status", equalTo(BAD_REQUEST.getStatusCode()))
                 .body("violations", hasSize(1))
-                .body("violations[0].field", equalTo("key"))
+                .body("violations[0].field", equalTo("phraseName"))
                 .body("violations[0].message", equalTo("must be greater than or equal to 15"))
                 .body("stacktrace", nullValue());
     }
@@ -52,15 +52,24 @@ class JavaxMappersIT {
     @Test
     void constraintViolationForArgumentsShouldProvideErrorDetails() {
         given()
-                .queryParam("phrase", "too-short")
-                .get("/throw/javax/constraint-violation-exception-primitive")
+                .contentType(APPLICATION_JSON)
+                .queryParam("phrase_name", "queryValue")
+                .pathParam("phrase_name", "pathValue")
+                .get("/throw/javax/constraint-violation-exception/{phrase_name}")
                 .then()
                 .statusCode(BAD_REQUEST.getStatusCode())
                 .body("title", equalTo(BAD_REQUEST.getReasonPhrase()))
                 .body("status", equalTo(BAD_REQUEST.getStatusCode()))
                 .body("violations", hasSize(1))
-                .body("violations[0].field", equalTo("phrase"))
-                .body("violations[0].message", equalTo("must be greater than or equal to 15"));
+                .body("violations[0].field", equalTo("phrase_name"))
+                .body("violations[0].message", equalTo("length must be between 10 and 15"))
+                .body("violations[0].in", equalTo("query"))
+                .body("violations[1].field", equalTo("phrase_name"))
+                .body("violations[1].message", equalTo("length must be between 10 and 15"))
+                .body("violations[1].in", equalTo("path"))
+                .body("violations[2].field", equalTo("phrase_name"))
+                .body("violations[2].message", equalTo("must be greater than or equal to 15"))
+                .body("violations[2].in", equalTo("body"));
     }
 
 }
