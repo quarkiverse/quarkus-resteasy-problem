@@ -13,8 +13,8 @@
 This extension registers few JaxRS Exceptions Mappers for common exceptions thrown by Quarkus apps, which turn exceptions into standardized HTTP responses described in RFC, with content type `application/problem+json`. See [Built-in exception mappers](#built-in-exception-mappers) section for more details.
 
 Supports:
-- _quarkus-resteasy-jackson_ and _quarkus-resteasy-jsonb_ for Quarkus 1.4.2 and newer
-- _quarkus-resteasy-reactive-jackson_ and _quarkus-resteasy-reactive-jsonb_ for Quarkus 1.11.6 and newer
+- _quarkus-resteasy-jackson_ and _quarkus-resteasy-jsonb_ for Quarkus 1.4.2 and newer (including 2.0.0.Alpha1)
+- _quarkus-resteasy-reactive-jackson_ and _quarkus-resteasy-reactive-jsonb_ for Quarkus 1.11.6 and newer (including 2.0.0.Alpha1)
 - JVM and native mode
 - Java 8+
 
@@ -35,7 +35,7 @@ You may also want to check [this article](https://dzone.com/articles/when-http-s
 ## Usage
 Create a new Quarkus project with the following command (you can also use `resteasy-jsonb` or reactive equivalents: `resteasy-reactive-jackson` / `resteasy-reactive-jsonb`):
 ```shell
-mvn io.quarkus:quarkus-maven-plugin:1.13.2.Final:create \
+mvn io.quarkus:quarkus-maven-plugin:2.0.0.Alpha1.Final:create \
     -DprojectGroupId=problem \
     -DprojectArtifactId=quarkus-resteasy-problem-playground \
     -DclassName="problem.HelloResource" \

@@ -149,6 +149,13 @@
         </profile>
 
         <profile>
+            <id>quarkus-1.13</id>
+            <properties>
+                <quarkus.version>1.13.2.Final</quarkus.version>
+            </properties>
+        </profile>
+
+        <profile>
             <id>quarkus-1.12</id>
             <properties>
                 <quarkus.version>1.12.2.Final</quarkus.version>
