@@ -1,10 +1,9 @@
 package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
@@ -16,7 +15,6 @@ import org.slf4j.Logger;
 final class ProblemLogger implements ProblemPostProcessor {
 
     private final Logger logger;
-    private final ObjectMapper mapper = new ObjectMapper();
 
     ProblemLogger(Logger logger) {
         this.logger = logger;
@@ -58,11 +56,17 @@ final class ProblemLogger implements ProblemPostProcessor {
     }
 
     private String serializeParameter(Map.Entry<String, Object> param) {
-        try {
-            return param.getKey() + "=" + mapper.writeValueAsString(param.getValue());
-        } catch (JsonProcessingException e) {
-            return param.getKey() + "=" + param.getValue().toString();
-        }
+        String serializedValue = Optional.ofNullable(param.getValue())
+                .map(value -> {
+                    if (value instanceof String) {
+                        return "\"" + value + "\"";
+                    } else {
+                        return value.toString();
+                    }
+                })
+                .orElse("null");
+
+        return param.getKey() + "=" + serializedValue;
     }
 
     @Override

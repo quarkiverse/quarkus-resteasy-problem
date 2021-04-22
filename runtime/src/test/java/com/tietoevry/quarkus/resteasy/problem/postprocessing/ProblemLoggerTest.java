@@ -46,6 +46,7 @@ class ProblemLoggerTest {
                 .withStatus(BAD_REQUEST)
                 .with("custom-field", "123")
                 .with("violations", Collections.singletonList(new Violation("too small", "key")))
+                .with("nullable_field", null)
                 .build();
 
         processor.apply(problem, simpleContext());
@@ -53,7 +54,8 @@ class ProblemLoggerTest {
         assertThat(capturedInfoMessage())
                 .contains(
                         "custom-field=\"123\"",
-                        "violations=[{\"field\":\"key\",\"message\":\"too small\",\"error\":\"too small\"}]");
+                        "violations=[Violation{message='too small', field='key'}]",
+                        "nullable_field=null");
     }
 
     @Test

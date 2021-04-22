@@ -35,7 +35,7 @@ You may also want to check [this article](https://dzone.com/articles/when-http-s
 ## Usage
 Create a new Quarkus project with the following command (you can also use `resteasy-jsonb` or reactive equivalents: `resteasy-reactive-jackson` / `resteasy-reactive-jsonb`):
 ```shell
-mvn io.quarkus:quarkus-maven-plugin:1.13.1.Final:create \
+mvn io.quarkus:quarkus-maven-plugin:1.13.2.Final:create \
     -DprojectGroupId=problem \
     -DprojectArtifactId=quarkus-resteasy-problem-playground \
     -DclassName="problem.HelloResource" \
