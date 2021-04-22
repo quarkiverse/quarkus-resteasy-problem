@@ -35,7 +35,7 @@ jobs:
 
       - uses: DeLaGuardo/setup-graalvm@master
         with:
-          graalvm: '21.0.0.2'
+          graalvm: '21.1.0'
           java: 'java11'
 
       - name: Native Tests

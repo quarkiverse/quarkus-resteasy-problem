@@ -34,7 +34,7 @@ class MetricsIT {
         ExtractableResponse response = given()
                 .accept(ContentType.JSON)
                 .when()
-                .get("/metrics/application/http.error")
+                .get("/q/metrics/application/http.error")
                 .then()
                 .extract();
 
