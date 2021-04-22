@@ -40,42 +40,52 @@ public class ProblemProcessor {
 
     private static List<ExceptionMapperDefinition> neededExceptionMappers() {
         Stream<ExceptionMapperDefinition> allMappers = Stream.of(
-                mapper("HttpProblemMapper").thatHandles("com.tietoevry.quarkus.resteasy.problem.HttpProblem"),
+                mapper(EXTENSION_MAIN_PACKAGE + "HttpProblemMapper")
+                        .thatHandles("com.tietoevry.quarkus.resteasy.problem.HttpProblem"),
 
-                mapper("jaxrs.WebApplicationExceptionMapper").thatHandles("javax.ws.rs.WebApplicationException"),
-                mapper("jaxrs.JaxRsForbiddenExceptionMapper").thatHandles("javax.ws.rs.ForbiddenException"),
-                mapper("jaxrs.NotFoundExceptionMapper").thatHandles("javax.ws.rs.NotFoundException"),
-                mapper("jsonb.RestEasyClassicJsonbExceptionMapper").thatHandles("javax.ws.rs.ProcessingException"),
+                mapper(EXTENSION_MAIN_PACKAGE + "jaxrs.WebApplicationExceptionMapper")
+                        .thatHandles("javax.ws.rs.WebApplicationException"),
+                mapper(EXTENSION_MAIN_PACKAGE + "jaxrs.JaxRsForbiddenExceptionMapper")
+                        .thatHandles("javax.ws.rs.ForbiddenException"),
+                mapper(EXTENSION_MAIN_PACKAGE + "jaxrs.NotFoundExceptionMapper").thatHandles("javax.ws.rs.NotFoundException"),
+                mapper(EXTENSION_MAIN_PACKAGE + "jsonb.RestEasyClassicJsonbExceptionMapper")
+                        .thatHandles("javax.ws.rs.ProcessingException"),
 
-                mapper("security.UnauthorizedExceptionMapper").thatHandles("io.quarkus.security.UnauthorizedException"),
-                mapper("security.AuthenticationFailedExceptionMapper")
+                mapper(EXTENSION_MAIN_PACKAGE + "security.UnauthorizedExceptionMapper")
+                        .thatHandles("io.quarkus.security.UnauthorizedException"),
+                mapper(EXTENSION_MAIN_PACKAGE + "security.AuthenticationFailedExceptionMapper")
                         .thatHandles("io.quarkus.security.AuthenticationFailedException"),
-                mapper("security.AuthenticationRedirectExceptionMapper")
+                mapper(EXTENSION_MAIN_PACKAGE + "security.AuthenticationRedirectExceptionMapper")
                         .thatHandles("io.quarkus.security.AuthenticationRedirectException"),
-                mapper("security.AuthenticationCompletionExceptionMapper")
+                mapper(EXTENSION_MAIN_PACKAGE + "security.AuthenticationCompletionExceptionMapper")
                         .thatHandles("io.quarkus.security.AuthenticationCompletionException"),
-                mapper("security.ForbiddenExceptionMapper").thatHandles("io.quarkus.security.ForbiddenException"),
+                mapper(EXTENSION_MAIN_PACKAGE + "security.ForbiddenExceptionMapper")
+                        .thatHandles("io.quarkus.security.ForbiddenException"),
 
-                mapper("javax.ValidationExceptionMapper").thatHandles("javax.validation.ValidationException"),
+                mapper(EXTENSION_MAIN_PACKAGE + "javax.ValidationExceptionMapper")
+                        .thatHandles("javax.validation.ValidationException"),
 
-                mapper("javax.ConstraintViolationExceptionMapper").thatHandles("javax.validation.ConstraintViolationException"),
+                mapper(EXTENSION_MAIN_PACKAGE + "javax.ConstraintViolationExceptionMapper")
+                        .thatHandles("javax.validation.ConstraintViolationException"),
 
-                mapper("jackson.JsonProcessingExceptionMapper")
+                mapper(EXTENSION_MAIN_PACKAGE + "jackson.JsonProcessingExceptionMapper")
                         .thatHandles("com.fasterxml.jackson.core.JsonProcessingException").onlyIf(new JacksonDetector()),
-                mapper("jackson.UnrecognizedPropertyExceptionMapper")
+                mapper(EXTENSION_MAIN_PACKAGE + "jackson.UnrecognizedPropertyExceptionMapper")
                         .thatHandles("com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException")
                         .onlyIf(new JacksonDetector()),
-                mapper("jackson.InvalidFormatExceptionMapper")
+                mapper(EXTENSION_MAIN_PACKAGE + "jackson.InvalidFormatExceptionMapper")
                         .thatHandles("com.fasterxml.jackson.databind.exc.InvalidFormatException").onlyIf(new JacksonDetector()),
 
-                mapper("jsonb.RestEasyClassicJsonbExceptionMapper").thatHandles("javax.ws.rs.ProcessingException")
+                mapper(EXTENSION_MAIN_PACKAGE + "jsonb.RestEasyClassicJsonbExceptionMapper")
+                        .thatHandles("javax.ws.rs.ProcessingException")
                         .onlyIf(new JsonBDetector()),
 
-                mapper("jsonb.JsonbExceptionMapper").thatHandles("javax.json.bind.JsonbException").onlyIf(new JsonBDetector()),
+                mapper(EXTENSION_MAIN_PACKAGE + "jsonb.JsonbExceptionMapper").thatHandles("javax.json.bind.JsonbException")
+                        .onlyIf(new JsonBDetector()),
 
-                mapper("ZalandoProblemMapper").thatHandles("org.zalando.problem.ThrowableProblem"),
+                mapper(EXTENSION_MAIN_PACKAGE + "ZalandoProblemMapper").thatHandles("org.zalando.problem.ThrowableProblem"),
 
-                mapper("DefaultExceptionMapper").thatHandles("java.lang.Exception"));
+                mapper(EXTENSION_MAIN_PACKAGE + "DefaultExceptionMapper").thatHandles("java.lang.Exception"));
 
         return allMappers
                 .filter(ExceptionMapperDefinition::isNeeded)
@@ -94,13 +104,13 @@ public class ProblemProcessor {
     @BuildStep(onlyIf = RestEasyClassicDetector.class)
     void registerMappersForClassic(BuildProducer<ResteasyJaxrsProviderBuildItem> providers) {
         neededExceptionMappers().forEach(mapper -> providers.produce(
-                new ResteasyJaxrsProviderBuildItem(EXTENSION_MAIN_PACKAGE + mapper.mapperClassName)));
+                new ResteasyJaxrsProviderBuildItem(mapper.mapperClassName)));
     }
 
     @BuildStep(onlyIf = RestEasyReactiveDetector.class)
     void registerMappersForReactive(BuildProducer<ExceptionMapperBuildItem> providers) {
         neededExceptionMappers().forEach(mapper -> providers.produce(
-                new ExceptionMapperBuildItem(EXTENSION_MAIN_PACKAGE + mapper.mapperClassName,
+                new ExceptionMapperBuildItem(mapper.mapperClassName,
                         mapper.exceptionClassName, Priorities.AUTHENTICATION - 1, true)));
     }
 
