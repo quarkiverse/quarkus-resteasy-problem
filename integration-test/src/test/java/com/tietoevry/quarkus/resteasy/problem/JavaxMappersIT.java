@@ -53,23 +53,25 @@ class JavaxMappersIT {
     void constraintViolationForArgumentsShouldProvideErrorDetails() {
         given()
                 .contentType(APPLICATION_JSON)
-                .queryParam("phrase_name", "queryValue")
-                .pathParam("phrase_name", "pathValue")
-                .get("/throw/javax/constraint-violation-exception/{phrase_name}")
+                .body("{}")
+                .queryParam("param_name", "invalidQueryParam")
+                .queryParam("param_name2", "validQueryParam")
+                .header("param_name3", "invalidHeaderParam")
+                .pathParam("param_name4", "invalidPathParam")
+                .get("/throw/javax/constraint-violation-exception/{param_name4}")
                 .then()
                 .statusCode(BAD_REQUEST.getStatusCode())
                 .body("title", equalTo(BAD_REQUEST.getReasonPhrase()))
                 .body("status", equalTo(BAD_REQUEST.getStatusCode()))
-                .body("violations", hasSize(1))
-                .body("violations[0].field", equalTo("phrase_name"))
-                .body("violations[0].message", equalTo("length must be between 10 and 15"))
-                .body("violations[0].in", equalTo("query"))
-                .body("violations[1].field", equalTo("phrase_name"))
-                .body("violations[1].message", equalTo("length must be between 10 and 15"))
-                .body("violations[1].in", equalTo("path"))
-                .body("violations[2].field", equalTo("phrase_name"))
-                .body("violations[2].message", equalTo("must be greater than or equal to 15"))
-                .body("violations[2].in", equalTo("body"));
+                .body("violations", hasSize(4))
+                .body("violations.find{it.in == 'query'}.field", equalTo("param_name"))
+                .body("violations.find{it.in == 'query'}.message", equalTo("length must be between 10 and 15"))
+                .body("violations.find{it.in == 'header'}.field", equalTo("param_name3"))
+                .body("violations.find{it.in == 'header'}.message", equalTo("length must be between 10 and 15"))
+                .body("violations.find{it.in == 'path'}.field", equalTo("param_name4"))
+                .body("violations.find{it.in == 'path'}.message", equalTo("length must be between 10 and 15"))
+                .body("violations.find{it.in == 'body'}.field", equalTo("phraseName"))
+                .body("violations.find{it.in == 'body'}.message", equalTo("must be greater than or equal to 15"));
     }
 
 }
