@@ -1,5 +1,6 @@
 package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
+import static com.tietoevry.quarkus.resteasy.problem.javax.Violation.*;
 import static com.tietoevry.quarkus.resteasy.problem.postprocessing.ProblemContextMother.simpleContext;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
@@ -45,7 +46,7 @@ class ProblemLoggerTest {
                 .withTitle("your fault")
                 .withStatus(BAD_REQUEST)
                 .with("custom-field", "123")
-                .with("violations", Collections.singletonList(new Violation("too small", "key")))
+                .with("violations", Collections.singletonList(Violation.inBody("too small", "key")))
                 .build();
 
         processor.apply(problem, simpleContext());
@@ -53,7 +54,7 @@ class ProblemLoggerTest {
         assertThat(capturedInfoMessage())
                 .contains(
                         "custom-field=\"123\"",
-                        "violations=[{\"field\":\"key\",\"message\":\"too small\",\"error\":\"too small\"}]");
+                        "violations=[{\"message\":\"too small\",\"field\":\"key\",\"in\":\"body\"}]");
     }
 
     @Test

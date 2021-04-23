@@ -4,6 +4,7 @@ import javax.validation.Valid;
 import javax.validation.ValidationException;
 import javax.validation.constraints.Min;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -28,11 +29,13 @@ public class JavaxExceptionsResource {
     }
 
     @GET
-    @Path("/constraint-violation-exception/{phrase_name}")
+    @Path("/constraint-violation-exception/{param_name4}")
     public void throwConstraintViolationException(
-            @Valid @QueryParam("phrase_name") @Length(min = 10, max = 15) String phraseName,
-            @Valid @PathParam("phrase_name") @Length(min = 10, max = 15) String phraseName2,
-            @Valid TestRequestBody payloadBody) {
+            @Valid @QueryParam("param_name") @Length(min = 10, max = 15) String invalidQueryParam,
+            @Valid @QueryParam("param_name2") @Length(min = 1, max = 500) String validQueryParam,
+            @Valid @HeaderParam("param_name3") @Length(min = 10, max = 15) String invalidHeaderParam,
+            @Valid @PathParam("param_name4") @Length(min = 10, max = 15) String invalidPathParam,
+            @Valid TestRequestBody invalidPayload) {
     }
 
     public static final class TestRequestBody {
