@@ -50,7 +50,7 @@ class ProblemLoggerTest {
         processor.apply(problem, simpleContext());
 
         verify(logger).info(
-                "status=400, title=\"your fault\", custom-field=\"123\", Violations=[{\"message\":\"too small\",\"field\":\"key\",\"in\":\"body\"}], nullable_field=null");
+                "status=400, title=\"your fault\", custom-field=\"123\", violations=[Violation{message='too small', field='key', in='body'}], nullable_field=null");
     }
 
     @Test
