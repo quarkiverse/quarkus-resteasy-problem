@@ -58,7 +58,7 @@ class JavaxMappersIT {
                 .queryParam("param_name2", "validQueryParam")
                 .header("param_name3", "invalidHeaderParam")
                 .pathParam("param_name4", "invalidPathParam")
-                .get("/throw/javax/constraint-violation-exception/{param_name4}")
+                .post("/throw/javax/constraint-violation-exception/{param_name4}")
                 .then()
                 .statusCode(BAD_REQUEST.getStatusCode())
                 .body("title", equalTo(BAD_REQUEST.getReasonPhrase()))

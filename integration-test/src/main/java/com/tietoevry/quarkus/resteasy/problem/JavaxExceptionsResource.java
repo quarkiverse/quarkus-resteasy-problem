@@ -28,7 +28,7 @@ public class JavaxExceptionsResource {
     public void throwConstraintViolationException(@Valid TestRequestBody body) {
     }
 
-    @GET
+    @POST
     @Path("/constraint-violation-exception/{param_name4}")
     public void throwConstraintViolationException(
             @Valid @QueryParam("param_name") @Length(min = 10, max = 15) String invalidQueryParam,
