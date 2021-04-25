@@ -18,8 +18,13 @@ public final class InvalidFormatExceptionMapper extends ExceptionMapperBase<Inva
     @Override
     protected HttpProblem toProblem(InvalidFormatException exception) {
         String field = exception.getPath().stream()
-                .map(JsonMappingException.Reference::getFieldName)
-                .collect(Collectors.joining("."));
+                .map(this::refToString)
+                .collect(Collectors.joining());
+        if (field.length() > 1) {
+            field = field.substring(1); // remove first dot
+        } else {
+            field = "?";
+        }
 
         return HttpProblem.builder()
                 .withStatus(Response.Status.BAD_REQUEST)
@@ -28,4 +33,15 @@ public final class InvalidFormatExceptionMapper extends ExceptionMapperBase<Inva
                 .with("field", field)
                 .build();
     }
+
+    private String refToString(JsonMappingException.Reference ref) {
+        if (ref.getFieldName() != null) {
+            return "." + ref.getFieldName();
+        }
+        if (ref.getIndex() >= 0) {
+            return "[" + ref.getIndex() + "]";
+        }
+        return ".?";
+    }
+
 }

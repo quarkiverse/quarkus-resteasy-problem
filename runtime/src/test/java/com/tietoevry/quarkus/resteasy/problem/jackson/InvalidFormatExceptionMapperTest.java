@@ -16,9 +16,8 @@ class InvalidFormatExceptionMapperTest {
 
     @Test
     void shouldProduceHttp400WithFieldInfo() {
-        InvalidFormatException exception = new InvalidFormatException(mock(JsonParser.class),
-                "Invalid format of the field", this, this.getClass());
-        exception.prependPath(new JsonMappingException.Reference(this, "customFieldName"));
+        InvalidFormatException exception = buildExceptionWithPath(
+                new JsonMappingException.Reference(this, "customFieldName"));
 
         Response response = mapper.toResponse(exception);
 
@@ -28,6 +27,41 @@ class InvalidFormatExceptionMapperTest {
                 .isInstanceOf(HttpProblem.class)
                 .hasFieldOrPropertyWithValue("detail", "Invalid format of the field")
                 .hasFieldOrPropertyWithValue("parameters.field", "customFieldName");
+    }
+
+    @Test
+    void invalidFormatInsideCollectionShouldShowValidPath() {
+        InvalidFormatException exception = buildExceptionWithPath(
+                new JsonMappingException.Reference(this, "collection"),
+                new JsonMappingException.Reference(this, 2),
+                new JsonMappingException.Reference(this, "customFieldName"));
+
+        Response response = mapper.toResponse(exception);
+
+        assertThat(response.getEntity())
+                .isInstanceOf(HttpProblem.class)
+                .hasFieldOrPropertyWithValue("parameters.field", "collection[2].customFieldName");
+    }
+
+    @Test
+    void emptyPathShouldNotCrash() {
+        InvalidFormatException exception = buildExceptionWithPath();
+
+        Response response = mapper.toResponse(exception);
+
+        assertThat(response.getEntity())
+                .isInstanceOf(HttpProblem.class)
+                .hasFieldOrPropertyWithValue("parameters.field", "?");
+    }
+
+    private InvalidFormatException buildExceptionWithPath(JsonMappingException.Reference... pathSegments) {
+        InvalidFormatException exception = new InvalidFormatException(mock(JsonParser.class),
+                "Invalid format of the field", this, this.getClass());
+
+        for (int i = pathSegments.length - 1; i >= 0; --i) {
+            exception.prependPath(pathSegments[i]);
+        }
+        return exception;
     }
 
 }
