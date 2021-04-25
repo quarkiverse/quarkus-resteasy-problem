@@ -43,7 +43,7 @@ class ProblemLoggerTest {
                 .withTitle("your fault")
                 .withStatus(BAD_REQUEST)
                 .with("custom-field", "123")
-                .with("violations", Collections.singletonList(Violation.inBody("too small", "key")))
+                .with("violations", Collections.singletonList(Violation.In.BODY.violation("too small", "key")))
                 .with("nullable_field", null)
                 .build();
 

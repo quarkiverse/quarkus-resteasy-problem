@@ -60,21 +60,21 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
         final String message = constraintViolation.getMessage();
         if (param.getAnnotation(QueryParam.class) != null) {
             String field = param.getAnnotation(QueryParam.class).value();
-            return Violation.inQuery(message, field);
+            return Violation.In.QUERY.violation(message, field);
         }
 
         if (param.getAnnotation(PathParam.class) != null) {
             String field = param.getAnnotation(PathParam.class).value();
-            return Violation.inPath(message, field);
+            return Violation.In.PATH.violation(message, field);
         }
 
         if (param.getAnnotation(HeaderParam.class) != null) {
             String field = param.getAnnotation(HeaderParam.class).value();
-            return Violation.inHeader(message, field);
+            return Violation.In.HEADER.violation(message, field);
         }
 
         String field = dropMethodNameAndArgumentPositionFromPath(constraintViolation.getPropertyPath());
-        return Violation.inBody(message, field);
+        return Violation.In.BODY.violation(message, field);
     }
 
     private String extractArgValue(Path propertyPath) {

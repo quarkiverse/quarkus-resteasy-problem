@@ -4,27 +4,16 @@ import java.util.Locale;
 
 public final class Violation {
 
-    public static Violation inQuery(String message, String field) {
-        return new Violation(message, field, In.QUERY);
-    }
-
-    public static Violation inPath(String message, String field) {
-        return new Violation(message, field, In.PATH);
-    }
-
-    public static Violation inHeader(String message, String field) {
-        return new Violation(message, field, In.HEADER);
-    }
-
-    public static Violation inBody(String message, String field) {
-        return new Violation(message, field, In.BODY);
-    }
-
-    private enum In {
+    public enum In {
         QUERY,
         PATH,
         HEADER,
-        BODY
+        FORM,
+        BODY;
+
+        public Violation violation(String message, String field) {
+            return new Violation(message, field, this);
+        }
     }
 
     public final String message;
