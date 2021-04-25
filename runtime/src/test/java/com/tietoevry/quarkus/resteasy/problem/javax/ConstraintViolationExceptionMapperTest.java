@@ -28,11 +28,11 @@ import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Response;
 import org.hibernate.validator.HibernateValidator;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.parameternameprovider.ParanamerParameterNameProvider;
 import org.hibernate.validator.spi.nodenameprovider.JavaBeanProperty;
 import org.hibernate.validator.spi.nodenameprovider.Property;
 import org.hibernate.validator.spi.nodenameprovider.PropertyNodeNameProvider;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 class ConstraintViolationExceptionMapperTest {
@@ -85,7 +85,6 @@ class ConstraintViolationExceptionMapperTest {
     }
 
     @Test
-    @Disabled("FIXME")
     void invalidFormParamShouldBeReported() {
         ConstraintViolationException exception = resourceInfo.validateParameters(VALID, VALID, VALID, INVALID,
                 RequestBody.valid());
@@ -98,7 +97,6 @@ class ConstraintViolationExceptionMapperTest {
     }
 
     @Test
-    @Disabled("FIXME")
     void invalidBodyShouldBeReported() {
         ConstraintViolationException exception = resourceInfo.validateParameters(VALID, VALID, VALID, VALID,
                 RequestBody.invalid());
@@ -125,7 +123,6 @@ class ConstraintViolationExceptionMapperTest {
     }
 
     @Test
-    @Disabled("FIXME")
     void shouldUseNamingStrategy() {
         StubResourceInfo resourceInfo = StubResourceInfo.withJsonPropertyAwareValidator();
         mapper.resourceInfo = resourceInfo;
@@ -168,6 +165,7 @@ class ConstraintViolationExceptionMapperTest {
         public static StubResourceInfo withJsonPropertyAwareValidator() {
             return new StubResourceInfo(Validation.byProvider(HibernateValidator.class)
                     .configure()
+                    .parameterNameProvider(new ParanamerParameterNameProvider())
                     .propertyNodeNameProvider(new JacksonPropertyNodeNameProvider())
                     .buildValidatorFactory()
                     .getValidator());

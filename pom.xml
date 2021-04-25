@@ -25,6 +25,7 @@
         <jmh.version>1.29</jmh.version>
         <jsr305.version>3.0.2</jsr305.version>
         <archunit.version>0.18.0</archunit.version>
+        <paranamer.version>2.8</paranamer.version>
 
         <!-- maven plugins -->
         <maven.compiler-plugin.version>3.8.1</maven.compiler-plugin.version>
