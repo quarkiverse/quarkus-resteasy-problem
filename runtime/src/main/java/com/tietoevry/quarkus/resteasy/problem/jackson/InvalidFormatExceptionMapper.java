@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
+import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
@@ -17,21 +18,19 @@ public final class InvalidFormatExceptionMapper extends ExceptionMapperBase<Inva
 
     @Override
     protected HttpProblem toProblem(InvalidFormatException exception) {
-        String field = exception.getPath().stream()
-                .map(this::refToString)
-                .collect(Collectors.joining());
-        if (field.length() > 1) {
-            field = field.substring(1); // remove first dot
-        } else {
-            field = "?";
-        }
-
         return HttpProblem.builder()
                 .withStatus(Response.Status.BAD_REQUEST)
                 .withTitle(Response.Status.BAD_REQUEST.getReasonPhrase())
                 .withDetail(exception.getOriginalMessage())
-                .with("field", field)
+                .with("field", serializePath(exception.getPath()))
                 .build();
+    }
+
+    private String serializePath(List<JsonMappingException.Reference> path) {
+        String pathString = path.stream()
+                .map(this::refToString)
+                .collect(Collectors.joining());
+        return removeFirstDot(pathString);
     }
 
     private String refToString(JsonMappingException.Reference ref) {
@@ -44,4 +43,11 @@ public final class InvalidFormatExceptionMapper extends ExceptionMapperBase<Inva
         return ".?";
     }
 
+    private String removeFirstDot(String field) {
+        if (field.length() > 1) {
+            return field.substring(1);
+        } else {
+            return "?";
+        }
+    }
 }
