@@ -1,6 +1,7 @@
 package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
 import javax.ws.rs.core.UriInfo;
+import java.net.URI;
 
 /**
  * Context wrapper for everything ProblemPostProcessor implementations may need to do their job.
@@ -16,16 +17,24 @@ public final class ProblemContext {
     final Throwable cause;
 
     /**
-     * UriInfo for currently handled HTTP request.
+     * URI path of current endpoint.
      */
-    final UriInfo uriInfo;
+    final String path;
 
-    private ProblemContext(Throwable cause, UriInfo uriInfo) {
+    private ProblemContext(Throwable cause, String path) {
         this.cause = cause;
-        this.uriInfo = uriInfo;
+        this.path = path;
     }
 
     public static ProblemContext of(Throwable exception, UriInfo uriInfo) {
-        return new ProblemContext(exception, uriInfo);
+        try {
+            return new ProblemContext(exception, (uriInfo == null) ? null : uriInfo.getPath());
+        } catch (Exception e) { // quarkus-reactive throws ContextNotActiveException or NullPointerException when json request payload is malformed
+            return new ProblemContext(exception, null);
+        }
+    }
+
+    public static ProblemContext of(Throwable exception, String path) {
+        return new ProblemContext(exception, path);
     }
 }

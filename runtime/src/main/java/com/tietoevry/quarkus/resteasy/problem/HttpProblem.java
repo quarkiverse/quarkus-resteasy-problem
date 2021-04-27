@@ -117,6 +117,19 @@ public class HttpProblem extends RuntimeException {
         return this.headers;
     }
 
+    public Response toResponse() {
+        Objects.requireNonNull(getStatus());
+
+        Response.ResponseBuilder builder = Response
+                .status(getStatus().getStatusCode())
+                .type(HttpProblem.MEDIA_TYPE)
+                .entity(this);
+
+        getHeaders().forEach(builder::header);
+
+        return builder.build();
+    }
+
     public static class Builder {
 
         private static final Set<String> RESERVED_PROPERTIES = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
