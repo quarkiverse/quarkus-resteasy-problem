@@ -49,16 +49,20 @@ mvn io.quarkus:quarkus-maven-plugin:1.13.2.Final:create \
 cd quarkus-resteasy-problem-playground
 ```
 
-Now add this to your `pom.xml`:
+To add this extension to your project run:
+```shell
+./mvnw quarkus:add-extension -Dextensions="com.tietoevry.quarkus:quarkus-resteasy-problem:0.9.6"
+```
+or manually add dependency in your `pom.xml`:
 ```xml
 <dependency>
     <groupId>com.tietoevry.quarkus</groupId>
     <artifactId>quarkus-resteasy-problem</artifactId>
-    <version>${resteasy-problem.version}</version>
+    <version>0.9.6</version>
 </dependency>
 ```
 
-Run the application with: `./mvnw compile quarkus:dev`, and you will find `resteasy-problem` in the logs:
+Once you run Quarkus: `./mvnw compile quarkus:dev`, and you will find `resteasy-problem` in the logs:
 <pre>
 Installed features: [cdi, resteasy, resteasy-jackson, <b><u>resteasy-problem</u></b>]
 </pre>
