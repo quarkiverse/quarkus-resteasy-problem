@@ -8,10 +8,19 @@ public final class Violation {
         header,
         form,
         body,
-        unknown;
+        unknown() {
+            @Override
+            protected String serialize() {
+                return "?";
+            }
+        };
 
-        public MessageSupplier violation(String field) {
-            return message -> new Violation(message, field, this);
+        public MessageSupplier field(String field) {
+            return message -> new Violation(field, this.serialize(), message);
+        }
+
+        protected String serialize() {
+            return name();
         }
     }
 
@@ -19,22 +28,22 @@ public final class Violation {
         Violation message(String message);
     }
 
-    public final String message;
     public final String field;
-    public final In in;
+    public final String in;
+    public final String message;
 
-    private Violation(String message, String field, In in) {
-        this.message = message;
+    private Violation(String field, String in, String message) {
         this.field = field;
         this.in = in;
+        this.message = message;
     }
 
     @Override
     public String toString() {
         return "Violation{" +
-                "message='" + message + '\'' +
-                ", field='" + field + '\'' +
+                "field='" + field + '\'' +
                 ", in='" + in + '\'' +
+                ", message='" + message + '\'' +
                 '}';
     }
 }

@@ -2,7 +2,14 @@ package com.tietoevry.quarkus.resteasy.problem.javax;
 
 import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
-
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.annotation.Priority;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -15,14 +22,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Exception Mapper for ConstraintViolationException from Bean Validation API. Hibernate Validator, among others throw
@@ -52,7 +51,7 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
         return matchEndpointMethodParameter(constraintViolation)
                 .map(param -> createViolation(constraintViolation, param))
                 .orElseGet(() -> Violation.In.unknown
-                        .violation(dropMethodName(constraintViolation.getPropertyPath()))
+                        .field(dropMethodName(constraintViolation.getPropertyPath()))
                         .message(constraintViolation.getMessage()));
     }
 
@@ -76,50 +75,49 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
         final String message = constraintViolation.getMessage();
         if (param.getAnnotation(QueryParam.class) != null) {
             String field = param.getAnnotation(QueryParam.class).value();
-            return Violation.In.query.violation(field).message(message);
+            return Violation.In.query.field(field).message(message);
         }
 
         if (param.getAnnotation(PathParam.class) != null) {
             String field = param.getAnnotation(PathParam.class).value();
-            return Violation.In.path.violation(field).message(message);
+            return Violation.In.path.field(field).message(message);
         }
 
         if (param.getAnnotation(HeaderParam.class) != null) {
             String field = param.getAnnotation(HeaderParam.class).value();
-            return Violation.In.header.violation(field).message(message);
+            return Violation.In.header.field(field).message(message);
         }
 
         if (param.getAnnotation(FormParam.class) != null) {
             String field = param.getAnnotation(FormParam.class).value();
-            return Violation.In.form.violation(field).message(message);
+            return Violation.In.form.field(field).message(message);
         }
 
         String field = dropMethodNameAndArgumentPositionFromPath(constraintViolation.getPropertyPath());
-        return Violation.In.body.violation(field).message(message);
+        return Violation.In.body.field(field).message(message);
     }
 
     private String dropMethodNameAndArgumentPositionFromPath(Path propertyPath) {
-        Iterator<Path.Node> propertyPathIterator = propertyPath.iterator();
-        propertyPathIterator.next();
-        propertyPathIterator.next();
-
-        return getAllNamesExceptFirstTwo(propertyPathIterator);
+        return serializePath(propertyPath, 2);
     }
 
     private String dropMethodName(Path propertyPath) {
-        Iterator<Path.Node> propertyPathIterator = propertyPath.iterator();
-        propertyPathIterator.next();
-
-        return getAllNamesExceptFirstTwo(propertyPathIterator);
+        return serializePath(propertyPath, 1);
     }
 
-    private String getAllNamesExceptFirstTwo(Iterator<Path.Node> propertyPathIterator) {
-        List<String> allNamesExceptFirstTwo = new ArrayList<>();
-        while (propertyPathIterator.hasNext()) {
-            allNamesExceptFirstTwo.add(propertyPathIterator.next().toString());
-        }
+    private String serializePath(Path propertyPath, int skipFirstSegments) {
+        Iterator<Path.Node> segmentIterator = propertyPath.iterator();
 
-        return String.join(".", allNamesExceptFirstTwo);
+        List<String> pathSegments = new ArrayList<>();
+        while (segmentIterator.hasNext()) {
+            if (skipFirstSegments > 0) {
+                skipFirstSegments -= 1;
+                segmentIterator.next();
+            } else {
+                pathSegments.add(segmentIterator.next().toString());
+            }
+        }
+        return String.join(".", pathSegments);
     }
 
 }

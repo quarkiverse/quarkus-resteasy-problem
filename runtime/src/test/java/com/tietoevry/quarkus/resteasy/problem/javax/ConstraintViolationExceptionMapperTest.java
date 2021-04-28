@@ -1,22 +1,22 @@
 package com.tietoevry.quarkus.resteasy.problem.javax;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
-import org.hibernate.validator.HibernateValidator;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.parameternameprovider.ParanamerParameterNameProvider;
-import org.hibernate.validator.spi.nodenameprovider.JavaBeanProperty;
-import org.hibernate.validator.spi.nodenameprovider.Property;
-import org.hibernate.validator.spi.nodenameprovider.PropertyNodeNameProvider;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import javax.validation.ParameterNameProvider;
 import javax.validation.Valid;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -28,13 +28,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Response;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.hibernate.validator.HibernateValidator;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.spi.nodenameprovider.JavaBeanProperty;
+import org.hibernate.validator.spi.nodenameprovider.Property;
+import org.hibernate.validator.spi.nodenameprovider.PropertyNodeNameProvider;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class ConstraintViolationExceptionMapperTest {
 
@@ -58,7 +58,7 @@ class ConstraintViolationExceptionMapperTest {
 
         assertThat(violations)
                 .usingFieldByFieldElementComparator()
-                .containsExactly(Violation.In.path.violation("param_name").message("length must be between 2 and 10"));
+                .containsExactly(Violation.In.path.field("param_name").message("length must be between 2 and 10"));
     }
 
     @Test
@@ -70,7 +70,7 @@ class ConstraintViolationExceptionMapperTest {
 
         assertThat(violations)
                 .usingFieldByFieldElementComparator()
-                .containsExactly(Violation.In.query.violation("param_name").message("length must be between 3 and 10"));
+                .containsExactly(Violation.In.query.field("param_name").message("length must be between 3 and 10"));
     }
 
     @Test
@@ -82,7 +82,7 @@ class ConstraintViolationExceptionMapperTest {
 
         assertThat(violations)
                 .usingFieldByFieldElementComparator()
-                .containsExactly(Violation.In.header.violation("param_name").message("length must be between 4 and 10"));
+                .containsExactly(Violation.In.header.field("param_name").message("length must be between 4 and 10"));
     }
 
     @Test
@@ -94,7 +94,7 @@ class ConstraintViolationExceptionMapperTest {
 
         assertThat(violations)
                 .usingFieldByFieldElementComparator()
-                .containsExactly(Violation.In.form.violation("param_name").message("length must be between 5 and 10"));
+                .containsExactly(Violation.In.form.field("param_name").message("length must be between 5 and 10"));
     }
 
     @Test
@@ -107,13 +107,13 @@ class ConstraintViolationExceptionMapperTest {
         assertThat(violations)
                 .usingFieldByFieldElementComparator()
                 .containsExactlyInAnyOrder(
-                        Violation.In.body.violation("param_name")
+                        Violation.In.body.field("param_name")
                                 .message("length must be between 6 and 10"),
-                        Violation.In.body.violation("items[1].param_name")
+                        Violation.In.body.field("items[1].param_name")
                                 .message("length must be between 7 and 10"),
-                        Violation.In.body.violation("items2")
+                        Violation.In.body.field("items2")
                                 .message("size must be between 1 and 10"),
-                        Violation.In.body.violation("inner.param_name")
+                        Violation.In.body.field("inner.param_name")
                                 .message("length must be between 8 and 10"));
     }
 
@@ -138,18 +138,18 @@ class ConstraintViolationExceptionMapperTest {
         assertThat(violations)
                 .usingFieldByFieldElementComparator()
                 .contains(
-                        Violation.In.body.violation("param_name_from_annotation")
+                        Violation.In.body.field("param_name_from_annotation")
                                 .message("length must be between 6 and 10"),
-                        Violation.In.body.violation("items[1].param_name_from_annotation")
+                        Violation.In.body.field("items[1].param_name_from_annotation")
                                 .message("length must be between 7 and 10"),
-                        Violation.In.body.violation("inner.param_name_from_annotation")
+                        Violation.In.body.field("inner.param_name_from_annotation")
                                 .message("length must be between 8 and 10"),
-                        Violation.In.body.violation("items2")
+                        Violation.In.body.field("items2")
                                 .message("size must be between 1 and 10"));
     }
 
     @Test
-    void shouldUseCustomParameterNamingStrategy() {
+    void customParameterNamingStrategyShouldBeTolerated() {
         StubResourceInfo resourceInfo = StubResourceInfo.withCustomParameterNameProvider();
         mapper.resourceInfo = resourceInfo;
         ConstraintViolationException exception = resourceInfo.validateParameters(INVALID, VALID, VALID, VALID,
@@ -159,13 +159,13 @@ class ConstraintViolationExceptionMapperTest {
         assertThat(violations)
                 .usingFieldByFieldElementComparator()
                 .contains(
-                        Violation.In.unknown.violation("pathParam")
+                        Violation.In.unknown.field("firstParam")
                                 .message("length must be between 2 and 10"),
-                        Violation.In.unknown.violation("requestBody.param_name")
+                        Violation.In.unknown.field("fifthParam.param_name")
                                 .message("length must be between 6 and 10"),
-                        Violation.In.unknown.violation("requestBody.items[1].param_name")
+                        Violation.In.unknown.field("fifthParam.items[1].param_name")
                                 .message("length must be between 7 and 10"),
-                        Violation.In.unknown.violation("requestBody.inner.param_name")
+                        Violation.In.unknown.field("fifthParam.inner.param_name")
                                 .message("length must be between 8 and 10"));
     }
 
@@ -204,7 +204,20 @@ class ConstraintViolationExceptionMapperTest {
         public static StubResourceInfo withCustomParameterNameProvider() {
             return new StubResourceInfo(Validation.byProvider(HibernateValidator.class)
                     .configure()
-                    .parameterNameProvider(new ParanamerParameterNameProvider())
+                    .parameterNameProvider(new ParameterNameProvider() {
+                        private final List<String> hardcodedNames = Arrays.asList("firstParam", "secondParam", "thirdParam",
+                                "forthParam", "fifthParam");
+
+                        @Override
+                        public List<String> getParameterNames(Constructor<?> constructor) {
+                            return hardcodedNames;
+                        }
+
+                        @Override
+                        public List<String> getParameterNames(Method method) {
+                            return hardcodedNames;
+                        }
+                    })
                     .buildValidatorFactory()
                     .getValidator());
         }
