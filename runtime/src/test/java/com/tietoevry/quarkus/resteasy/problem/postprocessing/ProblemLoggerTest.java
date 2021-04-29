@@ -43,14 +43,14 @@ class ProblemLoggerTest {
                 .withTitle("your fault")
                 .withStatus(BAD_REQUEST)
                 .with("custom-field", "123")
-                .with("violations", Collections.singletonList(new Violation("too small", "key")))
+                .with("violations", Collections.singletonList(Violation.In.body.field("key").message("too small")))
                 .with("nullable_field", null)
                 .build();
 
         processor.apply(problem, simpleContext());
 
         verify(logger).info(
-                "status=400, title=\"your fault\", custom-field=\"123\", violations=[Violation{message='too small', field='key'}], nullable_field=null");
+                "status=400, title=\"your fault\", custom-field=\"123\", violations=[Violation{field='key', in='body', message='too small'}], nullable_field=null");
     }
 
     @Test

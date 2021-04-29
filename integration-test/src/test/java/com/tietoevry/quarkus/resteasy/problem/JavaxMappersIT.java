@@ -36,7 +36,7 @@ class JavaxMappersIT {
     @Test
     void constraintViolationShouldProvideErrorDetails() {
         given()
-                .body("{\"key\": 10 }")
+                .body("{\"phraseName\": 10 }")
                 .contentType(APPLICATION_JSON)
                 .post("/throw/javax/constraint-violation-exception")
                 .then()
@@ -44,9 +44,37 @@ class JavaxMappersIT {
                 .body("title", equalTo(BAD_REQUEST.getReasonPhrase()))
                 .body("status", equalTo(BAD_REQUEST.getStatusCode()))
                 .body("violations", hasSize(1))
-                .body("violations[0].field", equalTo("key"))
+                .body("violations[0].field", equalTo("phraseName"))
                 .body("violations[0].message", equalTo("must be greater than or equal to 15"))
                 .body("stacktrace", nullValue());
     }
 
+    @Test
+    void constraintViolationForArgumentsShouldProvideErrorDetails() {
+        given()
+                .contentType(APPLICATION_JSON)
+                .body(new InvalidPayload())
+                .queryParam("param_name", "invalidQueryParam")
+                .queryParam("param_name2", "validQueryParam")
+                .header("param_name3", "invalidHeaderParam")
+                .pathParam("param_name4", "invalidPathParam")
+                .post("/throw/javax/constraint-violation-exception/{param_name4}")
+                .then()
+                .statusCode(BAD_REQUEST.getStatusCode())
+                .body("title", equalTo(BAD_REQUEST.getReasonPhrase()))
+                .body("status", equalTo(BAD_REQUEST.getStatusCode()))
+                .body("violations", hasSize(4))
+                .body("violations.find{it.in == 'query'}.field", equalTo("param_name"))
+                .body("violations.find{it.in == 'query'}.message", equalTo("length must be between 10 and 15"))
+                .body("violations.find{it.in == 'header'}.field", equalTo("param_name3"))
+                .body("violations.find{it.in == 'header'}.message", equalTo("length must be between 10 and 15"))
+                .body("violations.find{it.in == 'path'}.field", equalTo("param_name4"))
+                .body("violations.find{it.in == 'path'}.message", equalTo("length must be between 10 and 15"))
+                .body("violations.find{it.in == 'body'}.field", equalTo("phraseName"))
+                .body("violations.find{it.in == 'body'}.message", equalTo("must be greater than or equal to 15"));
+    }
+
+    public static class InvalidPayload {
+       public int phraseName = 1;
+    }
 }

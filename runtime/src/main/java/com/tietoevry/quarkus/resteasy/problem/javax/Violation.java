@@ -2,27 +2,48 @@ package com.tietoevry.quarkus.resteasy.problem.javax;
 
 public final class Violation {
 
+    public enum In {
+        query,
+        path,
+        header,
+        form,
+        body,
+        unknown() {
+            @Override
+            protected String serialize() {
+                return "?";
+            }
+        };
+
+        public MessageSupplier field(String field) {
+            return message -> new Violation(field, this.serialize(), message);
+        }
+
+        protected String serialize() {
+            return name();
+        }
+    }
+
+    public interface MessageSupplier {
+        Violation message(String message);
+    }
+
     public final String field;
+    public final String in;
     public final String message;
 
-    /**
-     * Deprecated, use message instead.
-     */
-    @Deprecated
-    public final String error;
-
-    public Violation(String message, String field) {
+    private Violation(String field, String in, String message) {
         this.field = field;
+        this.in = in;
         this.message = message;
-
-        this.error = message;
     }
 
     @Override
     public String toString() {
         return "Violation{" +
-                "message='" + message + '\'' +
-                ", field='" + field + '\'' +
+                "field='" + field + '\'' +
+                ", in='" + in + '\'' +
+                ", message='" + message + '\'' +
                 '}';
     }
 }
