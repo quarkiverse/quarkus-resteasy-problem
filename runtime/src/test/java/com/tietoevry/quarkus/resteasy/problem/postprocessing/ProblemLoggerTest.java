@@ -8,7 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
-import com.tietoevry.quarkus.resteasy.problem.javax.Violation;
+import com.tietoevry.quarkus.resteasy.problem.validation.Violation;
 import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

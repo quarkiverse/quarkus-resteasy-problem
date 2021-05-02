@@ -1,4 +1,4 @@
-package com.tietoevry.quarkus.resteasy.problem.javax;
+package com.tietoevry.quarkus.resteasy.problem.validation;
 
 import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;

@@ -1,4 +1,4 @@
-package com.tietoevry.quarkus.resteasy.problem.javax;
+package com.tietoevry.quarkus.resteasy.problem.validation;
 
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 
