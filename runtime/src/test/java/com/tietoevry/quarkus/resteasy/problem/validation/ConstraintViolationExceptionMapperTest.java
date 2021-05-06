@@ -1,4 +1,4 @@
-package com.tietoevry.quarkus.resteasy.problem.javax;
+package com.tietoevry.quarkus.resteasy.problem.validation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

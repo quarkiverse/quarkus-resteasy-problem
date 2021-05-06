@@ -13,9 +13,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import org.hibernate.validator.constraints.Length;
 
-@Path("/throw/javax/")
+@Path("/throw/validation/")
 @Produces(MediaType.APPLICATION_JSON)
-public class JavaxExceptionsResource {
+public class ValdationExceptionsResource {
 
     @GET
     @Path("/violation-exception")

@@ -62,10 +62,10 @@ public class ProblemProcessor {
                 mapper(EXTENSION_MAIN_PACKAGE + "security.ForbiddenExceptionMapper")
                         .thatHandles("io.quarkus.security.ForbiddenException"),
 
-                mapper(EXTENSION_MAIN_PACKAGE + "javax.ValidationExceptionMapper")
+                mapper(EXTENSION_MAIN_PACKAGE + "validation.ValidationExceptionMapper")
                         .thatHandles("javax.validation.ValidationException"),
 
-                mapper(EXTENSION_MAIN_PACKAGE + "javax.ConstraintViolationExceptionMapper")
+                mapper(EXTENSION_MAIN_PACKAGE + "validation.ConstraintViolationExceptionMapper")
                         .thatHandles("javax.validation.ConstraintViolationException"),
 
                 mapper(EXTENSION_MAIN_PACKAGE + "jackson.JsonProcessingExceptionMapper")
@@ -128,7 +128,7 @@ public class ProblemProcessor {
 
     @BuildStep
     ReflectiveClassBuildItem registerPojosForReflection() {
-        return new ReflectiveClassBuildItem(true, true, EXTENSION_MAIN_PACKAGE + "javax.Violation");
+        return new ReflectiveClassBuildItem(true, true, EXTENSION_MAIN_PACKAGE + "validation.Violation");
     }
 
     @Record(STATIC_INIT)

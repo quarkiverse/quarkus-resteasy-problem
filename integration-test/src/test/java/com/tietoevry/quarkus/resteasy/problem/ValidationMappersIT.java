@@ -12,7 +12,7 @@ import io.restassured.RestAssured;
 import org.junit.jupiter.api.Test;
 
 @QuarkusTest
-class JavaxMappersIT {
+class ValidationMappersIT {
 
     static final String SAMPLE_DETAIL = "A small one";
 
@@ -24,7 +24,7 @@ class JavaxMappersIT {
     void violationShouldReturnDetails() {
         given()
                 .queryParam("message", SAMPLE_DETAIL)
-                .get("/throw/javax/violation-exception")
+                .get("/throw/validation/violation-exception")
                 .then()
                 .statusCode(BAD_REQUEST.getStatusCode())
                 .body("title", equalTo(BAD_REQUEST.getReasonPhrase()))
@@ -38,7 +38,7 @@ class JavaxMappersIT {
         given()
                 .body("{\"phraseName\": 10 }")
                 .contentType(APPLICATION_JSON)
-                .post("/throw/javax/constraint-violation-exception")
+                .post("/throw/validation/constraint-violation-exception")
                 .then()
                 .statusCode(BAD_REQUEST.getStatusCode())
                 .body("title", equalTo(BAD_REQUEST.getReasonPhrase()))
@@ -58,7 +58,7 @@ class JavaxMappersIT {
                 .queryParam("param_name2", "validQueryParam")
                 .header("param_name3", "invalidHeaderParam")
                 .pathParam("param_name4", "invalidPathParam")
-                .post("/throw/javax/constraint-violation-exception/{param_name4}")
+                .post("/throw/validation/constraint-violation-exception/{param_name4}")
                 .then()
                 .statusCode(BAD_REQUEST.getStatusCode())
                 .body("title", equalTo(BAD_REQUEST.getReasonPhrase()))
