@@ -22,7 +22,7 @@ More details on how to setup your ide can be found in official [Quarkus Contribu
 `integration-test` - test scenarios + test endpoints + runners for Jackson and JsonB apps
 
 ### Architecture
-Everything in this extension revolves around `ExceptionMapperBase` abstract class from `runtime` module. All exceptions go though
+Everything in this extension revolves around `ExceptionMapperBase` abstract class from `runtime` module. All exceptions go through
 exception mappers extending this class.
 
 Exception lifecycle:

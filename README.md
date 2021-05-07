@@ -22,7 +22,7 @@ This extension supports:
 
 - __predictability__ - no matter what kind of exception is thrown: expected (thrown by you on purpose), or unexpected (not thrown 'by design') - your API consumer gets similar, repeatable experience.  
 
-- __safety__ - it helps preventing leakage of some implementation details like stack-traces, DTO/resource class names etc.
+- __safety__ - it helps prevent leakage of some implementation details like stack-traces, DTO/resource class names etc.
 
 - __time-saving__ - in most cases you will not have to implement your own JaxRS `ExceptionMapper`s anymore, which makes your app smaller, and less error-prone. 
 
@@ -51,14 +51,14 @@ cd quarkus-resteasy-problem-playground
 
 To add this extension to your project run:
 ```shell
-./mvnw quarkus:add-extension -Dextensions="com.tietoevry.quarkus:quarkus-resteasy-problem:0.9.7"
+./mvnw quarkus:add-extension -Dextensions="com.tietoevry.quarkus:quarkus-resteasy-problem:0.9.8"
 ```
 or manually add dependency in your `pom.xml`:
 ```xml
 <dependency>
     <groupId>com.tietoevry.quarkus</groupId>
     <artifactId>quarkus-resteasy-problem</artifactId>
-    <version>0.9.7</version>
+    <version>0.9.8</version>
 </dependency>
 ```
 
