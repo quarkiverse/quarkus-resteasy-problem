@@ -10,7 +10,7 @@ updates:
       - dependencies
     allow:
       # Runtime / test dependencies
-      - dependency-name: io.quarkus:quarkus-bom
+      - dependency-name: io.quarkus:*
       - dependency-name: com.google.code.findbugs:jsr305
       - dependency-name: org.zalando:problem
       - dependency-name: org.assertj:assertj-core
