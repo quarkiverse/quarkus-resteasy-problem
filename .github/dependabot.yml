@@ -23,4 +23,6 @@ updates:
       - dependency-name: de.thetaphi:forbiddenapis
       - dependency-name: net.revelc.code.formatter:formatter-maven-plugin
       - dependency-name: net.revelc.code:impsort-maven-plugin
+    ignore:
+      - dependency-name: io.quarkus:quarkus-maven-plugin
     rebase-strategy: disabled
