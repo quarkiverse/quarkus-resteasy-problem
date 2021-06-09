@@ -35,7 +35,8 @@ jobs:
 
       - uses: DeLaGuardo/setup-graalvm@master
         with:
-          graalvm-version: '21.0.0.2.java11'
+          graalvm: '21.0.0.2'
+          java: 'java11'
 
       - name: Native Tests
         run: ./mvnw clean verify -Pnative,${{ matrix.json-provider }}-${{ matrix.paradigm }} -pl integration-test

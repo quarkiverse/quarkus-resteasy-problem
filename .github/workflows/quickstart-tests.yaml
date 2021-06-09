@@ -37,7 +37,14 @@ jobs:
 
       - name: Generate Quickstart App
         working-directory: ./quickstart
-        run: mvn io.quarkus:quarkus-maven-plugin:1.13.3.Final:create -Dextensions="resteasy,${{ matrix.json-provider }}" -DprojectGroupId=problem -DprojectArtifactId=quarkus-resteasy-problem-playground -DclassName="problem.HelloResource" -Dpath="/hello"
+        run: |
+          QUARKUS_VERSION=$(mvn -f ../pom.xml -q -Dexec.executable=echo -Dexec.args='${quarkus.version}' --non-recursive exec:exec)
+          mvn io.quarkus:quarkus-maven-plugin:$QUARKUS_VERSION:create \
+            -Dextensions="resteasy,${{ matrix.json-provider }}" \
+            -DprojectGroupId=problem \
+            -DprojectArtifactId=quarkus-resteasy-problem-playground \
+            -DclassName="problem.HelloResource" \
+            -Dpath="/hello"
 
       - name: Add extension dependency
         working-directory: ./quickstart/quarkus-resteasy-problem-playground
