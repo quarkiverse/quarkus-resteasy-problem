@@ -40,7 +40,7 @@ so-called "HTTP APIs" are usually not.
 ## Usage
 Create a new Quarkus project with the following command (you can also use `resteasy-jsonb` or reactive equivalents: `resteasy-reactive-jackson` / `resteasy-reactive-jsonb`):
 ```shell
-mvn io.quarkus:quarkus-maven-plugin:1.13.3.Final:create \
+mvn io.quarkus:quarkus-maven-plugin:1.13.7.Final:create \
     -DprojectGroupId=problem \
     -DprojectArtifactId=quarkus-resteasy-problem-playground \
     -DclassName="problem.HelloResource" \

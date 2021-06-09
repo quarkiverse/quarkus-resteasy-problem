@@ -33,7 +33,8 @@ class MetricsIT {
     private int fetchHttpErrorMetric(int status) {
         ExtractableResponse response = given()
                 .accept(ContentType.JSON)
-                .when().get("/metrics/application/http.error")
+                .when()
+                .get("/metrics/application/http.error")
                 .then()
                 .extract();
 
