@@ -38,22 +38,20 @@ so-called "HTTP APIs" are usually not.
 ```
 
 ## Usage
-Create a new Quarkus project with the following command (you can also use `resteasy-jsonb` or reactive equivalents: `resteasy-reactive-jackson` / `resteasy-reactive-jsonb`):
+### New Quarkus project
+Create a new Quarkus project with the following command:
 ```shell
 mvn io.quarkus:quarkus-maven-plugin:1.13.7.Final:create \
     -DprojectGroupId=problem \
     -DprojectArtifactId=quarkus-resteasy-problem-playground \
     -DclassName="problem.HelloResource" \
     -Dpath="/hello" \
-    -Dextensions="resteasy,resteasy-jackson"
+    -Dextensions="resteasy,resteasy-jackson,com.tietoevry.quarkus:quarkus-resteasy-problem:1.0.0"
 cd quarkus-resteasy-problem-playground
 ```
+**Hint:** you can also use `resteasy-jsonb` or reactive equivalents: `resteasy-reactive-jackson` / `resteasy-reactive-jsonb` instead of `resteasy-jackson`
 
-To add this extension to your project run:
-```shell
-./mvnw quarkus:add-extension -Dextensions="com.tietoevry.quarkus:quarkus-resteasy-problem:1.0.0"
-```
-or manually add dependency in your `pom.xml`:
+Existing Quarkus project: add the following dependency to `pom.xml`:
 ```xml
 <dependency>
     <groupId>com.tietoevry.quarkus</groupId>
