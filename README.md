@@ -51,14 +51,14 @@ cd quarkus-resteasy-problem-playground
 
 To add this extension to your project run:
 ```shell
-./mvnw quarkus:add-extension -Dextensions="com.tietoevry.quarkus:quarkus-resteasy-problem:0.9.8"
+./mvnw quarkus:add-extension -Dextensions="com.tietoevry.quarkus:quarkus-resteasy-problem:1.0.0"
 ```
 or manually add dependency in your `pom.xml`:
 ```xml
 <dependency>
     <groupId>com.tietoevry.quarkus</groupId>
     <artifactId>quarkus-resteasy-problem</artifactId>
-    <version>0.9.8</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
