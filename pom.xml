@@ -24,7 +24,7 @@
         <assertj.version>3.20.1</assertj.version>
         <jmh.version>1.32</jmh.version>
         <jsr305.version>3.0.2</jsr305.version>
-        <archunit.version>0.18.0</archunit.version>
+        <archunit.version>0.19.0</archunit.version>
 
         <!-- maven plugins -->
         <maven.compiler-plugin.version>3.8.1</maven.compiler-plugin.version>
