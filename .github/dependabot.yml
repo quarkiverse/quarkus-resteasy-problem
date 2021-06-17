@@ -13,8 +13,8 @@ updates:
       - dependency-name: io.quarkus:*
       - dependency-name: com.google.code.findbugs:jsr305
       - dependency-name: org.zalando:problem
-      - dependency-name: org.assertj:assertj-core
-      - dependency-name: com.tngtech.archunit:archunit-junit5-api
+      - dependency-name: org.assertj:*
+      - dependency-name: com.tngtech.archunit:*
       - dependency-name: org.openjdk.jmh:*
 
       # Maven plugins
