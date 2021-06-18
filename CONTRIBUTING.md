@@ -4,8 +4,8 @@ You're more than welcome to work on this extension. Check [issues](../../issues/
 or add your own suggestions and start discussion. Then create fork or branch and Pull Request once it's ready.
 
 ## Setup
-- JDK 8
-- GraalVM + JDK 11 for native test run, check [Quarkus Contributing guide](https://github.com/quarkusio/quarkus/blob/main/CONTRIBUTING.md#setup) for more details.
+- JDK 11
+- GraalVM for native test run, check [Quarkus Contributing guide](https://github.com/quarkusio/quarkus/blob/main/CONTRIBUTING.md#setup) for more details.
 
 ### IDE Config and Code Style
 

@@ -14,9 +14,7 @@ jobs:
       matrix:
         maven_profiles: [
             "jackson-classic", "jsonb-classic",
-            "jackson-reactive", "jsonb-reactive",
-            "jackson-classic,quarkus-1.4", "jsonb-classic,quarkus-1.4",
-            "jackson-reactive,quarkus-1.11", "jsonb-reactive,quarkus-1.11"
+            "jackson-reactive", "jsonb-reactive"
         ]
 
     steps:
@@ -25,7 +23,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
-          java-version: 1.8
+          java-version: 11
 
       - name: Cache local Maven repository
         uses: actions/cache@v2
