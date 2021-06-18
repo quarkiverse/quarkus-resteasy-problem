@@ -2,8 +2,7 @@ name: Quickstart Flow Tests
 
 on:
   push:
-    branches:
-      - master
+    branches: [ master, v1.X ]
   workflow_dispatch:
 
 jobs:
