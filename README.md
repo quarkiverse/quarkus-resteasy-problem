@@ -1,9 +1,14 @@
 # Problem Details for HTTP APIs (RFC-7807) implementation for Quarkus / RESTeasy.
 
-[![Release](https://img.shields.io/maven-central/v/com.tietoevry.quarkus/quarkus-resteasy-problem)](https://search.maven.org/artifact/com.tietoevry.quarkus/quarkus-resteasy-problem)
+[![Release](https://img.shields.io/maven-central/v/com.tietoevry.quarkus/quarkus-resteasy-problem/2?label=quarkus-resteasy-problem)](https://search.maven.org/search?q=g:com.tietoevry.quarkus%20AND%20a:quarkus-resteasy-problem%20AND%20v:2*) 
+![Quarkus](https://img.shields.io/badge/Quarkus-2.0.0+-red.svg) 
+![Quarkus](https://img.shields.io/badge/Java%2011+-blue.svg) 
+
+[![Release](https://img.shields.io/maven-central/v/com.tietoevry.quarkus/quarkus-resteasy-problem/1?label=quarkus-resteasy-problem)](https://search.maven.org/search?q=g:com.tietoevry.quarkus%20AND%20a:quarkus-resteasy-problem%20AND%20v:1*)
+![Quarkus](https://img.shields.io/badge/Quarkus-1.4.2%20+-red.svg)
+![Quarkus](https://img.shields.io/badge/Java%208+-blue.svg) 
+
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/blob/master/LICENSE.txt)
-![Quarkus](https://img.shields.io/badge/Quarkus-1.4.2%20+-green.svg)
-![Quarkus](https://img.shields.io/badge/Quarkus-2.0.0.Final-red.svg)
 
 [![Build status](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/unit-tests.yaml/badge.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions)
 [![Build status](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/integration-tests.yaml/badge.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions)
@@ -15,8 +20,7 @@ This extension supports:
 - _quarkus-resteasy-jackson_ and _quarkus-resteasy-jsonb_ for Quarkus 1.4.2 and newer
 - _quarkus-resteasy-reactive-jackson_ and _quarkus-resteasy-reactive-jsonb_ for Quarkus 1.11.6 and newer
 - JVM and native mode
-- Quarkus v2.X / Java 11+ with and quarkus-resteasy-problem v2.X
-- Quarkus v1.X / Java 8+ with and quarkus-resteasy-problem v1.X
+- Quarkus 1.X and 2.X
 
 ## Why you should use this extension?
 - __consistency__ - it unifies your REST API error messages, and gives it much needed consistency, no matter which JSON provider (Jackson vs JsonB) or paradigm (classic/blocking vs reactive) you're using.   
@@ -39,6 +43,25 @@ so-called "HTTP APIs" are usually not.
 ```
 
 ## Usage
+### Quarkus 2.X / Java 11+
+```shell
+mvn io.quarkus:quarkus-maven-plugin:2.0.0.Final:create \
+    -DprojectGroupId=problem \
+    -DprojectArtifactId=quarkus-resteasy-problem-playground \
+    -DclassName="problem.HelloResource" \
+    -Dpath="/hello" \
+    -Dextensions="resteasy,resteasy-jackson,com.tietoevry.quarkus:quarkus-resteasy-problem:2.0.0.CR3"
+cd quarkus-resteasy-problem-playground
+```
+or:
+```xml
+<dependency>
+    <groupId>com.tietoevry.quarkus</groupId>
+    <artifactId>quarkus-resteasy-problem</artifactId>
+    <version>2.0.0.CR3</version>
+</dependency>
+```
+
 ### Quarkus 1.X / Java 1.8+
 Create a new Quarkus project with the following command:
 ```shell 
@@ -56,25 +79,6 @@ Or add the following dependency to `pom.xml` in existing project:
     <groupId>com.tietoevry.quarkus</groupId>
     <artifactId>quarkus-resteasy-problem</artifactId>
     <version>1.0.0</version>
-</dependency>
-```
-
-### Quarkus 2.X / Java 11+
-```shell
-mvn io.quarkus:quarkus-maven-plugin:2.0.0.Final:create \
-    -DprojectGroupId=problem \
-    -DprojectArtifactId=quarkus-resteasy-problem-playground \
-    -DclassName="problem.HelloResource" \
-    -Dpath="/hello" \
-    -Dextensions="resteasy,resteasy-jackson,com.tietoevry.quarkus:quarkus-resteasy-problem:2.0.0.CR3"
-cd quarkus-resteasy-problem-playground
-```
-or:
-```xml
-<dependency>
-    <groupId>com.tietoevry.quarkus</groupId>
-    <artifactId>quarkus-resteasy-problem</artifactId>
-    <version>2.0.0.CR3</version>
 </dependency>
 ```
 
