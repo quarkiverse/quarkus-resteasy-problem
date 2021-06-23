@@ -3,7 +3,7 @@
 [![Release](https://img.shields.io/maven-central/v/com.tietoevry.quarkus/quarkus-resteasy-problem)](https://search.maven.org/artifact/com.tietoevry.quarkus/quarkus-resteasy-problem)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/blob/master/LICENSE.txt)
 ![Quarkus](https://img.shields.io/badge/Quarkus-1.4.2%20+-green.svg)
-![Quarkus](https://img.shields.io/badge/Quarkus-2.0.0.CR3-red.svg)
+![Quarkus](https://img.shields.io/badge/Quarkus-2.0.0.Final-red.svg)
 
 [![Build status](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/unit-tests.yaml/badge.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions)
 [![Build status](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/integration-tests.yaml/badge.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions)
@@ -61,7 +61,7 @@ Or add the following dependency to `pom.xml` in existing project:
 
 ### Quarkus 2.X / Java 11+
 ```shell
-mvn io.quarkus:quarkus-maven-plugin:2.0.0.CR3:create \
+mvn io.quarkus:quarkus-maven-plugin:2.0.0.Final:create \
     -DprojectGroupId=problem \
     -DprojectArtifactId=quarkus-resteasy-problem-playground \
     -DclassName="problem.HelloResource" \
