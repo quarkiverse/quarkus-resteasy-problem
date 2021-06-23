@@ -39,5 +39,9 @@ jobs:
           graalvm: '21.1.0'
           java: 'java11'
 
+      - name: Install native-image component
+        run: |
+          ${{ matrix.gu-binary }} install native-image
+
       - name: Native Tests
         run: ./mvnw clean verify -Pnative,${{ matrix.json-provider }}-${{ matrix.paradigm }} -pl integration-test
