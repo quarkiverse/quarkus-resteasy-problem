@@ -9,6 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
+      max-parallel: 2
       matrix:
         paradigm: [ "classic", "reactive" ]
         json-provider: [ "jsonb", "jackson" ]
