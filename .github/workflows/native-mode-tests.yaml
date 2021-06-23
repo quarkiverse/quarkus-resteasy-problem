@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 1
+      max-parallel: 4
       matrix:
         paradigm: [ "classic", "reactive" ]
         json-provider: [ "jsonb", "jackson" ]
@@ -38,6 +38,10 @@ jobs:
         with:
           graalvm: '21.1.0'
           java: 'java11'
+
+      - name: Install native-image component
+        run: |
+          gu install native-image
 
       - name: Native Tests
         run: ./mvnw clean verify -Pnative,${{ matrix.json-provider }}-${{ matrix.paradigm }} -pl integration-test
