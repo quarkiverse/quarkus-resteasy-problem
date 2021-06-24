@@ -50,7 +50,7 @@ mvn io.quarkus:quarkus-maven-plugin:2.0.0.Final:create \
     -DprojectArtifactId=quarkus-resteasy-problem-playground \
     -DclassName="problem.HelloResource" \
     -Dpath="/hello" \
-    -Dextensions="resteasy,resteasy-jackson,com.tietoevry.quarkus:quarkus-resteasy-problem:2.0.0.CR3"
+    -Dextensions="resteasy,resteasy-jackson,com.tietoevry.quarkus:quarkus-resteasy-problem:2.0.0"
 cd quarkus-resteasy-problem-playground
 ```
 or:
@@ -58,7 +58,7 @@ or:
 <dependency>
     <groupId>com.tietoevry.quarkus</groupId>
     <artifactId>quarkus-resteasy-problem</artifactId>
-    <version>2.0.0.CR3</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 
