@@ -1,11 +1,11 @@
 # Problem Details for HTTP APIs (RFC-7807) implementation for Quarkus / RESTeasy.
 
 [![Release](https://img.shields.io/maven-central/v/com.tietoevry.quarkus/quarkus-resteasy-problem/2?label=quarkus-resteasy-problem)](https://search.maven.org/search?q=g:com.tietoevry.quarkus%20AND%20a:quarkus-resteasy-problem%20AND%20v:2*) 
-![Quarkus](https://img.shields.io/badge/Quarkus-2.0.0+-red.svg) 
+[![Quarkus](https://img.shields.io/badge/Quarkus-2.0.0+-important.svg)](https://github.com/quarkusio/quarkus/releases/tag/2.0.0.Final)
 ![Quarkus](https://img.shields.io/badge/Java%2011+-blue.svg) 
 
 [![Release](https://img.shields.io/maven-central/v/com.tietoevry.quarkus/quarkus-resteasy-problem/1?label=quarkus-resteasy-problem)](https://search.maven.org/search?q=g:com.tietoevry.quarkus%20AND%20a:quarkus-resteasy-problem%20AND%20v:1*)
-![Quarkus](https://img.shields.io/badge/Quarkus-1.4.2%20+-red.svg)
+[![Quarkus](https://img.shields.io/badge/Quarkus-1.4%20&ndash;%201.13-important.svg)](https://github.com/quarkusio/quarkus/releases/tag/1.13.7.Final)
 ![Quarkus](https://img.shields.io/badge/Java%208+-blue.svg) 
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/blob/master/LICENSE.txt)
@@ -17,10 +17,10 @@
 [RFC7807 Problem](https://tools.ietf.org/html/rfc7807) extension for Quarkus RESTeasy/JaxRS applications. It maps Exceptions to `application/problem+json` HTTP responses. Inspired by [Zalando Problem library](https://github.com/zalando/problem).
 
 This extension supports:
-- _quarkus-resteasy-jackson_ and _quarkus-resteasy-jsonb_ for Quarkus 1.4.2 and newer
-- _quarkus-resteasy-reactive-jackson_ and _quarkus-resteasy-reactive-jsonb_ for Quarkus 1.11.6 and newer
-- JVM and native mode
 - Quarkus 1.X and 2.X
+- `quarkus-resteasy-jackson` and `quarkus-resteasy-jsonb`
+- `quarkus-resteasy-reactive-jackson` and `quarkus-resteasy-reactive-jsonb`
+- JVM and native mode
 
 ## Why you should use this extension?
 - __consistency__ - it unifies your REST API error messages, and gives it much needed consistency, no matter which JSON provider (Jackson vs JsonB) or paradigm (classic/blocking vs reactive) you're using.   
