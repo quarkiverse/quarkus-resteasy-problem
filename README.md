@@ -50,10 +50,11 @@ mvn io.quarkus:quarkus-maven-plugin:2.0.0.Final:create \
     -DprojectArtifactId=quarkus-resteasy-problem-playground \
     -DclassName="problem.HelloResource" \
     -Dpath="/hello" \
-    -Dextensions="resteasy,resteasy-jackson,com.tietoevry.quarkus:quarkus-resteasy-problem:2.0.0"
+    -Dextensions="resteasy,resteasy-jackson"
 cd quarkus-resteasy-problem-playground
+./mvnw quarkus:add-extension -Dextensions="com.tietoevry.quarkus:quarkus-resteasy-problem:2.0.0"
 ```
-or:
+Or add the following dependency to `pom.xml` in existing project:
 ```xml
 <dependency>
     <groupId>com.tietoevry.quarkus</groupId>
@@ -73,7 +74,7 @@ mvn io.quarkus:quarkus-maven-plugin:1.13.7.Final:create \
     -Dextensions="resteasy,resteasy-jackson,com.tietoevry.quarkus:quarkus-resteasy-problem:1.0.0"
 cd quarkus-resteasy-problem-playground
 ```
-Or add the following dependency to `pom.xml` in existing project:
+or
 ```xml
 <dependency>
     <groupId>com.tietoevry.quarkus</groupId>

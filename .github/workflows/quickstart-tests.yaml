@@ -38,14 +38,19 @@ jobs:
         working-directory: ./quickstart
         run: |
           QUARKUS_VERSION=$(mvn -f ../pom.xml -q -Dexec.executable=echo -Dexec.args='${quarkus.version}' --non-recursive exec:exec)
-          EXTENSION_VERSION=$(mvn -f ../pom.xml -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+          echo "QUARKUS_VERSION = $QUARKUS_VERSION"
 
           mvn io.quarkus:quarkus-maven-plugin:$QUARKUS_VERSION:create \
-            -Dextensions="resteasy,${{ matrix.json-provider }},com.tietoevry.quarkus:quarkus-resteasy-problem:$EXTENSION_VERSION" \
+            -Dextensions="resteasy,${{ matrix.json-provider }}" \
             -DprojectGroupId=problem \
             -DprojectArtifactId=quarkus-resteasy-problem-playground \
             -DclassName="problem.HelloResource" \
             -Dpath="/hello"
+
+          EXTENSION_VERSION=$(mvn -f ../pom.xml -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+          echo "EXTENSION_VERSION = $EXTENSION_VERSION"
+          cd quarkus-resteasy-problem-playground
+          ./mvnw quarkus:add-extension -Dextensions="com.tietoevry.quarkus:quarkus-resteasy-problem:$EXTENSION_VERSION"
 
       - name: Run tests
         working-directory: ./quickstart/quarkus-resteasy-problem-playground
