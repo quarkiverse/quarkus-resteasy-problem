@@ -149,6 +149,13 @@
         </profile>
 
         <profile>
+            <id>quarkus-2.0</id>
+            <properties>
+                <quarkus.version>2.0.3.Final</quarkus.version>
+            </properties>
+        </profile>
+
+        <profile>
             <id>native</id>
             <properties>
                 <quarkus.package.type>native</quarkus.package.type>
