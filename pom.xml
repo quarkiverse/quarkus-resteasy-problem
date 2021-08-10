@@ -22,7 +22,7 @@
         <quarkus.version>2.1.1.Final</quarkus.version>
         <zalando-problem.version>0.26.0</zalando-problem.version>
         <assertj.version>3.20.2</assertj.version>
-        <jmh.version>1.32</jmh.version>
+        <jmh.version>1.33</jmh.version>
         <jsr305.version>3.0.2</jsr305.version>
         <archunit.version>0.20.1</archunit.version>
 
