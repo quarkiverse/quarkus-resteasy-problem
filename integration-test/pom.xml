@@ -11,11 +11,15 @@
     <artifactId>quarkus-resteasy-problem-integration-test</artifactId>
     <name>Quarkus - RESTeasy - Problem - Integration Tests</name>
 
+    <properties>
+        <quarkus-resteasy-problem.version>${project.version}</quarkus-resteasy-problem.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.tietoevry.quarkus</groupId>
             <artifactId>quarkus-resteasy-problem</artifactId>
-            <version>${project.version}</version>
+            <version>${quarkus-resteasy-problem.version}</version>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>

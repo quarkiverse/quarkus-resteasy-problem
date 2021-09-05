@@ -1,0 +1,43 @@
+name: Integration Tests for latest stable version with latest stable Quarkus
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        maven_profiles: [
+            "jackson-classic", "jsonb-classic",
+            "jackson-reactive", "jsonb-reactive"
+        ]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+            ${{ runner.os }}-
+
+      - name: Integration Tests (lastest - classic - jackson)
+        env:
+          EXTENSION_VERSION: "2.0.0"
+        run: |
+          QUARKUS_VERSION=$(mvn -f pom.xml -q -Dexec.executable=echo -Dexec.args='${quarkus.version}' --non-recursive exec:exec)
+          echo "Checking quarkus-resteasy-problem v$EXTENSION_VERSION with Quarkus v$QUARKUS_VERSION"
+          ./mvnw clean verify -P${{ matrix.maven_profiles }} -pl integration-test -Dquarkus-resteasy-problem.version=$EXTENSION_VERSION
+
+
