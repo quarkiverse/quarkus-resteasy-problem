@@ -1,4 +1,4 @@
-name: Integration Tests for latest stable version with latest stable Quarkus
+name: Compatibility with latest stable Quarkus
 
 on:
   push:
