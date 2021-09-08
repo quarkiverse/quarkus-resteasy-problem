@@ -13,6 +13,7 @@
 [![Build status](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/unit-tests.yaml/badge.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions)
 [![Build status](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/integration-tests.yaml/badge.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions)
 [![Build status](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/native-mode-tests.yaml/badge.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions)
+[![Compatibility with latest stable Quarkus](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/latest-stable-compatibility-tests.yaml/badge.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/latest-stable-compatibility-tests.yaml)
 
 [RFC7807 Problem](https://tools.ietf.org/html/rfc7807) extension for Quarkus RESTeasy/JaxRS applications. It maps Exceptions to `application/problem+json` HTTP responses. Inspired by [Zalando Problem library](https://github.com/zalando/problem).
 
@@ -46,7 +47,7 @@ so-called "HTTP APIs" are usually not.
 ### Quarkus 2.X / Java 11+
 Make sure JDK 11 is in your PATH, the run:
 ```shell
-mvn io.quarkus:quarkus-maven-plugin:2.2.0.Final:create \
+mvn io.quarkus:quarkus-maven-plugin:2.2.2.Final:create \
     -DprojectGroupId=problem \
     -DprojectArtifactId=quarkus-resteasy-problem-playground \
     -DclassName="problem.HelloResource" \
