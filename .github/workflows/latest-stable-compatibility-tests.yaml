@@ -1,4 +1,4 @@
-name: Compatibility with latest stable Quarkus
+name: Latest stable version compatibility with Quarkus
 
 on:
   push:
@@ -10,10 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        maven_profiles: [
-            "jackson-classic", "jsonb-classic",
-            "jackson-reactive", "jsonb-reactive"
-        ]
+        json-provider: [ "jackson-classic", "jsonb-classic", "jackson-reactive", "jsonb-reactive" ]
+        quarkus-version: [ "2.0", "2.1", "2.2" ]
 
     steps:
       - uses: actions/checkout@v2
@@ -34,10 +32,11 @@ jobs:
 
       - name: Integration Tests (lastest - classic - jackson)
         env:
-          EXTENSION_VERSION: "2.0.0"
+          LATEST_STABLE_EXTENSION_VERSION: "2.0.0"
         run: |
           QUARKUS_VERSION=$(mvn -f pom.xml -q -Dexec.executable=echo -Dexec.args='${quarkus.version}' --non-recursive exec:exec)
-          echo "Checking quarkus-resteasy-problem v$EXTENSION_VERSION with Quarkus v$QUARKUS_VERSION"
-          ./mvnw clean verify -P${{ matrix.maven_profiles }} -pl integration-test -Dquarkus-resteasy-problem.version=$EXTENSION_VERSION
-
-
+          echo "Checking quarkus-resteasy-problem LATEST_STABLE_EXTENSION_VERSION with Quarkus v$QUARKUS_VERSION"
+          ./mvnw clean verify \
+              -P${{ matrix.json-provider }},quarkus-${{ matrix.quarkus-version }} \
+              -pl integration-test \
+              -Dquarkus-resteasy-problem.version=$LATEST_STABLE_EXTENSION_VERSION
