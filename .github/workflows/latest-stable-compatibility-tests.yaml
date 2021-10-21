@@ -39,7 +39,3 @@ jobs:
               -P${{ matrix.json-provider }},quarkus-${{ matrix.quarkus-version }} \
               -pl integration-test \
               -Dquarkus-resteasy-problem.version=$LATEST_STABLE_EXTENSION_VERSION
-          
-          
-          
-          mvn -f integration-test/pom.xml -q -Pquarkus-2.1 -Dexec.executable=echo -Dexec.args='${quarkus.version}' --non-recursive exec:exec
