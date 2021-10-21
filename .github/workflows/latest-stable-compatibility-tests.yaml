@@ -34,9 +34,12 @@ jobs:
         env:
           LATEST_STABLE_EXTENSION_VERSION: "2.0.0"
         run: |
-          QUARKUS_VERSION=$(mvn -f pom.xml -q -Dexec.executable=echo -Dexec.args='${quarkus.version}' --non-recursive exec:exec)
-          echo "Checking quarkus-resteasy-problem $LATEST_STABLE_EXTENSION_VERSION with Quarkus v$QUARKUS_VERSION"
+          echo "Checking quarkus-resteasy-problem $LATEST_STABLE_EXTENSION_VERSION with Quarkus v${{ matrix.quarkus-version }}"
           ./mvnw clean verify \
               -P${{ matrix.json-provider }},quarkus-${{ matrix.quarkus-version }} \
               -pl integration-test \
               -Dquarkus-resteasy-problem.version=$LATEST_STABLE_EXTENSION_VERSION
+          
+          
+          
+          mvn -f integration-test/pom.xml -q -Pquarkus-2.1 -Dexec.executable=echo -Dexec.args='${quarkus.version}' --non-recursive exec:exec
