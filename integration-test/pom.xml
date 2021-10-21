@@ -165,6 +165,20 @@
                 <quarkus.version>2.1.4.Final</quarkus.version>
             </properties>
         </profile>
+        
+        <profile>
+            <id>quarkus-2.2</id>
+            <properties>
+                <quarkus.version>2.2.3.Final</quarkus.version>
+            </properties>
+        </profile>
+        
+        <profile>
+            <id>quarkus-2.3</id>
+            <properties>
+                <quarkus.version>2.3.1.Final</quarkus.version>
+            </properties>
+        </profile>
 
         <profile>
             <id>native</id>
