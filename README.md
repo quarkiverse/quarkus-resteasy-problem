@@ -10,9 +10,9 @@
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/blob/master/LICENSE.txt)
 
-[![Build status](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/unit-tests.yaml/badge.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions)
-[![Build status](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/integration-tests.yaml/badge.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions)
-[![Build status](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/native-mode-tests.yaml/badge.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions)
+[![Build status](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/unit-tests.yaml/badge.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/unit-tests.yaml)
+[![Build status](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/integration-tests.yaml/badge.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/integration-tests.yaml)
+[![Build status](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/native-mode-tests.yaml/badge.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/native-mode-tests.yaml)
 [![Compatibility with latest stable Quarkus](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/latest-stable-compatibility-tests.yaml/badge.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/latest-stable-compatibility-tests.yaml)
 
 [RFC7807 Problem](https://tools.ietf.org/html/rfc7807) extension for Quarkus RESTeasy/JaxRS applications. It maps Exceptions to `application/problem+json` HTTP responses. Inspired by [Zalando Problem library](https://github.com/zalando/problem).
