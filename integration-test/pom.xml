@@ -169,7 +169,7 @@
         <profile>
             <id>quarkus-2.2</id>
             <properties>
-                <quarkus.version>2.2.3.Final</quarkus.version>
+                <quarkus.version>2.2.4.Final</quarkus.version>
             </properties>
         </profile>
         
@@ -184,6 +184,13 @@
             <id>quarkus-2.4</id>
             <properties>
                 <quarkus.version>2.4.2.Final</quarkus.version>
+            </properties>
+        </profile>
+        
+        <profile>
+            <id>quarkus-2.5</id>
+            <properties>
+                <quarkus.version>2.5.3.Final</quarkus.version>
             </properties>
         </profile>
 
