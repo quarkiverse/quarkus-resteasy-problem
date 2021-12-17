@@ -36,7 +36,7 @@ jobs:
 
       - uses: DeLaGuardo/setup-graalvm@master
         with:
-          graalvm: '21.1.0'
+          graalvm: '21.3.0'
           java: 'java11'
 
       - name: Install native-image component
