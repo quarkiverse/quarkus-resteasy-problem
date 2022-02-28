@@ -32,7 +32,7 @@
         <maven.source-plugin.version>3.2.1</maven.source-plugin.version>
         <maven.deploy-plugin.version>2.8.2</maven.deploy-plugin.version>
         <maven.javadoc-plugin.version>3.3.2</maven.javadoc-plugin.version>
-        <sign-maven-plugin.version>1.0.0</sign-maven-plugin.version>
+        <sign-maven-plugin.version>1.0.1</sign-maven-plugin.version>
         <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
         <failsafe-plugin.version>3.0.0-M5</failsafe-plugin.version>
         <forbiddenapis-maven-plugin.version>3.2</forbiddenapis-maven-plugin.version>
