@@ -200,6 +200,13 @@
                 <quarkus.version>2.6.3.Final</quarkus.version>
             </properties>
         </profile>
+        
+        <profile>
+            <id>quarkus-2.7</id>
+            <properties>
+                <quarkus.version>2.7.5.Final</quarkus.version>
+            </properties>
+        </profile>
 
         <profile>
             <id>native</id>
