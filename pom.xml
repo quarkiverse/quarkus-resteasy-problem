@@ -21,7 +21,7 @@
         <!-- runtime/test dependencies -->
         <quarkus.version>2.9.2.Final</quarkus.version>
         <zalando-problem.version>0.27.1</zalando-problem.version>
-        <assertj.version>3.23.0</assertj.version>
+        <assertj.version>3.23.1</assertj.version>
         <jmh.version>1.35</jmh.version>
         <jsr305.version>3.0.2</jsr305.version>
         <archunit.version>0.23.1</archunit.version>
