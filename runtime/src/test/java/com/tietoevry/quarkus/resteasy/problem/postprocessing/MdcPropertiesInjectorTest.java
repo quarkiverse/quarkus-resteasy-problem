@@ -8,8 +8,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.common.collect.Sets;
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
-import io.quarkus.bootstrap.logging.LateBoundMDCProvider;
-import io.quarkus.vertx.core.runtime.VertxMDC;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +21,6 @@ class MdcPropertiesInjectorTest {
 
     @BeforeEach
     void init() {
-        LateBoundMDCProvider.setMDCProviderDelegate(VertxMDC.INSTANCE);
         MDC.clear();
     }
 
