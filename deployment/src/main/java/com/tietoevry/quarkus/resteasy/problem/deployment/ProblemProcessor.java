@@ -153,14 +153,6 @@ public class ProblemProcessor {
         }
     }
 
-    @BuildStep(onlyIfNot = QuarkusSmallryeMetricsDetector.class)
-    void warnOnMissingSmallryeMetricsDependency(ProblemBuildConfig config) {
-        if (config.metricsEnabled) {
-            logger().warn("quarkus.resteasy.problem.metrics.enabled is set to true, but quarkus-smallrye-metrics not "
-                    + "found in the classpath");
-        }
-    }
-
     protected Logger logger() {
         return LoggerFactory.getLogger(FEATURE_NAME);
     }
