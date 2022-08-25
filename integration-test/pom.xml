@@ -232,7 +232,7 @@
         <profile>
             <id>quarkus-2.11</id>
             <properties>
-                <quarkus.version>2.11.2.Final</quarkus.version>
+                <quarkus.version>2.11.3.Final</quarkus.version>
             </properties>
         </profile>
 
