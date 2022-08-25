@@ -44,7 +44,7 @@ Command line:\
 `./mvnw clean verify -Pnative,jackson-classic -pl integration-test` - running tests in native mode
 
 ### Deployment and release
-Releases are managed and conducted by TietoEVRY. Stable (release) artifacts are available from Maven Central.
+Releases are managed and conducted by Tietoevry. Stable (release) artifacts are available from Maven Central.
 
 ```
 ./mvnw release:prepare release:perform

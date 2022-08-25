@@ -10,7 +10,7 @@
     <name>Quarkus - RESTeasy - Problem - Parent</name>
     <description>Problem Details for HTTP APIs (RFC-7807) implementation for Quarkus / RESTeasy - Parent POM.
     </description>
-    <url>https://github.com/TietoEVRY/quarkus-resteasy-problem</url>
+    <url>https://github.com/Tietoevry/quarkus-resteasy-problem</url>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -313,17 +313,17 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:git@github.com:TietoEVRY/quarkus-resteasy-problem.git</connection>
-        <developerConnection>scm:git:git@github.com:TietoEVRY/quarkus-resteasy-problem.git
+        <connection>scm:git:git@github.com:tietoevry/quarkus-resteasy-problem.git</connection>
+        <developerConnection>scm:git:git@github.com:tietoevry/quarkus-resteasy-problem.git
         </developerConnection>
-        <url>https://github.com/TietoEVRY/quarkus-resteasy-problem/tree/master</url>
+        <url>https://github.com/tietoevry/quarkus-resteasy-problem/tree/master</url>
         <tag>HEAD</tag>
     </scm>
 
     <developers>
         <developer>
             <name>Data Platforms</name>
-            <organization>TietoEVRY</organization>
+            <organization>Tietoevry</organization>
             <organizationUrl>https://tietoevry.com</organizationUrl>
             <timezone>UTC+01:00</timezone>
         </developer>

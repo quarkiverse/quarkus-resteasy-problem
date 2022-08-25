@@ -8,12 +8,12 @@
 [![Quarkus](https://img.shields.io/badge/Quarkus-1.4%20&ndash;%201.13-important.svg)](https://github.com/quarkusio/quarkus/releases/tag/1.13.7.Final)
 ![Quarkus](https://img.shields.io/badge/Java%208+-blue.svg) 
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/blob/master/LICENSE.txt)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/tietoevry/quarkus-resteasy-problem/blob/master/LICENSE.txt)
 
-[![Build status](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/unit-tests.yaml/badge.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/unit-tests.yaml)
-[![Build status](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/integration-tests.yaml/badge.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/integration-tests.yaml)
-[![Build status](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/native-mode-tests.yaml/badge.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/native-mode-tests.yaml)
-[![Compatibility with latest stable Quarkus](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/latest-stable-compatibility-tests.yaml/badge.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/latest-stable-compatibility-tests.yaml)
+[![Build status](https://github.com/tietoevry/quarkus-resteasy-problem/actions/workflows/unit-tests.yaml/badge.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/unit-tests.yaml)
+[![Build status](https://github.com/tietoevry/quarkus-resteasy-problem/actions/workflows/integration-tests.yaml/badge.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/integration-tests.yaml)
+[![Build status](https://github.com/tietoevry/quarkus-resteasy-problem/actions/workflows/native-mode-tests.yaml/badge.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/native-mode-tests.yaml)
+[![Compatibility with latest stable Quarkus](https://github.com/tietoevry/quarkus-resteasy-problem/actions/workflows/latest-stable-compatibility-tests.yaml/badge.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/latest-stable-compatibility-tests.yaml)
 
 [RFC7807 Problem](https://tools.ietf.org/html/rfc7807) extension for Quarkus RESTeasy/JaxRS applications. It maps Exceptions to `application/problem+json` HTTP responses. Inspired by [Zalando Problem library](https://github.com/zalando/problem).
 
@@ -32,7 +32,7 @@ This extension supports:
 
 - __time-saving__ - in most cases you will not have to implement your own JaxRS `ExceptionMapper`s anymore, which makes your app smaller, and less error-prone. 
 
-See [Built-in Exception Mappers Wiki](https://github.com/TietoEVRY/quarkus-resteasy-problem/wiki#built-in-exception-mappers) for more details.
+See [Built-in Exception Mappers Wiki](https://github.com/tietoevry/quarkus-resteasy-problem/wiki#built-in-exception-mappers) for more details.
 
 From [RFC7807](https://tools.ietf.org/html/rfc7807):
 ```
