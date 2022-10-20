@@ -32,7 +32,6 @@ class SecurityMappersIT {
                 .statusCode(UNAUTHORIZED.getStatusCode())
                 .body("title", equalTo(UNAUTHORIZED.getReasonPhrase()))
                 .body("status", equalTo(UNAUTHORIZED.getStatusCode()))
-                .body("detail", equalTo(SAMPLE_DETAIL))
                 .body("stacktrace", nullValue());
     }
 
@@ -45,7 +44,6 @@ class SecurityMappersIT {
                 .statusCode(UNAUTHORIZED.getStatusCode())
                 .body("title", equalTo(UNAUTHORIZED.getReasonPhrase()))
                 .body("status", equalTo(UNAUTHORIZED.getStatusCode()))
-                .body("detail", equalTo(SAMPLE_DETAIL))
                 .body("stacktrace", nullValue());
     }
 
@@ -69,7 +67,7 @@ class SecurityMappersIT {
                 .get("/throw/security/secured-resource")
                 .then()
                 .statusCode(UNAUTHORIZED.getStatusCode())
-                .header(HttpHeaders.WWW_AUTHENTICATE, equalTo("Bearer {token}"))
+                .header(HttpHeaders.WWW_AUTHENTICATE, equalTo("Bearer"))
                 .body("title", equalTo(UNAUTHORIZED.getReasonPhrase()))
                 .body("status", equalTo(UNAUTHORIZED.getStatusCode()))
                 .body("instance", equalTo("/throw/security/secured-resource"))

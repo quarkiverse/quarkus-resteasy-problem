@@ -12,13 +12,13 @@ import javax.ws.rs.Priorities;
  * Mapper overriding default Quarkus exception mapper to make all error responses compliant with RFC7807.<br>
  * <br>
  * From AuthenticationCompletionException javadocs on WWW-Authenticate header:
- * 
+ *
  * <pre>
  * Exception indicating that a user authentication flow has failed and no challenge is required.
  * </pre>
- * 
+ *
  * <br>
- * 
+ *
  * @see io.quarkus.resteasy.runtime.AuthenticationCompletionExceptionMapper
  */
 @Priority(Priorities.USER - 1)

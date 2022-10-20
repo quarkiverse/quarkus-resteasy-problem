@@ -2,16 +2,14 @@ package com.tietoevry.quarkus.resteasy.problem.security;
 
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
-import javax.ws.rs.core.Response;
-
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
-
 import io.quarkus.vertx.http.runtime.security.ChallengeData;
 import io.quarkus.vertx.http.runtime.security.HttpAuthenticator;
 import io.smallrye.mutiny.Uni;
 import io.vertx.ext.web.RoutingContext;
+import javax.ws.rs.core.Response;
 
-final class AuthChallengeExtractor {
+final class HttpUnauthorizedUtils {
 
     static Uni<HttpProblem> toProblem(RoutingContext routingContext, Exception exception) {
         return extractChallenge(routingContext)

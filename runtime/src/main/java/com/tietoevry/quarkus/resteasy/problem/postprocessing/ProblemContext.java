@@ -1,7 +1,7 @@
 package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
-import javax.ws.rs.core.UriInfo;
 import java.net.URI;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * Context wrapper for everything ProblemPostProcessor implementations may need to do their job.

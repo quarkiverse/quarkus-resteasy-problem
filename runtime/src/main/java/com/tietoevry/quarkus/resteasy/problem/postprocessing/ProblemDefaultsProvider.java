@@ -2,7 +2,6 @@ package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 import java.net.URI;
-import javax.ws.rs.core.UriInfo;
 
 /**
  * Replaces <code>null</code> value of <code>instance</code> with URI of currently served endpoint, i.e

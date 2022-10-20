@@ -5,9 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 import io.quarkus.security.UnauthorizedException;
-import javax.ws.rs.core.Response;
-
 import io.quarkus.vertx.http.runtime.CurrentVertxRequest;
+import javax.ws.rs.core.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
