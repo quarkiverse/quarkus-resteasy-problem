@@ -12,6 +12,8 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.Test;
 
+import javax.ws.rs.core.HttpHeaders;
+
 @QuarkusTest
 class SecurityMappersIT {
 
@@ -30,7 +32,6 @@ class SecurityMappersIT {
                 .statusCode(UNAUTHORIZED.getStatusCode())
                 .body("title", equalTo(UNAUTHORIZED.getReasonPhrase()))
                 .body("status", equalTo(UNAUTHORIZED.getStatusCode()))
-                .body("detail", equalTo(SAMPLE_DETAIL))
                 .body("stacktrace", nullValue());
     }
 
@@ -43,7 +44,6 @@ class SecurityMappersIT {
                 .statusCode(UNAUTHORIZED.getStatusCode())
                 .body("title", equalTo(UNAUTHORIZED.getReasonPhrase()))
                 .body("status", equalTo(UNAUTHORIZED.getStatusCode()))
-                .body("detail", equalTo(SAMPLE_DETAIL))
                 .body("stacktrace", nullValue());
     }
 
@@ -61,14 +61,16 @@ class SecurityMappersIT {
     }
 
     @Test
-    void securedResourceWithoutValidJwtShouldReturn401() {
+    void securedResourceWithoutValidJwtShouldReturn401AndWwwAuthenticateHeader() {
         givenAnonymous()
                 .queryParam("message", SAMPLE_DETAIL)
                 .get("/throw/security/secured-resource")
                 .then()
                 .statusCode(UNAUTHORIZED.getStatusCode())
+                .header(HttpHeaders.WWW_AUTHENTICATE, equalTo("Bearer"))
                 .body("title", equalTo(UNAUTHORIZED.getReasonPhrase()))
                 .body("status", equalTo(UNAUTHORIZED.getStatusCode()))
+                .body("instance", equalTo("/throw/security/secured-resource"))
                 .body("stacktrace", nullValue());
     }
 

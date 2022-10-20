@@ -19,7 +19,7 @@ class ProblemDefaultsProviderTest {
 
         HttpProblem enhancedProblem = processor.apply(badRequestProblem(), context);
 
-        assertThat(enhancedProblem.getInstance()).hasPath(context.uriInfo.getPath());
+        assertThat(enhancedProblem.getInstance()).hasPath(context.path);
     }
 
     @Test

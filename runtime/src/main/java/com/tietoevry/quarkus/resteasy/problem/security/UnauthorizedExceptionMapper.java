@@ -1,11 +1,11 @@
 package com.tietoevry.quarkus.resteasy.problem.security;
 
-import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
-
 import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 import io.quarkus.security.UnauthorizedException;
+import io.quarkus.vertx.http.runtime.CurrentVertxRequest;
 import javax.annotation.Priority;
+import javax.enterprise.inject.spi.CDI;
 import javax.ws.rs.Priorities;
 
 /**
@@ -18,7 +18,17 @@ public final class UnauthorizedExceptionMapper extends ExceptionMapperBase<Unaut
 
     @Override
     protected HttpProblem toProblem(UnauthorizedException exception) {
-        return HttpProblem.valueOf(UNAUTHORIZED, exception.getMessage());
+        return HttpUnauthorizedUtils.toProblem(currentVertxRequest().getCurrent(), exception)
+                .await().indefinitely();
+    }
+
+    volatile CurrentVertxRequest currentVertxRequest;
+
+    private CurrentVertxRequest currentVertxRequest() {
+        if (currentVertxRequest == null) {
+            currentVertxRequest = CDI.current().select(CurrentVertxRequest.class).get();
+        }
+        return currentVertxRequest;
     }
 
 }

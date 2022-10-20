@@ -26,22 +26,9 @@ public abstract class ExceptionMapperBase<E extends Throwable> implements Except
 
         ProblemContext context = ProblemContext.of(exception, uriInfo);
         HttpProblem finalProblem = postProcessorsRegistry.applyPostProcessing(problem, context);
-        return toFinalResponse(finalProblem);
+        return finalProblem.toResponse();
     }
 
     protected abstract HttpProblem toProblem(E exception);
-
-    private Response toFinalResponse(HttpProblem problem) {
-        Objects.requireNonNull(problem.getStatus());
-
-        Response.ResponseBuilder builder = Response
-                .status(problem.getStatus().getStatusCode())
-                .type(HttpProblem.MEDIA_TYPE)
-                .entity(problem);
-
-        problem.getHeaders().forEach(builder::header);
-
-        return builder.build();
-    }
 
 }

@@ -15,6 +15,7 @@ import io.quarkus.deployment.builditem.LiveReloadBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.ReflectiveClassBuildItem;
 import io.quarkus.jsonb.spi.JsonbSerializerBuildItem;
 import io.quarkus.resteasy.common.spi.ResteasyJaxrsProviderBuildItem;
+import io.quarkus.resteasy.reactive.spi.CustomExceptionMapperBuildItem;
 import io.quarkus.resteasy.reactive.spi.ExceptionMapperBuildItem;
 import java.util.Arrays;
 import java.util.List;
@@ -52,9 +53,9 @@ public class ProblemProcessor {
                         .thatHandles("javax.ws.rs.ProcessingException"),
 
                 mapper(EXTENSION_MAIN_PACKAGE + "security.UnauthorizedExceptionMapper")
-                        .thatHandles("io.quarkus.security.UnauthorizedException"),
+                        .thatHandles("io.quarkus.security.UnauthorizedException").onlyIf(new RestEasyClassicDetector()),
                 mapper(EXTENSION_MAIN_PACKAGE + "security.AuthenticationFailedExceptionMapper")
-                        .thatHandles("io.quarkus.security.AuthenticationFailedException"),
+                        .thatHandles("io.quarkus.security.AuthenticationFailedException").onlyIf(new RestEasyClassicDetector()),
                 mapper(EXTENSION_MAIN_PACKAGE + "security.AuthenticationRedirectExceptionMapper")
                         .thatHandles("io.quarkus.security.AuthenticationRedirectException"),
                 mapper(EXTENSION_MAIN_PACKAGE + "security.AuthenticationCompletionExceptionMapper")
@@ -112,6 +113,14 @@ public class ProblemProcessor {
         neededExceptionMappers().forEach(mapper -> providers.produce(
                 new ExceptionMapperBuildItem(mapper.mapperClassName,
                         mapper.exceptionClassName, Priorities.AUTHENTICATION - 1, true)));
+    }
+
+    @BuildStep(onlyIf = RestEasyReactiveDetector.class)
+    void registerCustomExceptionMappers(BuildProducer<CustomExceptionMapperBuildItem> customExceptionMapper) {
+        customExceptionMapper.produce(
+                new CustomExceptionMapperBuildItem(EXTENSION_MAIN_PACKAGE + "security.UnauthorizedExceptionReactiveMapper"));
+        customExceptionMapper.produce(new CustomExceptionMapperBuildItem(
+                EXTENSION_MAIN_PACKAGE + "security.AuthenticationFailedExceptionReactiveMapper"));
     }
 
     @BuildStep(onlyIf = JacksonDetector.class)
