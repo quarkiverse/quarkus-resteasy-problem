@@ -12,7 +12,7 @@
     <name>Quarkus - RESTeasy - Problem - Integration Tests</name>
 
     <properties>
-        <quarkus-resteasy-problem.version>2.1.1-SNAPSHOT</quarkus-resteasy-problem.version>
+        <quarkus-resteasy-problem.version>${project.version}</quarkus-resteasy-problem.version>
     </properties>
 
     <dependencies>

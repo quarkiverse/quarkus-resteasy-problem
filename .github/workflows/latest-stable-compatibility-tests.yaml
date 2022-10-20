@@ -32,7 +32,7 @@ jobs:
 
       - name: Integration Tests (lastest - classic - jackson)
         env:
-          LATEST_STABLE_EXTENSION_VERSION: "2.0.1"
+          LATEST_STABLE_EXTENSION_VERSION: "2.1.0"
         run: |
           echo "Checking quarkus-resteasy-problem $LATEST_STABLE_EXTENSION_VERSION with Quarkus v${{ matrix.quarkus-version }}"
           ./mvnw clean verify \

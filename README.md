@@ -47,14 +47,14 @@ so-called "HTTP APIs" are usually not.
 ### Quarkus 2.X / Java 11+
 Make sure JDK 11 is in your PATH, the run:
 ```shell
-mvn io.quarkus:quarkus-maven-plugin:2.13.2.Final:create \
+mvn io.quarkus:quarkus-maven-plugin:2.13.3.Final:create \
     -DprojectGroupId=problem \
     -DprojectArtifactId=quarkus-resteasy-problem-playground \
     -DclassName="problem.HelloResource" \
     -Dpath="/hello" \
     -Dextensions="resteasy,resteasy-jackson"
 cd quarkus-resteasy-problem-playground
-./mvnw quarkus:add-extension -Dextensions="com.tietoevry.quarkus:quarkus-resteasy-problem:2.0.1"
+./mvnw quarkus:add-extension -Dextensions="com.tietoevry.quarkus:quarkus-resteasy-problem:2.1.0"
 ```
 Or add the following dependency to `pom.xml` in existing project:
 ```xml
