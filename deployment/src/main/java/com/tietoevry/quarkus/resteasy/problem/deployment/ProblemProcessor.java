@@ -117,8 +117,10 @@ public class ProblemProcessor {
 
     @BuildStep(onlyIf = RestEasyReactiveDetector.class)
     void registerCustomExceptionMappers(BuildProducer<CustomExceptionMapperBuildItem> customExceptionMapper) {
-        customExceptionMapper.produce(new CustomExceptionMapperBuildItem(EXTENSION_MAIN_PACKAGE + "security.UnauthorizedExceptionReactiveMapper"));
-        customExceptionMapper.produce(new CustomExceptionMapperBuildItem(EXTENSION_MAIN_PACKAGE + "security.AuthenticationFailedExceptionReactiveMapper"));
+        customExceptionMapper.produce(
+                new CustomExceptionMapperBuildItem(EXTENSION_MAIN_PACKAGE + "security.UnauthorizedExceptionReactiveMapper"));
+        customExceptionMapper.produce(new CustomExceptionMapperBuildItem(
+                EXTENSION_MAIN_PACKAGE + "security.AuthenticationFailedExceptionReactiveMapper"));
     }
 
     @BuildStep(onlyIf = JacksonDetector.class)
