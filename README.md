@@ -61,7 +61,7 @@ Or add the following dependency to `pom.xml` in existing project:
 <dependency>
     <groupId>com.tietoevry.quarkus</groupId>
     <artifactId>quarkus-resteasy-problem</artifactId>
-    <version>2.0.1</version>
+    <version>2.1.0</version>
 </dependency>
 ```
 
