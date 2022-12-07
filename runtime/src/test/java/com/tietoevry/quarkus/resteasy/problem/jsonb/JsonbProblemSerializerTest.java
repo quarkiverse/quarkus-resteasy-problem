@@ -7,12 +7,12 @@ import com.tietoevry.quarkus.resteasy.problem.HttpProblemMother;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import javax.json.Json;
-import javax.json.bind.JsonbConfig;
-import javax.json.bind.serializer.SerializationContext;
-import javax.json.stream.JsonGenerator;
+import jakarta.json.Json;
+import jakarta.json.bind.JsonbConfig;
+import jakarta.json.bind.serializer.SerializationContext;
+import jakarta.json.stream.JsonGenerator;
 import org.eclipse.yasson.internal.JsonbContext;
-import org.eclipse.yasson.internal.Marshaller;
+import org.eclipse.yasson.internal.SerializationContextImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +20,7 @@ class JsonbProblemSerializerTest {
 
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     JsonGenerator jsonGenerator = Json.createGenerator(outputStream);
-    SerializationContext context = new Marshaller(new JsonbContext(new JsonbConfig(), null));
+    SerializationContext context = new SerializationContextImpl(new JsonbContext(new JsonbConfig(), null));
 
     JsonbProblemSerializer serializer = new JsonbProblemSerializer();
 

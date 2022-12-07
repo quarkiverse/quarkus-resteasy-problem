@@ -3,9 +3,9 @@ package com.tietoevry.quarkus.resteasy.problem.jackson;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
-import javax.annotation.Priority;
-import javax.ws.rs.Priorities;
-import javax.ws.rs.core.Response;
+import jakarta.annotation.Priority;
+import jakarta.ws.rs.Priorities;
+import jakarta.ws.rs.core.Response;
 
 /**
  * UnrecognizedPropertyException is thrown by Jackson, when request payload json does not fit DTO object with @Valid annotation

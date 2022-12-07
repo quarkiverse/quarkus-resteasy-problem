@@ -1,12 +1,12 @@
 package com.tietoevry.quarkus.resteasy.problem.validation;
 
-import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static jakarta.ws.rs.core.Response.Status.BAD_REQUEST;
 
 import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
-import javax.annotation.Priority;
-import javax.validation.ValidationException;
-import javax.ws.rs.Priorities;
+import jakarta.annotation.Priority;
+import jakarta.validation.ValidationException;
+import jakarta.ws.rs.Priorities;
 
 /**
  * More generic Exception Mapper compared to ConstraintViolationException - does not provide any details except the message.

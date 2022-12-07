@@ -6,9 +6,9 @@ import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.annotation.Priority;
-import javax.ws.rs.Priorities;
-import javax.ws.rs.core.Response;
+import jakarta.annotation.Priority;
+import jakarta.ws.rs.Priorities;
+import jakarta.ws.rs.core.Response;
 
 /**
  * Mapper for Jackson InvalidFormatException, which is more specialised version of JsonProcessingException

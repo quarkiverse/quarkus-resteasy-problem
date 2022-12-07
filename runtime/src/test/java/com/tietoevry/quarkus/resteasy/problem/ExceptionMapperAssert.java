@@ -1,9 +1,9 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
 import java.util.Optional;
-import javax.annotation.Priority;
-import javax.ws.rs.Priorities;
-import javax.ws.rs.ext.ExceptionMapper;
+import jakarta.annotation.Priority;
+import jakarta.ws.rs.Priorities;
+import jakarta.ws.rs.ext.ExceptionMapper;
 import org.assertj.core.api.AbstractAssert;
 
 public final class ExceptionMapperAssert extends AbstractAssert<ExceptionMapperAssert, Class<? extends ExceptionMapper<?>>> {

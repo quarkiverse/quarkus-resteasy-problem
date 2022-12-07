@@ -4,8 +4,8 @@ import static com.tietoevry.quarkus.resteasy.problem.ExceptionMapperAssert.asser
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.quarkus.security.AuthenticationRedirectException;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;
 
 class AuthenticationRedirectExceptionMapperTest {

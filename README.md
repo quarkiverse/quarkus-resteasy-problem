@@ -18,7 +18,7 @@
 [RFC7807 Problem](https://tools.ietf.org/html/rfc7807) extension for Quarkus RESTeasy/JaxRS applications. It maps Exceptions to `application/problem+json` HTTP responses. Inspired by [Zalando Problem library](https://github.com/zalando/problem).
 
 This extension supports:
-- Quarkus 1.X and 2.X
+- Quarkus 1, 2 and 3
 - `quarkus-resteasy-jackson` and `quarkus-resteasy-jsonb`
 - `quarkus-resteasy-reactive-jackson` and `quarkus-resteasy-reactive-jsonb`
 - JVM and native mode
@@ -44,8 +44,29 @@ so-called "HTTP APIs" are usually not.
 ```
 
 ## Usage
+### Quarkus 3.X / Java 11+
+Make sure JDK 11 is in your PATH, then run:
+```shell
+mvn io.quarkus:quarkus-maven-plugin:3.0.0.Alpha2:create \
+    -DprojectGroupId=problem \
+    -DprojectArtifactId=quarkus-resteasy-problem-playground \
+    -DclassName="problem.HelloResource" \
+    -Dpath="/hello" \
+    -Dextensions="resteasy,resteasy-jackson"
+cd quarkus-resteasy-problem-playground
+./mvnw quarkus:add-extension -Dextensions="com.tietoevry.quarkus:quarkus-resteasy-problem:3.0.0"
+```
+Or add the following dependency to `pom.xml` in existing project:
+```xml
+<dependency>
+    <groupId>com.tietoevry.quarkus</groupId>
+    <artifactId>quarkus-resteasy-problem</artifactId>
+    <version>3.0.0</version>
+</dependency>
+```
+
 ### Quarkus 2.X / Java 11+
-Make sure JDK 11 is in your PATH, the run:
+Make sure JDK 11 is in your PATH, then run:
 ```shell
 mvn io.quarkus:quarkus-maven-plugin:2.15.2.Final:create \
     -DprojectGroupId=problem \
@@ -99,9 +120,9 @@ Now you can throw `HttpProblem`s (using builder or a subclass), JaxRS exceptions
 package problem;
 
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.core.Response;
 
 @Path("/hello")
 public class HelloResource {

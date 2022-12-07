@@ -1,7 +1,7 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
-import io.quarkus.test.junit.NativeImageTest;
+import io.quarkus.test.junit.QuarkusIntegrationTest;
 
-@NativeImageTest
+@QuarkusIntegrationTest
 class JsonMappersNativeIT extends JsonMappersIT {
 }
