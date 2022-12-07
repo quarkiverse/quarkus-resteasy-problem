@@ -2,11 +2,11 @@ package com.tietoevry.quarkus.resteasy.problem;
 
 import com.tietoevry.quarkus.resteasy.problem.postprocessing.PostProcessorsRegistry;
 import com.tietoevry.quarkus.resteasy.problem.postprocessing.ProblemContext;
-import java.util.Objects;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 import jakarta.ws.rs.ext.ExceptionMapper;
+import java.util.Objects;
 
 /**
  * Base class for all ExceptionMappers in this extension, takes care of mapping Exceptions to Problems, triggering

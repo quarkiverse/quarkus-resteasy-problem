@@ -5,11 +5,11 @@ import static jakarta.ws.rs.core.HttpHeaders.RETRY_AFTER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
-import java.net.URI;
 import jakarta.ws.rs.RedirectionException;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import java.net.URI;
 import org.junit.jupiter.api.Test;
 
 class WebApplicationExceptionMapperTest {
