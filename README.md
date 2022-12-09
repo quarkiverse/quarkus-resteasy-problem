@@ -54,57 +54,63 @@ mvn io.quarkus:quarkus-maven-plugin:3.0.0.Alpha2:create \
     -Dpath="/hello" \
     -Dextensions="resteasy,resteasy-jackson"
 cd quarkus-resteasy-problem-playground
-./mvnw quarkus:add-extension -Dextensions="com.tietoevry.quarkus:quarkus-resteasy-problem:3.0.0"
+./mvnw quarkus:add-extension -Dextensions="com.tietoevry.quarkus:quarkus-resteasy-problem:3.0.0.Alpha2"
 ```
 Or add the following dependency to `pom.xml` in existing project:
 ```xml
 <dependency>
     <groupId>com.tietoevry.quarkus</groupId>
     <artifactId>quarkus-resteasy-problem</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.0.Alpha2</version>
 </dependency>
 ```
 
-### Quarkus 2.X / Java 11+
-Make sure JDK 11 is in your PATH, then run:
-```shell
-mvn io.quarkus:quarkus-maven-plugin:2.15.2.Final:create \
-    -DprojectGroupId=problem \
-    -DprojectArtifactId=quarkus-resteasy-problem-playground \
-    -DclassName="problem.HelloResource" \
-    -Dpath="/hello" \
-    -Dextensions="resteasy,resteasy-jackson"
-cd quarkus-resteasy-problem-playground
-./mvnw quarkus:add-extension -Dextensions="com.tietoevry.quarkus:quarkus-resteasy-problem:2.1.0"
-```
-Or add the following dependency to `pom.xml` in existing project:
-```xml
-<dependency>
-    <groupId>com.tietoevry.quarkus</groupId>
-    <artifactId>quarkus-resteasy-problem</artifactId>
-    <version>2.1.0</version>
-</dependency>
-```
+<details>
+    <summary>Quarkus 2.X / Java 11+</summary>
 
-### Quarkus 1.X / Java 1.8+
-Create a new Quarkus project with the following command:
-```shell 
-mvn io.quarkus:quarkus-maven-plugin:1.13.7.Final:create \
-    -DprojectGroupId=problem \
-    -DprojectArtifactId=quarkus-resteasy-problem-playground \
-    -DclassName="problem.HelloResource" \
-    -Dpath="/hello" \
-    -Dextensions="resteasy,resteasy-jackson,com.tietoevry.quarkus:quarkus-resteasy-problem:1.0.0"
-cd quarkus-resteasy-problem-playground
-```
-or
-```xml
-<dependency>
+  Make sure JDK 11 is in your PATH, then run:
+  ```shell 
+  mvn io.quarkus:quarkus-maven-plugin:2.15.2.Final:create \
+      -DprojectGroupId=problem \
+      -DprojectArtifactId=quarkus-resteasy-problem-playground \
+      -DclassName="problem.HelloResource" \
+      -Dpath="/hello" \
+      -Dextensions="resteasy,resteasy-jackson"
+  cd quarkus-resteasy-problem-playground
+  ./mvnw quarkus:add-extension -Dextensions="com.tietoevry.quarkus:quarkus-resteasy-problem:2.1.0
+  ```
+  Or add the following dependency to `pom.xml` in existing project:
+  ```xml
+  <dependency>
+      <groupId>com.tietoevry.quarkus</groupId>
+      <artifactId>quarkus-resteasy-problem</artifactId>
+      <version>2.1.0</version>
+  </dependency>
+  ```
+</details>
+
+<details>
+    <summary>Quarkus 1.X / Java 1.8+</summary>
+    
+  Create a new Quarkus project with the following command:
+  ```shell 
+  mvn io.quarkus:quarkus-maven-plugin:1.13.7.Final:create \
+      -DprojectGroupId=problem \
+      -DprojectArtifactId=quarkus-resteasy-problem-playground \
+      -DclassName="problem.HelloResource" \
+      -Dpath="/hello" \
+      -Dextensions="resteasy,resteasy-jackson,com.tietoevry.quarkus:quarkus-resteasy-problem:1.0.0"
+  cd quarkus-resteasy-problem-playground
+  ```
+  Or add the following dependency to `pom.xml` in existing project:
+  ```xml
+  <dependency>
     <groupId>com.tietoevry.quarkus</groupId>
     <artifactId>quarkus-resteasy-problem</artifactId>
     <version>1.0.0</version>
-</dependency>
-```
+  </dependency>
+  ```
+</details>
 
 **Hint:** you can also use `resteasy-jsonb` or reactive equivalents: `resteasy-reactive-jackson` / `resteasy-reactive-jsonb` instead of `resteasy-jackson`
 
