@@ -29,8 +29,9 @@ class JsonMappersIT {
     static final String JSONB_REACTIVE_MALFORMED_PAYLOAD_DETAIL = "Invalid token=EOF at (line no=1, column no=14, offset=13). Expected tokens are: [CURLYOPEN, SQUAREOPEN, STRING, NUMBER, TRUE, FALSE, NULL]";
     static final String JSONB_CLASSIC_FIELD_SERIALIZATION_ERROR_DETAIL = "Internal error: Invalid UUID string: ABC-DEF-GHI";
     static final String JSONB_REACTIVE_FIELD_SERIALIZATION_ERROR_DETAIL = "Invalid UUID string: ABC-DEF-GHI";
+    static final String QUARKUS_2_15_JACKSON_REACTIVE_ERROR_DETAIL = "HTTP 400 Bad Request";
 
-    private Logger logger = LoggerFactory.getLogger(JsonMappersIT.class);
+    private static final Logger logger = LoggerFactory.getLogger(JsonMappersIT.class);
 
     static {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
@@ -56,7 +57,7 @@ class JsonMappersIT {
                 .post("/throw/json")
                 .then()
                 .statusCode(BAD_REQUEST.getStatusCode())
-                .body("detail", oneOf(JACKSON_MALFORMED_PAYLOAD_DETAIL, JSONB_CLASSIC_MALFORMED_PAYLOAD_DETAIL, JSONB_REACTIVE_MALFORMED_PAYLOAD_DETAIL));
+                .body("detail", oneOf(JACKSON_MALFORMED_PAYLOAD_DETAIL, JSONB_CLASSIC_MALFORMED_PAYLOAD_DETAIL, JSONB_REACTIVE_MALFORMED_PAYLOAD_DETAIL, QUARKUS_2_15_JACKSON_REACTIVE_ERROR_DETAIL));
     }
 
     @Test
