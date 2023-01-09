@@ -6,8 +6,8 @@ import com.tietoevry.quarkus.resteasy.problem.postprocessing.ProblemContext;
 import io.quarkus.security.UnauthorizedException;
 import io.smallrye.mutiny.Uni;
 import io.vertx.ext.web.RoutingContext;
-import javax.ws.rs.Priorities;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.Priorities;
+import jakarta.ws.rs.core.Response;
 import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
 
 /**

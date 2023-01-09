@@ -3,8 +3,8 @@ package com.tietoevry.quarkus.resteasy.problem;
 import static com.tietoevry.quarkus.resteasy.problem.AuthTestUtils.givenAnonymous;
 import static com.tietoevry.quarkus.resteasy.problem.AuthTestUtils.givenUser;
 import static io.restassured.RestAssured.given;
-import static javax.ws.rs.core.Response.Status.FORBIDDEN;
-import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
+import static jakarta.ws.rs.core.Response.Status.FORBIDDEN;
+import static jakarta.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.nullValue;
 
@@ -12,7 +12,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.Test;
 
-import javax.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.HttpHeaders;
 
 @QuarkusTest
 class SecurityMappersIT {

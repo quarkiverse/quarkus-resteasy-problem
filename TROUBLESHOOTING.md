@@ -51,7 +51,7 @@ response property is used directly.
 [Quarkus issue related to this behaviour](https://github.com/quarkusio/quarkus/issues/4031)
 
 ## There are strange fields (stack traces etc.) in API error responses
-Your code most likely overrides `Jackson`/`JsonB` configuration by providing bean of type `com.fasterxml.jackson.databind.ObjectMapper`/`javax.json.bind.JsonB`, thus deregistering serializers provided by this extension - this is considered a bad practice, as described in [Quarkus docs](https://quarkus.io/guides/rest-json#configuring-json-support). 
+Your code most likely overrides `Jackson`/`JsonB` configuration by providing bean of type `com.fasterxml.jackson.databind.ObjectMapper`/`jakarta.json.bind.JsonB`, thus deregistering serializers provided by this extension - this is considered a bad practice, as described in [Quarkus docs](https://quarkus.io/guides/rest-json#configuring-json-support). 
 The easiest fix is to customize, not override existing configurations.
 
 Jackson:
@@ -79,5 +79,5 @@ In case you really have to provide your own configuration bean, and still want t
 
 ```
 Jackson: it is very important to manually inject and apply all io.quarkus.jackson.ObjectMapperCustomizer beans in the CDI producer that produces ObjectMapper. Failure to do so will prevent Jackson specific customizations provided by various extensions from being applied.
-JsonB: it is very important to manually inject and apply all io.quarkus.jsonb.JsonbConfigCustomizer beans in the CDI producer that produces javax.json.bind.Jsonb. Failure to do so will prevent JSON-B specific customizations provided by various extensions from being applied.
+JsonB: it is very important to manually inject and apply all io.quarkus.jsonb.JsonbConfigCustomizer beans in the CDI producer that produces jakarta.json.bind.Jsonb. Failure to do so will prevent JSON-B specific customizations provided by various extensions from being applied.
 ```

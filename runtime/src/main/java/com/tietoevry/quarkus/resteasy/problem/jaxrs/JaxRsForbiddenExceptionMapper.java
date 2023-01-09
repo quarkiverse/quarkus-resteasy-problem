@@ -1,12 +1,12 @@
 package com.tietoevry.quarkus.resteasy.problem.jaxrs;
 
-import static javax.ws.rs.core.Response.Status.FORBIDDEN;
+import static jakarta.ws.rs.core.Response.Status.FORBIDDEN;
 
 import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
-import javax.annotation.Priority;
-import javax.ws.rs.ForbiddenException;
-import javax.ws.rs.Priorities;
+import jakarta.annotation.Priority;
+import jakarta.ws.rs.ForbiddenException;
+import jakarta.ws.rs.Priorities;
 
 /**
  * Mapper overriding default Quarkus exception mapper to make all error responses compliant with RFC7807.

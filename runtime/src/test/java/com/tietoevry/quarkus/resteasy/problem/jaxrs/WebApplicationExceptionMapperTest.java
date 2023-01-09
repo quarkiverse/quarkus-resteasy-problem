@@ -1,15 +1,15 @@
 package com.tietoevry.quarkus.resteasy.problem.jaxrs;
 
 import static com.tietoevry.quarkus.resteasy.problem.HttpProblem.MEDIA_TYPE;
-import static javax.ws.rs.core.HttpHeaders.RETRY_AFTER;
+import static jakarta.ws.rs.core.HttpHeaders.RETRY_AFTER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
+import jakarta.ws.rs.RedirectionException;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import java.net.URI;
-import javax.ws.rs.RedirectionException;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;
 
 class WebApplicationExceptionMapperTest {

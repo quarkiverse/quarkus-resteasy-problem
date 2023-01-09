@@ -17,11 +17,11 @@ import io.quarkus.jsonb.spi.JsonbSerializerBuildItem;
 import io.quarkus.resteasy.common.spi.ResteasyJaxrsProviderBuildItem;
 import io.quarkus.resteasy.reactive.spi.CustomExceptionMapperBuildItem;
 import io.quarkus.resteasy.reactive.spi.ExceptionMapperBuildItem;
+import jakarta.ws.rs.Priorities;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.ws.rs.Priorities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,12 +45,12 @@ public class ProblemProcessor {
                         .thatHandles("com.tietoevry.quarkus.resteasy.problem.HttpProblem"),
 
                 mapper(EXTENSION_MAIN_PACKAGE + "jaxrs.WebApplicationExceptionMapper")
-                        .thatHandles("javax.ws.rs.WebApplicationException"),
+                        .thatHandles("jakarta.ws.rs.WebApplicationException"),
                 mapper(EXTENSION_MAIN_PACKAGE + "jaxrs.JaxRsForbiddenExceptionMapper")
-                        .thatHandles("javax.ws.rs.ForbiddenException"),
-                mapper(EXTENSION_MAIN_PACKAGE + "jaxrs.NotFoundExceptionMapper").thatHandles("javax.ws.rs.NotFoundException"),
+                        .thatHandles("jakarta.ws.rs.ForbiddenException"),
+                mapper(EXTENSION_MAIN_PACKAGE + "jaxrs.NotFoundExceptionMapper").thatHandles("jakarta.ws.rs.NotFoundException"),
                 mapper(EXTENSION_MAIN_PACKAGE + "jsonb.RestEasyClassicJsonbExceptionMapper")
-                        .thatHandles("javax.ws.rs.ProcessingException"),
+                        .thatHandles("jakarta.ws.rs.ProcessingException"),
 
                 mapper(EXTENSION_MAIN_PACKAGE + "security.UnauthorizedExceptionMapper")
                         .thatHandles("io.quarkus.security.UnauthorizedException").onlyIf(new RestEasyClassicDetector()),
@@ -64,10 +64,10 @@ public class ProblemProcessor {
                         .thatHandles("io.quarkus.security.ForbiddenException"),
 
                 mapper(EXTENSION_MAIN_PACKAGE + "validation.ValidationExceptionMapper")
-                        .thatHandles("javax.validation.ValidationException"),
+                        .thatHandles("jakarta.validation.ValidationException"),
 
                 mapper(EXTENSION_MAIN_PACKAGE + "validation.ConstraintViolationExceptionMapper")
-                        .thatHandles("javax.validation.ConstraintViolationException"),
+                        .thatHandles("jakarta.validation.ConstraintViolationException"),
 
                 mapper(EXTENSION_MAIN_PACKAGE + "jackson.JsonProcessingExceptionMapper")
                         .thatHandles("com.fasterxml.jackson.core.JsonProcessingException").onlyIf(new JacksonDetector()),
@@ -78,10 +78,10 @@ public class ProblemProcessor {
                         .thatHandles("com.fasterxml.jackson.databind.exc.InvalidFormatException").onlyIf(new JacksonDetector()),
 
                 mapper(EXTENSION_MAIN_PACKAGE + "jsonb.RestEasyClassicJsonbExceptionMapper")
-                        .thatHandles("javax.ws.rs.ProcessingException")
+                        .thatHandles("jakarta.ws.rs.ProcessingException")
                         .onlyIf(new JsonBDetector()),
 
-                mapper(EXTENSION_MAIN_PACKAGE + "jsonb.JsonbExceptionMapper").thatHandles("javax.json.bind.JsonbException")
+                mapper(EXTENSION_MAIN_PACKAGE + "jsonb.JsonbExceptionMapper").thatHandles("jakarta.json.bind.JsonbException")
                         .onlyIf(new JsonBDetector()),
 
                 mapper(EXTENSION_MAIN_PACKAGE + "ZalandoProblemMapper").thatHandles("org.zalando.problem.ThrowableProblem"),

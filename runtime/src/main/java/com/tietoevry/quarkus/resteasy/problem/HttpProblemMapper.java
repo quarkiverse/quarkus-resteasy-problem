@@ -1,7 +1,7 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
-import javax.annotation.Priority;
-import javax.ws.rs.Priorities;
+import jakarta.annotation.Priority;
+import jakarta.ws.rs.Priorities;
 
 @Priority(Priorities.USER)
 public final class HttpProblemMapper extends ExceptionMapperBase<HttpProblem> {

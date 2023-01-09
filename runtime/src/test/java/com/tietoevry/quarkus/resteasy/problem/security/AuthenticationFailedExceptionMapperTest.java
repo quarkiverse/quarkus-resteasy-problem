@@ -6,7 +6,7 @@ import static org.mockito.Mockito.mock;
 
 import io.quarkus.security.AuthenticationFailedException;
 import io.quarkus.vertx.http.runtime.CurrentVertxRequest;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

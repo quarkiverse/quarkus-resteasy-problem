@@ -1,12 +1,12 @@
 package com.tietoevry.quarkus.resteasy.problem.jsonb;
 
-import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static jakarta.ws.rs.core.Response.Status.BAD_REQUEST;
 
 import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
-import javax.annotation.Priority;
-import javax.json.bind.JsonbException;
-import javax.ws.rs.Priorities;
+import jakarta.annotation.Priority;
+import jakarta.json.bind.JsonbException;
+import jakarta.ws.rs.Priorities;
 
 @Priority(Priorities.USER)
 public final class JsonbExceptionMapper extends ExceptionMapperBase<JsonbException> {

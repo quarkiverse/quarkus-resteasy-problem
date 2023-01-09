@@ -17,7 +17,7 @@ public class PostProcessingArchitectureTest {
 
     @ArchTest
     ArchRule postProcessorsShouldNotDependOnJsonB = classes()
-            .should().onlyDependOnClassesThat().resideOutsideOfPackage("javax.json.(**)")
+            .should().onlyDependOnClassesThat().resideOutsideOfPackage("jakarta.json.(**)")
             .because("post processors should be json-provider agnostic");
 
 }

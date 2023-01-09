@@ -5,9 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.common.collect.Sets;
 import com.tietoevry.quarkus.resteasy.problem.postprocessing.ProblemRecorder;
+import jakarta.ws.rs.core.Response;
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
-import javax.ws.rs.core.Response;
 import org.jboss.resteasy.specimpl.ResteasyUriInfo;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
