@@ -21,7 +21,7 @@
         <!-- runtime/test dependencies -->
         <quarkus.version>3.0.0.Alpha2</quarkus.version>
         <zalando-problem.version>0.27.1</zalando-problem.version>
-        <assertj.version>3.24.1</assertj.version>
+        <assertj.version>3.24.2</assertj.version>
         <jmh.version>1.36</jmh.version>
         <jsr305.version>3.0.2</jsr305.version>
         <archunit.version>1.0.1</archunit.version>
@@ -34,7 +34,7 @@
         <maven.javadoc-plugin.version>3.4.1</maven.javadoc-plugin.version>
         <sign-maven-plugin.version>1.0.1</sign-maven-plugin.version>
         <surefire-plugin.version>3.0.0-M8</surefire-plugin.version>
-        <failsafe-plugin.version>3.0.0-M7</failsafe-plugin.version>
+        <failsafe-plugin.version>3.0.0-M8</failsafe-plugin.version>
         <forbiddenapis-maven-plugin.version>3.4</forbiddenapis-maven-plugin.version>
         <formatter-maven-plugin.version>2.21.0</formatter-maven-plugin.version>
         <impsort-maven-plugin.version>1.8.0</impsort-maven-plugin.version>
