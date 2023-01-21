@@ -2,7 +2,7 @@ name: Static Code Analysis
 
 on:
   push:
-    branches: [ master, v2.X, v1.X ]
+    branches: [ master, v3.X, v2.X, v1.X ]
   pull_request:
     branches: [ master ]
   workflow_dispatch:
