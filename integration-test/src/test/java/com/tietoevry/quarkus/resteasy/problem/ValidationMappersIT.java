@@ -3,6 +3,7 @@ package com.tietoevry.quarkus.resteasy.problem;
 import static io.restassured.RestAssured.given;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.nullValue;
@@ -21,15 +22,28 @@ class ValidationMappersIT {
     }
 
     @Test
-    void violationShouldReturnDetails() {
+    void violationShouldReturn500() {
         given()
                 .queryParam("message", SAMPLE_DETAIL)
                 .get("/throw/validation/violation-exception")
                 .then()
-                .statusCode(BAD_REQUEST.getStatusCode())
-                .body("title", equalTo(BAD_REQUEST.getReasonPhrase()))
-                .body("status", equalTo(BAD_REQUEST.getStatusCode()))
-                .body("detail", equalTo(SAMPLE_DETAIL))
+                .statusCode(INTERNAL_SERVER_ERROR.getStatusCode())
+                .body("title", equalTo(INTERNAL_SERVER_ERROR.getReasonPhrase()))
+                .body("status", equalTo(INTERNAL_SERVER_ERROR.getStatusCode()))
+                .body("detail", nullValue())
+                .body("stacktrace", nullValue());
+    }
+
+    @Test
+    void constraintDeclarationExceptionShouldReturn500() {
+        given()
+                .queryParam("message", SAMPLE_DETAIL)
+                .get("/throw/validation/constraint-declaration-exception")
+                .then()
+                .statusCode(INTERNAL_SERVER_ERROR.getStatusCode())
+                .body("title", equalTo(INTERNAL_SERVER_ERROR.getReasonPhrase()))
+                .body("status", equalTo(INTERNAL_SERVER_ERROR.getStatusCode()))
+                .body("detail", nullValue())
                 .body("stacktrace", nullValue());
     }
 

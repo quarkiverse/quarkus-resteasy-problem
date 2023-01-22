@@ -2,6 +2,7 @@ package com.tietoevry.quarkus.resteasy.problem;
 
 import javax.validation.Valid;
 import javax.validation.ValidationException;
+import javax.validation.constraints.AssertFalse;
 import javax.validation.constraints.Min;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -15,12 +16,17 @@ import org.hibernate.validator.constraints.Length;
 
 @Path("/throw/validation/")
 @Produces(MediaType.APPLICATION_JSON)
-public class ValdationExceptionsResource {
+public class ValidationExceptionsResource {
 
     @GET
     @Path("/violation-exception")
     public void throwViolationException(@QueryParam("message") String message) {
         throw new ValidationException(message);
+    }
+
+    @GET
+    @Path("/constraint-declaration-exception")
+    public void throwConstraintDeclarationException(@AssertFalse @QueryParam("message") String message) {
     }
 
     @POST
