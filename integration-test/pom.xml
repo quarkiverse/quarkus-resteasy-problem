@@ -5,14 +5,14 @@
     <parent>
         <groupId>com.tietoevry.quarkus</groupId>
         <artifactId>quarkus-resteasy-problem-parent</artifactId>
-        <version>3.0.0-SNAPSHOT</version>
+        <version>3.0.0.Alpha3</version>
     </parent>
 
     <artifactId>quarkus-resteasy-problem-integration-test</artifactId>
     <name>Quarkus - RESTeasy - Problem - Integration Tests</name>
 
     <properties>
-        <quarkus-resteasy-problem.version>3.0.0-SNAPSHOT</quarkus-resteasy-problem.version>
+        <quarkus-resteasy-problem.version>3.0.0.Alpha3</quarkus-resteasy-problem.version>
     </properties>
 
     <dependencies>
