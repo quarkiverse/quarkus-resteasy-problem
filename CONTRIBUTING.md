@@ -49,4 +49,6 @@ Releases are managed and conducted by Tietoevry. Stable (release) artifacts are 
 ```
 ./mvnw release:prepare release:perform
 ```
-Now create and publish new release on Github. This will also automatically trigger GH Action, which will deploy artifacts built from newly created version to OSSRH staging nexus.
+Now create and publish new release on Github. 
+
+This will also automatically trigger GH Action, which will deploy artifacts built from newly created version to [OSSRH staging nexus](https://s01.oss.sonatype.org/#stagingRepositories).
