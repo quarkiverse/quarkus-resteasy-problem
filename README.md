@@ -45,23 +45,23 @@ so-called "HTTP APIs" are usually not.
 
 ## Usage
 ### Quarkus 3.X / Java 11+
-Make sure JDK 11 is in your PATH, then run:
+!Resteast jackson quickstart doesn't work yet in 3.0! Make sure JDK 11 is in your PATH, then run:
 ```shell
-mvn io.quarkus:quarkus-maven-plugin:3.0.0.Alpha2:create \
+mvn io.quarkus:quarkus-maven-plugin:3.0.0.Alpha3:create \
     -DprojectGroupId=problem \
     -DprojectArtifactId=quarkus-resteasy-problem-playground \
     -DclassName="problem.HelloResource" \
     -Dpath="/hello" \
     -Dextensions="resteasy,resteasy-jackson"
 cd quarkus-resteasy-problem-playground
-./mvnw quarkus:add-extension -Dextensions="com.tietoevry.quarkus:quarkus-resteasy-problem:3.0.0.Alpha2"
+./mvnw quarkus:add-extension -Dextensions="com.tietoevry.quarkus:quarkus-resteasy-problem:3.0.0.Alpha3"
 ```
 Or add the following dependency to `pom.xml` in existing project:
 ```xml
 <dependency>
     <groupId>com.tietoevry.quarkus</groupId>
     <artifactId>quarkus-resteasy-problem</artifactId>
-    <version>3.0.0.Alpha2</version>
+    <version>3.0.0.Alpha3</version>
 </dependency>
 ```
 
