@@ -30,7 +30,7 @@ jobs:
             ${{ runner.os }}-maven-
             ${{ runner.os }}-
 
-      - name: Integration Tests (lastest - classic - jackson)
+      - name: Integration Tests (latest - classic - jackson)
         env:
           LATEST_STABLE_EXTENSION_VERSION: "3.0.0.Alpha2"
         run: |
