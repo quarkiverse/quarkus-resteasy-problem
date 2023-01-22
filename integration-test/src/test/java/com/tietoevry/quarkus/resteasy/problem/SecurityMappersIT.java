@@ -30,6 +30,7 @@ class SecurityMappersIT {
                 .get("/throw/security/unauthorized-exception")
                 .then()
                 .statusCode(UNAUTHORIZED.getStatusCode())
+                .header(HttpHeaders.WWW_AUTHENTICATE, equalTo("Bearer"))
                 .body("title", equalTo(UNAUTHORIZED.getReasonPhrase()))
                 .body("status", equalTo(UNAUTHORIZED.getStatusCode()))
                 .body("stacktrace", nullValue());
@@ -42,6 +43,7 @@ class SecurityMappersIT {
                 .get("/throw/security/authentication-failed-exception")
                 .then()
                 .statusCode(UNAUTHORIZED.getStatusCode())
+                .header(HttpHeaders.WWW_AUTHENTICATE, equalTo("Bearer"))
                 .body("title", equalTo(UNAUTHORIZED.getReasonPhrase()))
                 .body("status", equalTo(UNAUTHORIZED.getStatusCode()))
                 .body("stacktrace", nullValue());

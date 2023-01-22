@@ -25,7 +25,7 @@ class ValidationMappersIT {
     void violationShouldReturn500() {
         given()
                 .queryParam("message", SAMPLE_DETAIL)
-                .get("/throw/validation/violation-exception")
+                .get("/throw/validation/validation-exception")
                 .then()
                 .statusCode(INTERNAL_SERVER_ERROR.getStatusCode())
                 .body("title", equalTo(INTERNAL_SERVER_ERROR.getReasonPhrase()))

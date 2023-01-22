@@ -19,8 +19,8 @@ import org.hibernate.validator.constraints.Length;
 public class ValidationExceptionsResource {
 
     @GET
-    @Path("/violation-exception")
-    public void throwViolationException(@QueryParam("message") String message) {
+    @Path("/validation-exception")
+    public void throwValidationException(@QueryParam("message") String message) {
         throw new ValidationException(message);
     }
 
