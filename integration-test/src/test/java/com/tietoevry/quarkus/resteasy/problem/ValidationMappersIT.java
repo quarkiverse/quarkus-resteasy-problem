@@ -22,7 +22,7 @@ class ValidationMappersIT {
     }
 
     @Test
-    void violationShouldReturn500() {
+    void validationExceptionShouldReturn500() {
         given()
                 .queryParam("message", SAMPLE_DETAIL)
                 .get("/throw/validation/validation-exception")

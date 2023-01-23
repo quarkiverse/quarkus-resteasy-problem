@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Priority;
@@ -35,16 +36,21 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
 
     @Override
     protected HttpProblem toProblem(ConstraintViolationException exception) {
-        List<Violation> violations = exception.getConstraintViolations()
-                .stream()
-                .map(this::toViolation)
-                .collect(Collectors.toList());
-
         return HttpProblem.builder()
                 .withStatus(Response.Status.BAD_REQUEST)
                 .withTitle(Response.Status.BAD_REQUEST.getReasonPhrase())
-                .with("violations", violations)
+                .with("violations", toViolations(exception.getConstraintViolations()))
                 .build();
+    }
+
+    private List<Violation> toViolations(Set<ConstraintViolation<?>> constraintViolations) {
+        if (constraintViolations == null) {
+            return List.of();
+        }
+        return constraintViolations
+                .stream()
+                .map(this::toViolation)
+                .collect(Collectors.toList());
     }
 
     private Violation toViolation(ConstraintViolation<?> constraintViolation) {
