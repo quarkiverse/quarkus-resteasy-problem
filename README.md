@@ -70,7 +70,7 @@ Or add the following dependency to `pom.xml` in existing project:
 
   Make sure JDK 11 is in your PATH, then run:
   ```shell 
-  mvn io.quarkus:quarkus-maven-plugin:2.16.0.Final:create \
+  mvn io.quarkus:quarkus-maven-plugin:2.16.1.Final:create \
       -DprojectGroupId=problem \
       -DprojectArtifactId=quarkus-resteasy-problem-playground \
       -DclassName="problem.HelloResource" \
