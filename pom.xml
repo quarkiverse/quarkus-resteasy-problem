@@ -30,7 +30,7 @@
         <maven.compiler-plugin.version>3.11.0</maven.compiler-plugin.version>
         <maven.release-plugin.version>3.0.0</maven.release-plugin.version>
         <maven.source-plugin.version>3.2.1</maven.source-plugin.version>
-        <maven.deploy-plugin.version>3.1.0</maven.deploy-plugin.version>
+        <maven.deploy-plugin.version>3.1.1</maven.deploy-plugin.version>
         <maven.javadoc-plugin.version>3.5.0</maven.javadoc-plugin.version>
         <sign-maven-plugin.version>1.0.1</sign-maven-plugin.version>
         <surefire-plugin.version>3.0.0</surefire-plugin.version>
