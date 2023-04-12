@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 import io.quarkus.jackson.ObjectMapperCustomizer;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 @Singleton
 public final class JacksonProblemModuleRegistrar implements ObjectMapperCustomizer {

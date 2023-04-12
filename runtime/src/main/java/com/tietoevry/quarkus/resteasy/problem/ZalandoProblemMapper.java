@@ -1,9 +1,9 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
+import jakarta.annotation.Priority;
+import jakarta.ws.rs.Priorities;
+import jakarta.ws.rs.core.Response;
 import java.util.Optional;
-import javax.annotation.Priority;
-import javax.ws.rs.Priorities;
-import javax.ws.rs.core.Response;
 import org.zalando.problem.ThrowableProblem;
 
 /**

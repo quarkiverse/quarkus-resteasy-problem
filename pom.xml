@@ -4,7 +4,7 @@
 
     <groupId>com.tietoevry.quarkus</groupId>
     <artifactId>quarkus-resteasy-problem-parent</artifactId>
-    <version>2.2.1-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Quarkus - RESTeasy - Problem - Parent</name>
@@ -19,7 +19,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- runtime/test dependencies -->
-        <quarkus.version>2.16.6.Final</quarkus.version>
+        <quarkus.version>3.0.0.Final</quarkus.version>
         <zalando-problem.version>0.27.1</zalando-problem.version>
         <assertj.version>3.24.2</assertj.version>
         <jmh.version>1.36</jmh.version>
@@ -317,7 +317,7 @@
         <developerConnection>scm:git:git@github.com:tietoevry/quarkus-resteasy-problem.git
         </developerConnection>
         <url>https://github.com/tietoevry/quarkus-resteasy-problem/tree/master</url>
-        <tag>v2.2.0</tag>
+        <tag>v3.0.0.Alpha2</tag>
     </scm>
 
     <developers>

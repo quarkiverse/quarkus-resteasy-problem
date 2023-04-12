@@ -3,7 +3,7 @@ package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 import static com.tietoevry.quarkus.resteasy.problem.HttpProblemMother.badRequestProblem;
 import static com.tietoevry.quarkus.resteasy.problem.HttpProblemMother.badRequestProblemBuilder;
 import static com.tietoevry.quarkus.resteasy.problem.postprocessing.ProblemContextMother.simpleContext;
-import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static jakarta.ws.rs.core.Response.Status.BAD_REQUEST;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.common.collect.Sets;

@@ -4,7 +4,7 @@ import static com.tietoevry.quarkus.resteasy.problem.ExceptionMapperAssert.asser
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.quarkus.security.ForbiddenException;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;
 
 class ForbiddenExceptionMapperTest {

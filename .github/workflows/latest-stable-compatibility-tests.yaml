@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         json-provider: [ "jackson-classic", "jsonb-classic", "jackson-reactive", "jsonb-reactive" ]
-        quarkus-version: [ "2.0", "2.1", "2.2", "2.3", "2.4", "2.5", "2.6", "2.7", "2.8", "2.9", "2.10", "2.11", "2.12", "2.13", "2.14", "2.15"]
+        quarkus-version: [ "3.0" ]
 
     steps:
       - uses: actions/checkout@v2
@@ -32,7 +32,7 @@ jobs:
 
       - name: Integration Tests (latest - classic - jackson)
         env:
-          LATEST_STABLE_EXTENSION_VERSION: "2.2.0"
+          LATEST_STABLE_EXTENSION_VERSION: "3.0.0"
         run: |
           echo "Checking quarkus-resteasy-problem $LATEST_STABLE_EXTENSION_VERSION with Quarkus v${{ matrix.quarkus-version }}"
           ./mvnw clean verify \

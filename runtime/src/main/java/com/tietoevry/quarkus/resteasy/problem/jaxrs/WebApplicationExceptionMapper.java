@@ -2,10 +2,10 @@ package com.tietoevry.quarkus.resteasy.problem.jaxrs;
 
 import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
-import javax.annotation.Priority;
-import javax.ws.rs.Priorities;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
+import jakarta.annotation.Priority;
+import jakarta.ws.rs.Priorities;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Response;
 
 /**
  * Generic exception mapper for JaxRS WebApplicationExceptions - it passes status and message to application/problem response.

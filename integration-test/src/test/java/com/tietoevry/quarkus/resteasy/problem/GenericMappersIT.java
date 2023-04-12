@@ -2,7 +2,7 @@ package com.tietoevry.quarkus.resteasy.problem;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
-import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
+import static jakarta.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.nullValue;
 

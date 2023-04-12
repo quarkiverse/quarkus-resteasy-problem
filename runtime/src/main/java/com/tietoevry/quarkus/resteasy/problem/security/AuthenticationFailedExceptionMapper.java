@@ -4,9 +4,9 @@ import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 import io.quarkus.security.AuthenticationFailedException;
 import io.quarkus.vertx.http.runtime.CurrentVertxRequest;
-import javax.annotation.Priority;
-import javax.enterprise.inject.spi.CDI;
-import javax.ws.rs.Priorities;
+import jakarta.annotation.Priority;
+import jakarta.enterprise.inject.spi.CDI;
+import jakarta.ws.rs.Priorities;
 
 /**
  * Mapper overriding default Quarkus exception mapper to make all error responses compliant with RFC7807.

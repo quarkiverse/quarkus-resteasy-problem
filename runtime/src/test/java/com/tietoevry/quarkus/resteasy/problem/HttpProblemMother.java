@@ -1,6 +1,6 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
-import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static jakarta.ws.rs.core.Response.Status.BAD_REQUEST;
 
 import java.net.URI;
 

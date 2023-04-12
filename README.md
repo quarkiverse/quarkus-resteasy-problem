@@ -18,7 +18,7 @@
 [RFC7807 Problem](https://tools.ietf.org/html/rfc7807) extension for Quarkus RESTeasy/JaxRS applications. It maps Exceptions to `application/problem+json` HTTP responses. Inspired by [Zalando Problem library](https://github.com/zalando/problem).
 
 This extension supports:
-- Quarkus 1.X and 2.X
+- Quarkus 1, 2 and 3
 - `quarkus-resteasy-jackson` and `quarkus-resteasy-jsonb`
 - `quarkus-resteasy-reactive-jackson` and `quarkus-resteasy-reactive-jsonb`
 - JVM and native mode
@@ -44,46 +44,73 @@ so-called "HTTP APIs" are usually not.
 ```
 
 ## Usage
-### Quarkus 2.X / Java 11+
-Make sure JDK 11 is in your PATH, the run:
+### Quarkus 3.X / Java 11+
+!Resteast jackson quickstart doesn't work yet in 3.0! Make sure JDK 11 is in your PATH, then run:
 ```shell
-mvn io.quarkus:quarkus-maven-plugin:2.16.5.Final:create \
+mvn io.quarkus:quarkus-maven-plugin:3.0.0.Final:create \
     -DprojectGroupId=problem \
     -DprojectArtifactId=quarkus-resteasy-problem-playground \
     -DclassName="problem.HelloResource" \
     -Dpath="/hello" \
     -Dextensions="resteasy,resteasy-jackson"
 cd quarkus-resteasy-problem-playground
-./mvnw quarkus:add-extension -Dextensions="com.tietoevry.quarkus:quarkus-resteasy-problem:2.2.0"
+./mvnw quarkus:add-extension -Dextensions="com.tietoevry.quarkus:quarkus-resteasy-problem:3.0.0"
 ```
 Or add the following dependency to `pom.xml` in existing project:
 ```xml
 <dependency>
     <groupId>com.tietoevry.quarkus</groupId>
     <artifactId>quarkus-resteasy-problem</artifactId>
-    <version>2.2.0</version>
+    <version>3.0.0</version>
 </dependency>
 ```
 
-### Quarkus 1.X / Java 1.8+
-Create a new Quarkus project with the following command:
-```shell 
-mvn io.quarkus:quarkus-maven-plugin:1.13.7.Final:create \
-    -DprojectGroupId=problem \
-    -DprojectArtifactId=quarkus-resteasy-problem-playground \
-    -DclassName="problem.HelloResource" \
-    -Dpath="/hello" \
-    -Dextensions="resteasy,resteasy-jackson,com.tietoevry.quarkus:quarkus-resteasy-problem:1.0.0"
-cd quarkus-resteasy-problem-playground
-```
-or
-```xml
-<dependency>
+<details>
+    <summary>Quarkus 2.X / Java 11+</summary>
+
+  Make sure JDK 11 is in your PATH, then run:
+  ```shell 
+  mvn io.quarkus:quarkus-maven-plugin:2.16.5.Final:create \
+      -DprojectGroupId=problem \
+      -DprojectArtifactId=quarkus-resteasy-problem-playground \
+      -DclassName="problem.HelloResource" \
+      -Dpath="/hello" \
+      -Dextensions="resteasy,resteasy-jackson"
+  cd quarkus-resteasy-problem-playground
+  ./mvnw quarkus:add-extension -Dextensions="com.tietoevry.quarkus:quarkus-resteasy-problem:2.2.0
+  ```
+  Or add the following dependency to `pom.xml` in existing project:
+  ```xml
+  <dependency>
+      <groupId>com.tietoevry.quarkus</groupId>
+      <artifactId>quarkus-resteasy-problem</artifactId>
+      <version>2.2.0</version>
+  </dependency>
+  ```
+</details>
+
+<details>
+    <summary>Quarkus 1.X / Java 1.8+</summary>
+    
+  Create a new Quarkus project with the following command:
+  ```shell 
+  mvn io.quarkus:quarkus-maven-plugin:1.13.7.Final:create \
+      -DprojectGroupId=problem \
+      -DprojectArtifactId=quarkus-resteasy-problem-playground \
+      -DclassName="problem.HelloResource" \
+      -Dpath="/hello" \
+      -Dextensions="resteasy,resteasy-jackson,com.tietoevry.quarkus:quarkus-resteasy-problem:1.0.0"
+  cd quarkus-resteasy-problem-playground
+  ```
+  Or add the following dependency to `pom.xml` in existing project:
+  ```xml
+  <dependency>
     <groupId>com.tietoevry.quarkus</groupId>
     <artifactId>quarkus-resteasy-problem</artifactId>
     <version>1.0.0</version>
-</dependency>
-```
+  </dependency>
+  ```
+</details>
 
 **Hint:** you can also use `resteasy-jsonb` or reactive equivalents: `resteasy-reactive-jackson` / `resteasy-reactive-jsonb` instead of `resteasy-jackson`
 
@@ -99,9 +126,9 @@ Now you can throw `HttpProblem`s (using builder or a subclass), JaxRS exceptions
 package problem;
 
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.core.Response;
 
 @Path("/hello")
 public class HelloResource {

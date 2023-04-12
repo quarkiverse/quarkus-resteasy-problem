@@ -7,8 +7,8 @@ import static org.mockito.Mockito.mock;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
+import jakarta.ws.rs.core.Response;
 import java.util.ArrayList;
-import javax.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;
 
 class UnrecognizedPropertyExceptionMapperTest {
