@@ -42,6 +42,7 @@ jobs:
 
           mvn io.quarkus:quarkus-maven-plugin:$QUARKUS_VERSION:create \
             -Dextensions="resteasy,${{ matrix.json-provider }}" \
+            -DplatformVersion=3.0.0.Final \
             -DprojectGroupId=problem \
             -DprojectArtifactId=quarkus-resteasy-problem-playground \
             -DclassName="problem.HelloResource" \
