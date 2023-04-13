@@ -45,9 +45,10 @@ so-called "HTTP APIs" are usually not.
 
 ## Usage
 ### Quarkus 3.X / Java 11+
-!Resteast jackson quickstart doesn't work yet in 3.0! Make sure JDK 11 is in your PATH, then run:
+Make sure JDK 11 is in your PATH, then run:
 ```shell
 mvn io.quarkus:quarkus-maven-plugin:3.0.0.Final:create \
+    -DplatformVersion=3.0.0.Final \
     -DprojectGroupId=problem \
     -DprojectArtifactId=quarkus-resteasy-problem-playground \
     -DclassName="problem.HelloResource" \
