@@ -1,6 +1,7 @@
 package com.tietoevry.quarkus.resteasy.problem.validation;
 
 import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
+import com.tietoevry.quarkus.resteasy.problem.ExtendedStatus;
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 import jakarta.annotation.Priority;
 import jakarta.validation.ConstraintViolation;
@@ -14,6 +15,8 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.container.ResourceInfo;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.config.ConfigProvider;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -24,6 +27,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static jakarta.ws.rs.core.Response.Status.BAD_REQUEST;
+
 /**
  * Exception Mapper for ConstraintViolationException from Bean Validation API. Hibernate Validator, among others throw
  * these exceptions. Adds 'violations' field into `application/problem` responses.
@@ -31,14 +36,28 @@ import java.util.stream.Stream;
 @Priority(Priorities.USER)
 public final class ConstraintViolationExceptionMapper extends ExceptionMapperBase<ConstraintViolationException> {
 
+    private static final String HTTP_STATUS_CONFIG_KEY = "resteasy.problem.constraint-violation.http.status";
+
     @Context
     ResourceInfo resourceInfo;
+
+    /**
+     * Response status code that should be returned for constraint violations.
+     */
+    Response.StatusType status;
+
+    public ConstraintViolationExceptionMapper() {
+        status = ConfigProvider.getConfig()
+                .getOptionalValue(HTTP_STATUS_CONFIG_KEY, Integer.class)
+                .map(ExtendedStatus::fromStatusCode)
+                .orElse(BAD_REQUEST);
+    }
 
     @Override
     protected HttpProblem toProblem(ConstraintViolationException exception) {
         return HttpProblem.builder()
-                .withStatus(Response.Status.BAD_REQUEST)
-                .withTitle(Response.Status.BAD_REQUEST.getReasonPhrase())
+                .withStatus(status)
+                .withTitle(status.getReasonPhrase())
                 .with("violations", toViolations(exception.getConstraintViolations()))
                 .build();
     }
