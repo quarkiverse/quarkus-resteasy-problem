@@ -1,8 +1,8 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
-import jakarta.ws.rs.core.Response;
-
 import static jakarta.ws.rs.core.Response.Status.*;
+
+import jakarta.ws.rs.core.Response;
 
 public enum ExtendedStatus implements Response.StatusType {
 

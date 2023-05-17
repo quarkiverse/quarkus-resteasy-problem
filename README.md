@@ -216,6 +216,11 @@ quarkus.log.category.http-problem.level=ERROR # only HTTP 5XX problems are logge
 quarkus.log.category.http-problem.level=OFF # disables all problems-related logging
 ```
 
+- Configure HttpStatusCode for _ConstraintViolationExceptionMapper.class_
+```
+resteasy.problem.constraint-violation.http.status=422 # default: 400
+```
+
 ## Troubles?
 
 If you have questions, concerns, bug reports, etc, please file an issue in this repository's Issue Tracker. You may also want to have a look at [troubleshooting FAQ](./TROUBLESHOOTING.md).

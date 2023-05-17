@@ -1,5 +1,7 @@
 package com.tietoevry.quarkus.resteasy.problem.validation;
 
+import static jakarta.ws.rs.core.Response.Status.BAD_REQUEST;
+
 import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
 import com.tietoevry.quarkus.resteasy.problem.ExtendedStatus;
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
@@ -15,8 +17,6 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.container.ResourceInfo;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
-import org.eclipse.microprofile.config.ConfigProvider;
-
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -26,8 +26,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static jakarta.ws.rs.core.Response.Status.BAD_REQUEST;
+import org.eclipse.microprofile.config.ConfigProvider;
 
 /**
  * Exception Mapper for ConstraintViolationException from Bean Validation API. Hibernate Validator, among others throw
