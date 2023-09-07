@@ -1,11 +1,15 @@
 # Problem Details for HTTP APIs (RFC-7807) implementation for Quarkus / RESTeasy.
 
+[![Release](https://img.shields.io/maven-central/v/com.tietoevry.quarkus/quarkus-resteasy-problem/3?label=quarkus-resteasy-problem)](https://search.maven.org/search?q=g:com.tietoevry.quarkus%20AND%20a:quarkus-resteasy-problem%20AND%20v:3*) 
+[![Quarkus](https://img.shields.io/badge/Quarkus-3.0.0+-important.svg)](https://github.com/quarkusio/quarkus/releases/tag/3.0.0.Final)
+![Quarkus](https://img.shields.io/badge/Java%2011+-blue.svg) 
+
 [![Release](https://img.shields.io/maven-central/v/com.tietoevry.quarkus/quarkus-resteasy-problem/2?label=quarkus-resteasy-problem)](https://search.maven.org/search?q=g:com.tietoevry.quarkus%20AND%20a:quarkus-resteasy-problem%20AND%20v:2*) 
-[![Quarkus](https://img.shields.io/badge/Quarkus-2.0.0+-important.svg)](https://github.com/quarkusio/quarkus/releases/tag/2.0.0.Final)
+[![Quarkus](https://img.shields.io/badge/Quarkus-2.0.0+-important.svg)](https://github.com/quarkusio/quarkus/releases/tag/2.16.6.Final)
 ![Quarkus](https://img.shields.io/badge/Java%2011+-blue.svg) 
 
 [![Release](https://img.shields.io/maven-central/v/com.tietoevry.quarkus/quarkus-resteasy-problem/1?label=quarkus-resteasy-problem)](https://search.maven.org/search?q=g:com.tietoevry.quarkus%20AND%20a:quarkus-resteasy-problem%20AND%20v:1*)
-[![Quarkus](https://img.shields.io/badge/Quarkus-1.4%20&ndash;%201.13-important.svg)](https://github.com/quarkusio/quarkus/releases/tag/1.13.7.Final)
+[![Quarkus](https://img.shields.io/badge/Quarkus-1.4.0+-important.svg)](https://github.com/quarkusio/quarkus/releases/tag/1.13.7.Final)
 ![Quarkus](https://img.shields.io/badge/Java%208+-blue.svg) 
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/tietoevry/quarkus-resteasy-problem/blob/master/LICENSE.txt)
@@ -71,7 +75,7 @@ Or add the following dependency to `pom.xml` in existing project:
 
   Make sure JDK 11 is in your PATH, then run:
   ```shell 
-  mvn io.quarkus:quarkus-maven-plugin:2.16.5.Final:create \
+  mvn io.quarkus:quarkus-maven-plugin:2.16.10.Final:create \
       -DprojectGroupId=problem \
       -DprojectArtifactId=quarkus-resteasy-problem-playground \
       -DclassName="problem.HelloResource" \
