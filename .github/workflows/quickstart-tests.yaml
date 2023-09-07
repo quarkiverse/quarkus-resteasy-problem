@@ -19,15 +19,8 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: 11
-
-      - name: Cache local Maven repository
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-            ${{ runner.os }}-
+          distribution: temurin
+          cache: 'maven'
 
       - name: Compile and Install Extension
         run: |
