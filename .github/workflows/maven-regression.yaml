@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        quarkus-version: [ "3.0" ]
+        quarkus-version: [ "3.0", "3.1", "3.2" ]
         json-provider: [ "jsonb-classic", "jackson-classic" ]
 
     steps:
