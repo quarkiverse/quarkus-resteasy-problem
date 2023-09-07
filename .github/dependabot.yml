@@ -26,3 +26,9 @@ updates:
     ignore:
       - dependency-name: io.quarkus:quarkus-maven-plugin
     rebase-strategy: disabled
+  
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: weekly
+      timezone: Europe/Warsaw
