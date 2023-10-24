@@ -169,7 +169,20 @@
                 <quarkus.version>3.2.5.Final</quarkus.version>
             </properties>
         </profile>
-        
+        <profile>
+            <id>quarkus-3.3</id>
+            <properties>
+                <quarkus.version>3.3.3</quarkus.version>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>quarkus-3.4</id>
+            <properties>
+                <quarkus.version>3.4.3</quarkus.version>
+            </properties>
+        </profile>
+
         <profile>
             <id>native</id>
             <properties>
