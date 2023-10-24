@@ -67,7 +67,7 @@ class ValidationMappersIT {
     void constraintViolationForArgumentsShouldProvideErrorDetails() {
         given()
                 .contentType(APPLICATION_JSON)
-                .body(new InvalidPayload())
+                .body("{\"phraseName\": 1}")
                 .queryParam("param_name", "invalidQueryParam")
                 .queryParam("param_name2", "validQueryParam")
                 .header("param_name3", "invalidHeaderParam")
@@ -88,7 +88,4 @@ class ValidationMappersIT {
                 .body("violations.find{it.in == 'body'}.message", equalTo("must be greater than or equal to 15"));
     }
 
-    public static class InvalidPayload {
-       public int phraseName = 1;
-    }
 }
