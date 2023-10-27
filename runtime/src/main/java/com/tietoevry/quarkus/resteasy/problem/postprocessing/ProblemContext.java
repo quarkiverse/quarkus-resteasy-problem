@@ -13,24 +13,16 @@ public final class ProblemContext {
     /**
      * * Original exception caught by ExceptionMapper.
      */
-    final Throwable cause;
+    public final Throwable cause;
 
     /**
      * URI path of current endpoint.
      */
-    final String path;
+    public final String path;
 
     private ProblemContext(Throwable cause, String path) {
         this.cause = cause;
         this.path = path;
-    }
-
-    public Throwable getCause() {
-        return cause;
-    }
-
-    public String getPath() {
-        return path;
     }
 
     public static ProblemContext of(Throwable exception, UriInfo uriInfo) {
