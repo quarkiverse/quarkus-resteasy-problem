@@ -20,13 +20,13 @@ public final class PostProcessorsRegistry {
      * Removes all registered post-processors and registers default ones. Used mainly for Quarkus dev mode (live-reload) tests
      * where there's a need to reset registered processors because of config change.
      */
-    synchronized public void reset() {
+    public synchronized void reset() {
         processors.clear();
         register(new ProblemLogger(LoggerFactory.getLogger("http-problem")));
         register(new ProblemDefaultsProvider());
     }
 
-    synchronized public void register(ProblemPostProcessor processor) {
+    public synchronized void register(ProblemPostProcessor processor) {
         processors.add(processor);
         processors.sort(ProblemPostProcessor.DEFAULT_ORDERING);
     }
