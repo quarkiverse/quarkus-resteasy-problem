@@ -221,8 +221,7 @@ quarkus.log.category.http-problem.level=OFF # disables all problems-related logg
 
 ## Custom ProblemPostProcessor
 If you want to intercept, change or augment a mapped `HttpProblem` before it gets serialized into raw HTTP response 
-body, you can create a bean extending `ProblemPostProcessor`, and override `apply` method. It will be a normal CDI bean, 
-where e.g. you can inject other beans.
+body, you can create a bean extending `ProblemPostProcessor`, and override `apply` method.
 
 Example:
 ```java
@@ -230,7 +229,7 @@ Example:
 @Startup // makes sure bean is instantiated eagerly on startup
 class CustomPostProcessor implements ProblemPostProcessor {
     
-    @Inject
+    @Inject // acts like normal bean, DI works fine etc
     Validator validator;
     
     @Override

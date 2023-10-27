@@ -2,7 +2,6 @@ package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 import java.util.Comparator;
-import java.util.function.BiFunction;
 
 /**
  * Post-processors use, change or enhance HttpProblem created by ExceptionMappers via 'apply' method, before they get
@@ -13,10 +12,15 @@ public interface ProblemPostProcessor {
     Comparator<ProblemPostProcessor> DEFAULT_ORDERING = Comparator.comparingInt(ProblemPostProcessor::priority).reversed();
 
     /**
-     * Interceptor method for HttpProblems. In case problem should be changed or enhanced, one can use 'HttpProblem.builder(httpProblem)'.
+     * Interceptor method for HttpProblems. In case problem should be changed or enhanced, one can use
+     * 'HttpProblem.builder(httpProblem)'.
+     * <p>
+     * Should be thread-safe.
+     *
      * @param problem Original HttpProblem, possibly processed by other processors with higher priority.
      * @param context Additional, internal metadata not included in HttpProblem
-     * @return Can be original HttpProblem (for peek-type processors), changed copy or completely new HttpProblem (for map-type processors.
+     * @return Can be original HttpProblem (for peek-type processors), changed copy or completely new HttpProblem (for map-type
+     *         processors.
      */
     HttpProblem apply(HttpProblem problem, ProblemContext context);
 

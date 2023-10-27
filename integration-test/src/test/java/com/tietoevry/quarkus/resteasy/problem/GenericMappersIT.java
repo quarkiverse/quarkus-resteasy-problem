@@ -52,6 +52,6 @@ class GenericMappersIT {
                 .queryParam("message", SAMPLE_DETAIL)
                 .get("/throw/generic/runtime-exception")
                 .then()
-                .body("injected_from_custom_post_processor", equalTo("hello world"));
+                .body("injected_from_custom_post_processor", equalTo("you called /throw/generic/runtime-exception"));
     }
 }
