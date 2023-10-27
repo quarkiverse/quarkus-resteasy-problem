@@ -234,9 +234,9 @@ class AppCustomPostProcessor implements ProblemPostProcessor {
     Validator validator;
     
     @Override
-    public HttpProblem apply(HttpProblem httpProblem, ProblemContext problemContext) {
-        return HttpProblem.builder(httpProblem)
-                .with("injected_from_custom_post_processor", "hello world " + problemContext.path)
+    public HttpProblem apply(HttpProblem problem, ProblemContext context) {
+        return HttpProblem.builder(problem)
+                .with("injected_from_custom_post_processor", "hello world " + context.path)
                 .build();
     }
     

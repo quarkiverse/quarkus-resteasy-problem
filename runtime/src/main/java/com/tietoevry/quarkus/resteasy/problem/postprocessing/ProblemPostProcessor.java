@@ -14,11 +14,11 @@ public interface ProblemPostProcessor {
 
     /**
      * Interceptor method for HttpProblems. In case problem should be changed or enhanced, one can use 'HttpProblem.builder(httpProblem)'.
-     * @param httpProblem Original HttpProblem, possibly processed by other processors with higher priority.
-     * @param problemContext Additional, internal metadata not included in HttpProblem
+     * @param problem Original HttpProblem, possibly processed by other processors with higher priority.
+     * @param context Additional, internal metadata not included in HttpProblem
      * @return Can be original HttpProblem (for peek-type processors), changed copy or completely new HttpProblem (for map-type processors.
      */
-    HttpProblem apply(HttpProblem httpProblem, ProblemContext problemContext);
+    HttpProblem apply(HttpProblem problem, ProblemContext context);
 
     /**
      * Defines order in which processors are triggered. Bigger value means precedence before processors

@@ -54,7 +54,7 @@ class PostProcessorsRegistryTest {
         }
 
         @Override
-        public HttpProblem apply(HttpProblem problem, ProblemContext problemContext) {
+        public HttpProblem apply(HttpProblem problem, ProblemContext context) {
             invocations.add(priority);
             return problem;
         }
