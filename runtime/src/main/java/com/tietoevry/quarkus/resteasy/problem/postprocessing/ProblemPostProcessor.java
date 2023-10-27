@@ -15,7 +15,7 @@ public interface ProblemPostProcessor {
      * Interceptor method for HttpProblems. In case problem should be changed or enhanced, one can use
      * 'HttpProblem.builder(httpProblem)'.
      * <p>
-     * Should be thread-safe.
+     * Implementations should be thread-safe.
      *
      * @param problem Original HttpProblem, possibly processed by other processors with higher priority.
      * @param context Additional, internal metadata not included in HttpProblem

@@ -223,6 +223,9 @@ quarkus.log.category.http-problem.level=OFF # disables all problems-related logg
 If you want to intercept, change or augment a mapped `HttpProblem` before it gets serialized into raw HTTP response 
 body, you can create a bean extending `ProblemPostProcessor`, and override `apply` method.
 
+**Important: Make sure your implementation is thread-safe, as it may potentially be called concurrently if multiple 
+requests throw exceptions at the same time.**
+
 Example:
 ```java
 @ApplicationScoped
