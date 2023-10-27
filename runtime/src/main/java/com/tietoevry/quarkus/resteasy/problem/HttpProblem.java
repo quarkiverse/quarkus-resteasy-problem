@@ -182,6 +182,7 @@ public class HttpProblem extends RuntimeException {
         }
 
         /**
+         * Adds custom property to the response.
          * @throws IllegalArgumentException if key is any of type, title, status, detail or instance
          */
         public Builder with(String key, Object value) throws IllegalArgumentException {
