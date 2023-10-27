@@ -2,6 +2,7 @@ package com.tietoevry.quarkus.resteasy.problem.validation;
 
 import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
+import com.tietoevry.quarkus.resteasy.problem.ProblemRuntimeConfig.ConstraintViolationMapperConfig;
 import jakarta.annotation.Priority;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -13,7 +14,6 @@ import jakarta.ws.rs.Priorities;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.container.ResourceInfo;
 import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.Response;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -31,14 +31,20 @@ import java.util.stream.Stream;
 @Priority(Priorities.USER)
 public final class ConstraintViolationExceptionMapper extends ExceptionMapperBase<ConstraintViolationException> {
 
+    private static ConstraintViolationMapperConfig config = ConstraintViolationMapperConfig.defaults();
+
     @Context
     ResourceInfo resourceInfo;
+
+    public static void configure(ConstraintViolationMapperConfig config) {
+        ConstraintViolationExceptionMapper.config = config;
+    }
 
     @Override
     protected HttpProblem toProblem(ConstraintViolationException exception) {
         return HttpProblem.builder()
-                .withStatus(Response.Status.BAD_REQUEST)
-                .withTitle(Response.Status.BAD_REQUEST.getReasonPhrase())
+                .withStatus(config.status())
+                .withTitle(config.title())
                 .with("violations", toViolations(exception.getConstraintViolations()))
                 .build();
     }

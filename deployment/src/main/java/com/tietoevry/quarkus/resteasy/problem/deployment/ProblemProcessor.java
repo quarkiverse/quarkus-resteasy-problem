@@ -4,6 +4,7 @@ import static com.tietoevry.quarkus.resteasy.problem.deployment.ExceptionMapperD
 import static io.quarkus.deployment.annotations.ExecutionTime.RUNTIME_INIT;
 import static io.quarkus.deployment.annotations.ExecutionTime.STATIC_INIT;
 
+import com.tietoevry.quarkus.resteasy.problem.ProblemRuntimeConfig;
 import com.tietoevry.quarkus.resteasy.problem.postprocessing.ProblemRecorder;
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
 import io.quarkus.deployment.Capabilities;
@@ -166,6 +167,12 @@ public class ProblemProcessor {
     @BuildStep
     void registerCustomPostProcessors(ProblemRecorder recorder) {
         recorder.registerCustomPostProcessors();
+    }
+
+    @Record(RUNTIME_INIT)
+    @BuildStep
+    void applyRuntimeConfig(ProblemRecorder recorder, ProblemRuntimeConfig config) {
+        recorder.applyRuntimeConfig(config);
     }
 
     protected Logger logger() {
