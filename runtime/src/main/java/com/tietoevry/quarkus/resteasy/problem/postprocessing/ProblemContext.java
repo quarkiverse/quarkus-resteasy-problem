@@ -25,6 +25,14 @@ public final class ProblemContext {
         this.path = path;
     }
 
+    public Throwable getCause() {
+        return cause;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
     public static ProblemContext of(Throwable exception, UriInfo uriInfo) {
         try {
             return new ProblemContext(exception, (uriInfo == null) ? null : uriInfo.getPath());
