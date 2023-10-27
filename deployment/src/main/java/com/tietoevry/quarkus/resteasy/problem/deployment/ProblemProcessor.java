@@ -162,6 +162,12 @@ public class ProblemProcessor {
         }
     }
 
+    @Record(RUNTIME_INIT)
+    @BuildStep
+    void registerCustomPostProcessors(ProblemRecorder recorder) {
+        recorder.registerCustomPostProcessors();
+    }
+
     protected Logger logger() {
         return LoggerFactory.getLogger(FEATURE_NAME);
     }

@@ -53,7 +53,7 @@ Make sure JDK 11 is in your PATH, then run:
 ```shell
 mvn io.quarkus:quarkus-maven-plugin:3.5.0:create \
     -DprojectGroupId=problem \
-    -DprojectArtifactId=quarkus-resteasy-problem-playground2 \
+    -DprojectArtifactId=quarkus-resteasy-problem-playground \
     -DclassName="problem.HelloResource" \
     -Dpath="/hello" \
     -Dextensions="resteasy,resteasy-jackson"
@@ -217,6 +217,30 @@ application_http_error_total{status="500"} 5.0
 quarkus.log.category.http-problem.level=INFO # default: all problems are logged
 quarkus.log.category.http-problem.level=ERROR # only HTTP 5XX problems are logged
 quarkus.log.category.http-problem.level=OFF # disables all problems-related logging
+```
+
+## Custom ProblemPostProcessor
+If you want to intercept, change or augment a mapped `HttpProblem` before it gets serialized into raw HTTP response 
+body, you can create a bean extending `ProblemPostProcessor`, and override `apply` method. It will be a normal CDI bean, 
+where e.g. you can inject other beans.
+
+Example:
+```java
+@ApplicationScoped
+@Startup // makes sure bean is instantiated eagerly on startup
+class AppCustomPostProcessor implements ProblemPostProcessor {
+    
+    @Inject
+    Validator validator;
+    
+    @Override
+    public HttpProblem apply(HttpProblem httpProblem, ProblemContext problemContext) {
+        return HttpProblem.builder(httpProblem)
+                .with("injected_from_custom_post_processor", "hello world " + problemContext.path)
+                .build();
+    }
+    
+}
 ```
 
 ## Troubles?

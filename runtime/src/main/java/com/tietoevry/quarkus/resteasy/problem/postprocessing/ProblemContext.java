@@ -16,7 +16,7 @@ public final class ProblemContext {
     public final Throwable cause;
 
     /**
-     * URI path of current endpoint.
+     * URI path of the endpoint.
      */
     public final String path;
 

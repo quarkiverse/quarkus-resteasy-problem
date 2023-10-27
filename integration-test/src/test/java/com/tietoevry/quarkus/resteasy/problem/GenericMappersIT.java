@@ -46,4 +46,12 @@ class GenericMappersIT {
                 .body("stacktrace", nullValue());
     }
 
+    @Test
+    void shouldRegisterProblemPostProcessorCustomImplementationsFromCDI() {
+        given()
+                .queryParam("message", SAMPLE_DETAIL)
+                .get("/throw/generic/runtime-exception")
+                .then()
+                .body("injected_from_custom_post_processor", equalTo("hello world"));
+    }
 }
