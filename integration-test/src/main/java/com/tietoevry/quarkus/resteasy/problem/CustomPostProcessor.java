@@ -9,7 +9,7 @@ import jakarta.validation.Validator;
 
 @ApplicationScoped
 @Startup
-class AppCustomPostProcessor implements ProblemPostProcessor {
+class CustomPostProcessor implements ProblemPostProcessor {
 
     @Inject
     Validator validator;

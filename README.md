@@ -228,7 +228,7 @@ Example:
 ```java
 @ApplicationScoped
 @Startup // makes sure bean is instantiated eagerly on startup
-class AppCustomPostProcessor implements ProblemPostProcessor {
+class CustomPostProcessor implements ProblemPostProcessor {
     
     @Inject
     Validator validator;
