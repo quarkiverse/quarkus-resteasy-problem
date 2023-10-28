@@ -2,7 +2,6 @@ package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 import io.smallrye.metrics.MetricRegistries;
-import java.util.Objects;
 import org.eclipse.microprofile.metrics.Metadata;
 import org.eclipse.microprofile.metrics.MetricRegistry;
 import org.eclipse.microprofile.metrics.Tag;
@@ -45,9 +44,7 @@ final class MicroprofileMetricsCollector implements ProblemPostProcessor {
 
     @Override
     public HttpProblem apply(HttpProblem problem, ProblemContext context) {
-        Objects.requireNonNull(problem.getStatus());
-
-        Tag tag = new Tag(STATUS_TAG, String.valueOf(problem.getStatus().getStatusCode()));
+        Tag tag = new Tag(STATUS_TAG, String.valueOf(problem.getStatusCode()));
         registry.counter(METRIC_NAME, tag).inc();
 
         return problem;

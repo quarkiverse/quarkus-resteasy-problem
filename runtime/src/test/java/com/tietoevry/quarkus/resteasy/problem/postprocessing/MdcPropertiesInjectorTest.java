@@ -34,7 +34,7 @@ class MdcPropertiesInjectorTest {
         HttpProblem enhancedProblem = processor.apply(badRequestProblem(), simpleContext());
 
         assertThat(enhancedProblem.getTitle()).isEqualTo("There's something wrong with your request");
-        assertThat(enhancedProblem.getStatus()).isEqualTo(BAD_REQUEST);
+        assertThat(enhancedProblem.getStatusCode()).isEqualTo(BAD_REQUEST.getStatusCode());
     }
 
     @Test

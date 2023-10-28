@@ -26,9 +26,7 @@ final class ProblemLogger implements ProblemPostProcessor {
             return problem;
         }
 
-        Objects.requireNonNull(problem.getStatus());
-
-        if (problem.getStatus().getStatusCode() >= 500) {
+        if (problem.getStatusCode() >= 500) {
             if (logger.isErrorEnabled()) {
                 logger.error(serialize(problem), context.cause);
             }
@@ -42,7 +40,7 @@ final class ProblemLogger implements ProblemPostProcessor {
 
     private String serialize(HttpProblem problem) {
         Stream<String> basicFields = Stream.of(
-                (problem.getStatus() == null) ? null : ("status=" + problem.getStatus().getStatusCode()),
+                ("status=" + problem.getStatusCode()),
                 (problem.getTitle() == null) ? null : ("title=\"" + problem.getTitle() + "\""),
                 (problem.getDetail() == null) ? null : ("detail=\"" + problem.getDetail() + "\""),
                 (problem.getInstance() == null) ? null : ("instance=\"" + problem.getInstance() + "\""),

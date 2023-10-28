@@ -6,7 +6,6 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 import jakarta.ws.rs.ext.ExceptionMapper;
-import java.util.Objects;
 
 /**
  * Base class for all ExceptionMappers in this extension, takes care of mapping Exceptions to Problems, triggering
@@ -22,8 +21,6 @@ public abstract class ExceptionMapperBase<E extends Throwable> implements Except
     @Override
     public final Response toResponse(E exception) {
         HttpProblem problem = toProblem(exception);
-        Objects.requireNonNull(problem.getStatus(), "Status must not be null");
-
         ProblemContext context = ProblemContext.of(exception, uriInfo);
         HttpProblem finalProblem = postProcessorsRegistry.applyPostProcessing(problem, context);
         return finalProblem.toResponse();

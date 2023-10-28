@@ -17,7 +17,7 @@ class HttpProblemTest {
 
         assertThat(problem.getType()).hasHost("tietoevry.com").hasPath("/problem");
         assertThat(problem.getInstance()).hasPath("/endpoint");
-        assertThat(problem.getStatus().getStatusCode()).isEqualTo(400);
+        assertThat(problem.getStatusCode()).isEqualTo(400);
         assertThat(problem.getDetail()).isEqualTo("Deep down wrongness, zażółć gęślą jaźń for Håkensth");
         assertThat(problem.getHeaders())
                 .containsEntry("X-Numeric-Header", 123)

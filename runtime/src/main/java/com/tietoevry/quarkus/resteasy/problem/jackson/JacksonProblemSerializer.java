@@ -27,9 +27,8 @@ public final class JacksonProblemSerializer extends StdSerializer<HttpProblem> {
         if (problem.getType() != null) {
             json.writeStringField("type", problem.getType().toASCIIString());
         }
-        if (problem.getStatus() != null) {
-            json.writeNumberField("status", problem.getStatus().getStatusCode());
-        }
+        json.writeNumberField("status", problem.getStatusCode());
+
         if (problem.getTitle() != null) {
             json.writeStringField("title", problem.getTitle());
         }

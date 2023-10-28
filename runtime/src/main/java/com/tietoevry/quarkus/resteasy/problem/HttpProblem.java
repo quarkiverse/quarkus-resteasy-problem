@@ -1,7 +1,5 @@
 package com.tietoevry.quarkus.resteasy.problem;
 
-import static jakarta.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
-
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.net.URI;
@@ -28,7 +26,7 @@ public class HttpProblem extends RuntimeException {
 
     private final URI type;
     private final String title;
-    private final Response.StatusType status;
+    private final int statusCode;
     private final String detail;
     private final URI instance;
     private final Map<String, Object> parameters;
@@ -39,7 +37,7 @@ public class HttpProblem extends RuntimeException {
 
         this.type = builder.type;
         this.title = builder.title;
-        this.status = Optional.ofNullable(builder.status).orElse(INTERNAL_SERVER_ERROR);
+        this.statusCode = builder.statusCode;
         this.detail = builder.detail;
         this.instance = builder.instance;
         this.parameters = Collections.unmodifiableMap(Optional.ofNullable(builder.parameters).orElseGet(LinkedHashMap::new));
@@ -82,7 +80,7 @@ public class HttpProblem extends RuntimeException {
                 .withType(original.getType())
                 .withInstance(original.getInstance())
                 .withTitle(original.getTitle())
-                .withStatus(original.getStatus())
+                .withStatus(original.getStatusCode())
                 .withDetail(original.getDetail());
         original.parameters.forEach(builder::with);
         original.headers.forEach(builder::withHeader);
@@ -97,8 +95,13 @@ public class HttpProblem extends RuntimeException {
         return this.title;
     }
 
+    public int getStatusCode() {
+        return this.statusCode;
+    }
+
+    @Deprecated(forRemoval = true)
     public Response.StatusType getStatus() {
-        return this.status;
+        return Response.Status.fromStatusCode(statusCode);
     }
 
     public String getDetail() {
@@ -118,10 +121,8 @@ public class HttpProblem extends RuntimeException {
     }
 
     public Response toResponse() {
-        Objects.requireNonNull(getStatus());
-
         Response.ResponseBuilder builder = Response
-                .status(getStatus().getStatusCode())
+                .status(getStatusCode())
                 .type(HttpProblem.MEDIA_TYPE)
                 .entity(this);
 
@@ -137,7 +138,7 @@ public class HttpProblem extends RuntimeException {
 
         private URI type;
         private String title;
-        private Response.StatusType status;
+        private int statusCode = 500;
         private String detail;
         private URI instance;
         private final Map<String, Object> headers = new LinkedHashMap<>();
@@ -156,13 +157,14 @@ public class HttpProblem extends RuntimeException {
             return this;
         }
 
-        public Builder withStatus(@Nullable Response.StatusType status) {
-            this.status = status;
+        public Builder withStatus(Response.StatusType status) {
+            Objects.requireNonNull(status);
+            this.statusCode = status.getStatusCode();
             return this;
         }
 
         public Builder withStatus(int statusCode) {
-            this.status = Response.Status.fromStatusCode(statusCode);
+            this.statusCode = statusCode;
             return this;
         }
 
