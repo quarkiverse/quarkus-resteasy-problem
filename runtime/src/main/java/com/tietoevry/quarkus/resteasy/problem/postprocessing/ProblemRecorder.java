@@ -2,6 +2,7 @@ package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
 import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
 import io.quarkus.runtime.annotations.Recorder;
+import jakarta.enterprise.inject.spi.CDI;
 import java.util.Set;
 
 /**
@@ -22,6 +23,11 @@ public class ProblemRecorder {
 
     public void enableMetrics() {
         ExceptionMapperBase.postProcessorsRegistry.register(new MicroprofileMetricsCollector());
+    }
+
+    public void registerCustomPostProcessors() {
+        CDI.current().select(ProblemPostProcessor.class)
+                .forEach(ExceptionMapperBase.postProcessorsRegistry::register);
     }
 
 }
