@@ -208,7 +208,7 @@ HTTP/1.1 422 Unprocessable Entity
 Content-Type: application/problem+json
 
 {
-    "status": 400,
+    "status": 422,
     "title": "Constraint violation",
     (...)
 }
