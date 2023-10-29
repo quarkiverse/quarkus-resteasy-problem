@@ -99,7 +99,9 @@ public class HttpProblem extends RuntimeException {
         return this.statusCode;
     }
 
-    @Deprecated(forRemoval = true)
+    /**
+     * Returns null if status code has no representation in Response.Status enum.
+     */
     public Response.StatusType getStatus() {
         return Response.Status.fromStatusCode(statusCode);
     }
