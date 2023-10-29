@@ -16,9 +16,8 @@ public final class JsonbProblemSerializer implements JsonbSerializer<HttpProblem
         if (problem.getType() != null) {
             generator.write("type", problem.getType().toASCIIString());
         }
-        if (problem.getStatus() != null) {
-            generator.write("status", problem.getStatus().getStatusCode());
-        }
+        generator.write("status", problem.getStatusCode());
+
         if (problem.getTitle() != null) {
             generator.write("title", problem.getTitle());
         }
