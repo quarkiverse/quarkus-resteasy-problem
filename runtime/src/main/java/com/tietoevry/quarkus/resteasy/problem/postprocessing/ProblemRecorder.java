@@ -1,6 +1,8 @@
 package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
 import com.tietoevry.quarkus.resteasy.problem.ExceptionMapperBase;
+import com.tietoevry.quarkus.resteasy.problem.ProblemRuntimeConfig;
+import com.tietoevry.quarkus.resteasy.problem.validation.ConstraintViolationExceptionMapper;
 import io.quarkus.runtime.annotations.Recorder;
 import jakarta.enterprise.inject.spi.CDI;
 import java.util.Set;
@@ -30,4 +32,7 @@ public class ProblemRecorder {
                 .forEach(ExceptionMapperBase.postProcessorsRegistry::register);
     }
 
+    public void applyRuntimeConfig(ProblemRuntimeConfig config) {
+        ConstraintViolationExceptionMapper.configure(config.constraintViolation());
+    }
 }

@@ -181,9 +181,8 @@ You may also want to check [this article](https://dzone.com/articles/when-http-s
 More on throwing problems: [zalando/problem usage](https://github.com/zalando/problem#usage)
 
 ## Configuration options
-All configuration options are build-time properties, meaning that you cannot override them in the runtime (i.e via environment variables).
 
-- Include MDC properties in the API response (you have to provide those properties to MDC using `MDC.put`)
+- (Build time) Include MDC properties in the API response. You have to provide those properties to MDC using `MDC.put`
 ```
 quarkus.resteasy.problem.include-mdc-properties=uuid,application,version
 ```
@@ -198,7 +197,24 @@ Result:
 }
 ```
 
-- Enable Smallrye (Microprofile) metrics for http error counters. Requires `quarkus-smallrye-metrics` in the classpath.
+- (Runtime) Changes default `400 Bad request` response status when `ConstraintViolationException` is thrown (e.g. by Hibernate Validator)
+```
+quarkus.resteasy.problem.constraint-violation.status=422
+quarkus.resteasy.problem.constraint-violation.title=Constraint violation
+```
+Result:
+```json
+HTTP/1.1 422 Unprocessable Entity
+Content-Type: application/problem+json
+
+{
+    "status": 422,
+    "title": "Constraint violation",
+    (...)
+}
+```
+
+- (Build time) Enable Smallrye (Microprofile) metrics for http error counters. Requires `quarkus-smallrye-metrics` in the classpath.
 
 Please note that if you use `quarkus-micrometer-registry-prometheus` you don't need this feature - http error metrics will be produced regardless of this setting or presence of this extension.
 
@@ -212,7 +228,7 @@ application_http_error_total{status="401"} 3.0
 application_http_error_total{status="500"} 5.0
 ```
 
-- Tuning logging
+- (Runtime) Tuning logging
 ```
 quarkus.log.category.http-problem.level=INFO # default: all problems are logged
 quarkus.log.category.http-problem.level=ERROR # only HTTP 5XX problems are logged
