@@ -144,10 +144,10 @@
                     <version>${surefire-plugin.version}</version>
                     <configuration>
                         <argLine>-Duser.language=en -Duser.region=US</argLine>
-                        <systemProperties>
+                        <systemPropertyVariables>
                             <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
                             <quarkus.log.console.level>OFF</quarkus.log.console.level>
-                        </systemProperties>
+                        </systemPropertyVariables>
                     </configuration>
                 </plugin>
                 <plugin>
