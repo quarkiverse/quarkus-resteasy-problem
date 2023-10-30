@@ -101,7 +101,11 @@ public class HttpProblem extends RuntimeException {
 
     /**
      * Returns null if status code has no representation in Response.Status enum.
+     *
+     * @deprecated Replaced by {@link #getStatusCode()}, will be removed in 4.0.0 release as part of minimizing
+     *             dependencies to JaxRS/JakartaRS classes.
      */
+    @Deprecated(since = "3.1.0", forRemoval = true)
     public Response.StatusType getStatus() {
         return Response.Status.fromStatusCode(statusCode);
     }

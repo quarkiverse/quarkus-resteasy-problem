@@ -150,9 +150,9 @@
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <configuration>
-                    <systemProperties>
+                    <systemPropertyVariables>
                         <performance-test>true</performance-test>
-                    </systemProperties>
+                    </systemPropertyVariables>
                     <excludes />
                     <includes>
                         <include>**/*Benchmark.java</include>
