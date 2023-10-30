@@ -5,8 +5,10 @@ import static io.quarkus.deployment.annotations.ExecutionTime.RUNTIME_INIT;
 import static io.quarkus.deployment.annotations.ExecutionTime.STATIC_INIT;
 
 import com.tietoevry.quarkus.resteasy.problem.ProblemRuntimeConfig;
+import com.tietoevry.quarkus.resteasy.problem.postprocessing.ProblemPostProcessor;
 import com.tietoevry.quarkus.resteasy.problem.postprocessing.ProblemRecorder;
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
+import io.quarkus.arc.deployment.UnremovableBeanBuildItem;
 import io.quarkus.deployment.Capabilities;
 import io.quarkus.deployment.annotations.BuildProducer;
 import io.quarkus.deployment.annotations.BuildStep;
@@ -167,6 +169,11 @@ public class ProblemProcessor {
     @BuildStep
     void registerCustomPostProcessors(ProblemRecorder recorder) {
         recorder.registerCustomPostProcessors();
+    }
+
+    @BuildStep
+    UnremovableBeanBuildItem markPostProcessorsUnremovable() {
+        return UnremovableBeanBuildItem.beanTypes(ProblemPostProcessor.class);
     }
 
     @Record(RUNTIME_INIT)

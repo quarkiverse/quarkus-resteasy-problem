@@ -2,17 +2,10 @@ package com.tietoevry.quarkus.resteasy.problem;
 
 import com.tietoevry.quarkus.resteasy.problem.postprocessing.ProblemContext;
 import com.tietoevry.quarkus.resteasy.problem.postprocessing.ProblemPostProcessor;
-import io.quarkus.runtime.Startup;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.validation.Validator;
 
 @ApplicationScoped
-@Startup
 class CustomPostProcessor implements ProblemPostProcessor {
-
-    @Inject
-    Validator validator;
 
     @Override
     public HttpProblem apply(HttpProblem problem, ProblemContext context) {
