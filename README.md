@@ -51,7 +51,7 @@ so-called "HTTP APIs" are usually not.
 ### Quarkus 3.X / Java 11+
 Make sure JDK 11 is in your PATH, then run:
 ```shell
-mvn io.quarkus:quarkus-maven-plugin:3.5.1:create \
+mvn io.quarkus:quarkus-maven-plugin:3.5.2:create \
     -DprojectGroupId=problem \
     -DprojectArtifactId=quarkus-resteasy-problem-playground \
     -DclassName="problem.HelloResource" \
