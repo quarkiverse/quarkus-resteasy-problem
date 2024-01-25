@@ -3,6 +3,7 @@ package com.tietoevry.quarkus.resteasy.problem.jaxrs;
 import static com.tietoevry.quarkus.resteasy.problem.HttpProblem.MEDIA_TYPE;
 import static jakarta.ws.rs.core.HttpHeaders.RETRY_AFTER;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 import jakarta.ws.rs.RedirectionException;
@@ -10,6 +11,9 @@ import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.net.URI;
+
+import org.jboss.resteasy.core.Headers;
+import org.jboss.resteasy.core.ServerResponse;
 import org.junit.jupiter.api.Test;
 
 class WebApplicationExceptionMapperTest {
@@ -64,5 +68,16 @@ class WebApplicationExceptionMapperTest {
         assertThat(response.getEntity())
                 .isInstanceOf(HttpProblem.class)
                 .hasFieldOrPropertyWithValue("detail", "HTTP 301 Moved Permanently");
+    }
+
+    @Test
+    void shouldHandleNullHeaders() {
+        Headers<Object> nullHeaders = null;
+        WebApplicationException exception = new WebApplicationException(
+                new ServerResponse(new Object(), 404, nullHeaders)
+        );
+
+        assertThatCode(() -> mapper.toResponse(exception))
+                .doesNotThrowAnyException();
     }
 }

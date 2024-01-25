@@ -7,6 +7,8 @@ import jakarta.ws.rs.Priorities;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 
+import java.util.Optional;
+
 /**
  * Generic exception mapper for JaxRS WebApplicationExceptions - it passes status and message to application/problem response.
  */
@@ -22,10 +24,10 @@ public final class WebApplicationExceptionMapper extends ExceptionMapperBase<Web
                 .withStatus(status)
                 .withDetail(exception.getMessage());
 
-        exception
-                .getResponse()
-                .getHeaders()
-                .forEach((header, values) -> values.forEach(value -> problem.withHeader(header, value)));
+        Optional.ofNullable(exception.getResponse().getHeaders())
+                .ifPresent(headers -> {
+                    headers.forEach((header, values) -> values.forEach(value -> problem.withHeader(header, value)));
+                });
 
         return problem.build();
     }
