@@ -11,7 +11,6 @@ import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.net.URI;
-
 import org.jboss.resteasy.core.Headers;
 import org.jboss.resteasy.core.ServerResponse;
 import org.junit.jupiter.api.Test;
@@ -74,8 +73,7 @@ class WebApplicationExceptionMapperTest {
     void shouldHandleNullHeaders() {
         Headers<Object> nullHeaders = null;
         WebApplicationException exception = new WebApplicationException(
-                new ServerResponse(new Object(), 404, nullHeaders)
-        );
+                new ServerResponse(new Object(), 404, nullHeaders));
 
         assertThatCode(() -> mapper.toResponse(exception))
                 .doesNotThrowAnyException();
