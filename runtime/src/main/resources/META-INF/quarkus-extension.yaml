@@ -1,9 +1,14 @@
 name: "RESTeasy Problem"
 metadata:
+  short-name: "resteasy-problem"
   keywords:
   - "rfc7807"
   - "rest"
   - "resteasy"
+  - "jaxrs"
+  - "json"
+  - "jackson"
+  - "jakarta-rest"
   - "problem"
   - "error"
   - "exception"
@@ -11,4 +16,6 @@ metadata:
   categories:
   - "web"
   - "serialization"
-  status: "experimental"
+  status: "stable"
+  config:
+    - "quarkus.resteasy.problem."
