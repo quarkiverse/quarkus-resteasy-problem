@@ -166,7 +166,7 @@
         <profile>
             <id>quarkus-3.2</id>
             <properties>
-                <quarkus.version>3.2.9.Final</quarkus.version>
+                <quarkus.version>3.2.10.Final</quarkus.version>
             </properties>
         </profile>
         <profile>
