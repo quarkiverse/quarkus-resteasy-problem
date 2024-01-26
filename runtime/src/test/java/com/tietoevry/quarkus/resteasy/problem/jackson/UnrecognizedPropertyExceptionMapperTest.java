@@ -18,7 +18,7 @@ class UnrecognizedPropertyExceptionMapperTest {
     @Test
     void shouldHaveHigherPriorityThanBuiltInMapper() {
         assertThat(UnrecognizedPropertyExceptionMapper.class)
-                .hasPrecedenceOver(org.jboss.resteasy.plugins.providers.jackson.UnrecognizedPropertyExceptionHandler.class);
+                .hasPrecedenceOver(org.jboss.resteasy.plugins.providers.jackson.JsonProcessingExceptionMapper.class);
     }
 
     @Test
