@@ -49,7 +49,7 @@ so-called "HTTP APIs" are usually not.
 
 ## Usage
 ### Quarkus 3.X / Java 11+
-Make sure JDK 11 is in your PATH, then run:
+Make sure JDK 17 is in your PATH, then run:
 ```shell
 mvn io.quarkus:quarkus-maven-plugin:3.6.3:create \
     -DprojectGroupId=problem \

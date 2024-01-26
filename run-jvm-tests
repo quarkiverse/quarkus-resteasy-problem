@@ -2,14 +2,14 @@
 
 java_ver=$(java -version 2>&1 | head -1 | cut -d'"' -f2 | sed '/^1\./s///' | cut -d'.' -f1)
 
-if [[ "$java_ver" != "11" ]]; then
-  read -p "Expected Java version is 11, while $java_ver was found. Switch to java 11 (y/n)? " choice
+if [[ "$java_ver" != "17" ]]; then
+  read -p "Expected Java version is 17, while $java_ver was found. Switch to java 17 (y/n)? " choice
   if [[ "$choice" != "y" ]]; then
     exit;
   fi
 
-  echo "Switching java version to 11"
-  export JAVA_HOME=$(/usr/libexec/java_home -v 11);
+  echo "Switching java version to 17"
+  export JAVA_HOME=$(/usr/libexec/java_home -v 17);
 fi
 
 set -x
