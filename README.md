@@ -48,10 +48,10 @@ so-called "HTTP APIs" are usually not.
 ```
 
 ## Usage
-### Quarkus 3.X / Java 11+
+### Quarkus 3.X / Java 17+
 Make sure JDK 17 is in your PATH, then run:
 ```shell
-mvn io.quarkus:quarkus-maven-plugin:3.7.0:create \
+mvn io.quarkus:quarkus-maven-plugin:3.7.1:create \
     -DprojectGroupId=problem \
     -DprojectArtifactId=quarkus-resteasy-problem-playground \
     -DclassName="problem.HelloResource" \
