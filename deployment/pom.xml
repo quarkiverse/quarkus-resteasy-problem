@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.tietoevry.quarkus</groupId>
         <artifactId>quarkus-resteasy-problem-parent</artifactId>
-        <version>3.1.1-SNAPSHOT</version>
+        <version>3.7.0</version>
     </parent>
 
     <artifactId>quarkus-resteasy-problem-deployment</artifactId>
