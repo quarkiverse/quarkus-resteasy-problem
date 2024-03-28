@@ -4,7 +4,7 @@
 
     <groupId>com.tietoevry.quarkus</groupId>
     <artifactId>quarkus-resteasy-problem-parent</artifactId>
-    <version>3.7.0</version>
+    <version>3.7.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Quarkus - RESTeasy - Problem - Parent</name>
@@ -319,7 +319,7 @@
         <developerConnection>scm:git:git@github.com:tietoevry/quarkus-resteasy-problem.git
         </developerConnection>
         <url>https://github.com/tietoevry/quarkus-resteasy-problem/tree/master</url>
-        <tag>v3.7.0</tag>
+        <tag>v3.0.0.Alpha2</tag>
     </scm>
 
     <developers>
