@@ -1,6 +1,7 @@
 package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
+import com.tietoevry.quarkus.resteasy.problem.InstanceUtils;
 import java.net.URI;
 
 /**
@@ -21,12 +22,8 @@ final class ProblemDefaultsProvider implements ProblemPostProcessor {
         }
 
         return HttpProblem.builder(problem)
-                .withInstance(defaultInstance(context))
+                .withInstance(InstanceUtils.pathToInstance(context.path))
                 .build();
-    }
-
-    private URI defaultInstance(ProblemContext context) {
-        return context.path == null ? null : URI.create(context.path);
     }
 
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
+import com.tietoevry.quarkus.resteasy.problem.InstanceUtils;
 import java.io.IOException;
 import java.util.Map;
 
@@ -36,7 +37,7 @@ public final class JacksonProblemSerializer extends StdSerializer<HttpProblem> {
             json.writeStringField("detail", problem.getDetail());
         }
         if (problem.getInstance() != null) {
-            json.writeStringField("instance", problem.getInstance().toASCIIString());
+            json.writeStringField("instance", InstanceUtils.instanceToPath(problem.getInstance()));
         }
 
         for (Map.Entry<String, Object> entry : problem.getParameters().entrySet()) {
