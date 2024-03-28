@@ -2,6 +2,7 @@ package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * Replaces <code>null</code> value of <code>instance</code> with URI of currently served endpoint, i.e
@@ -26,7 +27,14 @@ final class ProblemDefaultsProvider implements ProblemPostProcessor {
     }
 
     private URI defaultInstance(ProblemContext context) {
-        return context.path == null ? null : URI.create(context.path);
+        if (context.path == null) {
+            return null;
+        }
+        try {
+            return new URI(context.path.replaceAll(" ", "%20"));
+        } catch (URISyntaxException e) {
+            return null;
+        }
     }
 
 }
