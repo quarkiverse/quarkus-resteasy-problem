@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         json-provider: [ "jackson-classic", "jsonb-classic", "jackson-reactive", "jsonb-reactive" ]
-        quarkus-version: [ "3.0", "3.1", "3.2", "3.3", "3.4", "3.5", "3.6", "3.7", "3.8" ]
+        quarkus-version: [ "3.9" ]
 
     steps:
       - uses: actions/checkout@v4
