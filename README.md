@@ -24,7 +24,7 @@
 This extension supports:
 - Quarkus 1, 2 and 3
 - `quarkus-resteasy-jackson` and `quarkus-resteasy-jsonb`
-- `quarkus-resteasy-reactive-jackson` and `quarkus-resteasy-reactive-jsonb`
+- `quarkus-rest-jackson` and `quarkus-rest-jsonb`
 - JVM and native mode
 
 ## Why you should use this extension?
@@ -51,21 +51,21 @@ so-called "HTTP APIs" are usually not.
 ### Quarkus 3.X / Java 17+
 Make sure JDK 17 is in your PATH, then run:
 ```shell
-mvn io.quarkus:quarkus-maven-plugin:3.8.3:create \
+mvn io.quarkus:quarkus-maven-plugin:3.9.1:create \
     -DprojectGroupId=problem \
     -DprojectArtifactId=quarkus-resteasy-problem-playground \
     -DclassName="problem.HelloResource" \
     -Dpath="/hello" \
     -Dextensions="resteasy,resteasy-jackson"
 cd quarkus-resteasy-problem-playground
-./mvnw quarkus:add-extension -Dextensions="com.tietoevry.quarkus:quarkus-resteasy-problem:3.1.0"
+./mvnw quarkus:add-extension -Dextensions="com.tietoevry.quarkus:quarkus-resteasy-problem:3.9.0"
 ```
 Or add the following dependency to `pom.xml` in existing project:
 ```xml
 <dependency>
     <groupId>com.tietoevry.quarkus</groupId>
     <artifactId>quarkus-resteasy-problem</artifactId>
-    <version>3.1.0</version>
+    <version>3.9.0</version>
 </dependency>
 ```
 
@@ -116,7 +116,7 @@ Or add the following dependency to `pom.xml` in existing project:
   ```
 </details>
 
-**Hint:** you can also use `resteasy-jsonb` or reactive equivalents: `resteasy-reactive-jackson` / `resteasy-reactive-jsonb` instead of `resteasy-jackson`
+**Hint:** you can also use `resteasy-jsonb` or reactive equivalents: `rest-jackson` / `rest-jsonb` instead of `resteasy-jackson`
 
 
 Once you run Quarkus: `./mvnw compile quarkus:dev`, and you will find `resteasy-problem` in the logs:
