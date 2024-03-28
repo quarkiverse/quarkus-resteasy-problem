@@ -5,11 +5,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 import com.tietoevry.quarkus.resteasy.problem.InstanceUtils;
-
 import java.io.IOException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**

@@ -2,11 +2,7 @@ package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
 import com.tietoevry.quarkus.resteasy.problem.InstanceUtils;
-
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
 /**
  * Replaces <code>null</code> value of <code>instance</code> with URI of currently served endpoint, i.e

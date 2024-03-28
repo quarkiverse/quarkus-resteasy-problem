@@ -1,6 +1,5 @@
 package com.tietoevry.quarkus.resteasy.problem.jackson;
 
-import static jakarta.ws.rs.core.Response.Status.BAD_REQUEST;
 import static jakarta.ws.rs.core.Response.Status.NOT_FOUND;
 import static org.assertj.core.api.Assertions.assertThat;
 

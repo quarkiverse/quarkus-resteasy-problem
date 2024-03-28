@@ -10,7 +10,6 @@ import jakarta.json.bind.JsonbConfig;
 import jakarta.json.bind.serializer.SerializationContext;
 import jakarta.json.stream.JsonGenerator;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import org.eclipse.parsson.JsonProviderImpl;
