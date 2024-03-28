@@ -8,11 +8,6 @@ import jakarta.annotation.Priority;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.Priorities;
 
-/**
- * Mapper overriding default Quarkus exception mapper to make all error responses compliant with RFC7807.
- *
- * @see io.quarkus.resteasy.runtime.NotFoundExceptionMapper
- */
 @Priority(Priorities.USER)
 public final class NotFoundExceptionMapper extends ExceptionMapperBase<NotFoundException> {
 

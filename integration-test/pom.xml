@@ -128,7 +128,7 @@
             <dependencies>
                 <dependency>
                     <groupId>io.quarkus</groupId>
-                    <artifactId>quarkus-resteasy-reactive-jackson</artifactId>
+                    <artifactId>quarkus-rest-jackson</artifactId>
                 </dependency>
             </dependencies>
         </profile>
@@ -147,7 +147,7 @@
             <dependencies>
                 <dependency>
                     <groupId>io.quarkus</groupId>
-                    <artifactId>quarkus-resteasy-reactive-jsonb</artifactId>
+                    <artifactId>quarkus-rest-jsonb</artifactId>
                 </dependency>
             </dependencies>
         </profile>
@@ -201,6 +201,13 @@
             <id>quarkus-3.7</id>
             <properties>
                 <quarkus.version>3.7.4</quarkus.version>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>quarkus-3.8</id>
+            <properties>
+                <quarkus.version>3.8.3</quarkus.version>
             </properties>
         </profile>
 
