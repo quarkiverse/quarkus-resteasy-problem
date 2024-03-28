@@ -48,17 +48,23 @@ so-called "HTTP APIs" are usually not.
 ```
 
 ## Usage
-### Quarkus 3.X / Java 17+
-Make sure JDK 17 is in your PATH, then run:
+### Quarkus 3.X
+ Quarkus             | Java | quarkus-resteasy-problem
+---------------------|------|-------------------------
+ < 3.7.0             | 11+  | 3.1.0
+\>= 3.7.0 && < 3.9.0 | 17+  | 3.7.0
+\>= 3.9.0            | 17+  | 3.9.0
+
+Make sure proper version of JDK (look for the table above), then run:
 ```shell
-mvn io.quarkus:quarkus-maven-plugin:3.9.1:create \
+mvn io.quarkus:quarkus-maven-plugin:${quarkus.version}:create \
     -DprojectGroupId=problem \
     -DprojectArtifactId=quarkus-resteasy-problem-playground \
     -DclassName="problem.HelloResource" \
     -Dpath="/hello" \
     -Dextensions="resteasy,resteasy-jackson"
 cd quarkus-resteasy-problem-playground
-./mvnw quarkus:add-extension -Dextensions="com.tietoevry.quarkus:quarkus-resteasy-problem:3.9.0"
+./mvnw quarkus:add-extension -Dextensions="com.tietoevry.quarkus:quarkus-resteasy-problem:${quarkus-resteasy-problem.version}"
 ```
 Or add the following dependency to `pom.xml` in existing project:
 ```xml
