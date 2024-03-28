@@ -79,18 +79,6 @@ class JaxRsMappersIT {
     }
 
     @Test
-    void jaxRsNotFoundShouldHandleSpacesInUriProperly() {
-        given()
-                .queryParam("message", SAMPLE_DETAIL)
-                .get("/throw/jax-rs/not-found exception")
-                .then()
-                .statusCode(NOT_FOUND.getStatusCode())
-                .body("title", equalTo(NOT_FOUND.getReasonPhrase()))
-                .body("status", equalTo(NOT_FOUND.getStatusCode()))
-                .body("instance", equalTo("/throw/jax-rs/not-found%20exception"));
-    }
-
-    @Test
     void jaxRsForbiddenShouldReturn403ProblemInsteadOfDefaultRestEasyDefaultResponse() {
         given()
                 .queryParam("message", SAMPLE_DETAIL)

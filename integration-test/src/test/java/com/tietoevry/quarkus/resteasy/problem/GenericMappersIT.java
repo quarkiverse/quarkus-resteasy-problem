@@ -3,6 +3,7 @@ package com.tietoevry.quarkus.resteasy.problem;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 import static jakarta.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
+import static jakarta.ws.rs.core.Response.Status.NOT_FOUND;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.nullValue;
 
@@ -53,5 +54,13 @@ class GenericMappersIT {
                 .get("/throw/generic/runtime-exception")
                 .then()
                 .body("injected_from_custom_post_processor", equalTo("you called /throw/generic/runtime-exception"));
+    }
+
+    @Test
+    void instanceShouldHandleUnwiseCharactersProperly() {
+        given()
+                .get("/non|existing path /with unwisecharacters")
+                .then()
+                .body("instance", equalTo("/non|existing path /with unwisecharacters"));
     }
 }

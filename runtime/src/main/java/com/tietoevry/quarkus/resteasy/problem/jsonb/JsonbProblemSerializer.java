@@ -1,9 +1,13 @@
 package com.tietoevry.quarkus.resteasy.problem.jsonb;
 
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
+import com.tietoevry.quarkus.resteasy.problem.InstanceUtils;
 import jakarta.json.bind.serializer.JsonbSerializer;
 import jakarta.json.bind.serializer.SerializationContext;
 import jakarta.json.stream.JsonGenerator;
+
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Low level JsonB serializer for Problem type.
@@ -25,7 +29,7 @@ public final class JsonbProblemSerializer implements JsonbSerializer<HttpProblem
             generator.write("detail", problem.getDetail());
         }
         if (problem.getInstance() != null) {
-            generator.write("instance", problem.getInstance().toASCIIString());
+            generator.write("instance", InstanceUtils.instanceToPath(problem.getInstance()));
         }
 
         problem.getParameters().forEach((key, value) -> ctx.serialize(key, value, generator));

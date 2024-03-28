@@ -1,8 +1,12 @@
 package com.tietoevry.quarkus.resteasy.problem.postprocessing;
 
 import com.tietoevry.quarkus.resteasy.problem.HttpProblem;
+import com.tietoevry.quarkus.resteasy.problem.InstanceUtils;
+
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Replaces <code>null</code> value of <code>instance</code> with URI of currently served endpoint, i.e
@@ -22,19 +26,8 @@ final class ProblemDefaultsProvider implements ProblemPostProcessor {
         }
 
         return HttpProblem.builder(problem)
-                .withInstance(defaultInstance(context))
+                .withInstance(InstanceUtils.pathToInstance(context.path))
                 .build();
-    }
-
-    private URI defaultInstance(ProblemContext context) {
-        if (context.path == null) {
-            return null;
-        }
-        try {
-            return new URI(context.path.replaceAll(" ", "%20"));
-        } catch (URISyntaxException e) {
-            return null;
-        }
     }
 
 }

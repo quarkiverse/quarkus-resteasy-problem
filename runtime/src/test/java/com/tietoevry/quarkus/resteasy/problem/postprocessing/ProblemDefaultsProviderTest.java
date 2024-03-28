@@ -34,4 +34,14 @@ class ProblemDefaultsProviderTest {
         assertThat(enhancedProblem.getInstance()).hasPath("/non-default-endpoint");
     }
 
+    @Test
+    void shouldHandleUnwiseCharactersInPath() {
+        HttpProblem problemWithUnwiseCharactersInPath = processor.apply(
+                badRequestProblem(),
+                ProblemContext.of(new RuntimeException(), "/non|existing{path /with{unwise\\characters>#"));
+
+        assertThat(problemWithUnwiseCharactersInPath.getInstance())
+                .hasPath("/non|existing{path+/with{unwise\\characters>#");
+    }
+
 }
