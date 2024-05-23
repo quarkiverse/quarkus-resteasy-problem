@@ -212,7 +212,7 @@
         </profile>
 
         <profile>
-            <id>quarkus-3.8</id>
+            <id>quarkus-3.9</id>
             <properties>
                 <quarkus.version>3.9.5</quarkus.version>
             </properties>
