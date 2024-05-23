@@ -64,7 +64,7 @@ mvn io.quarkus:quarkus-maven-plugin:${quarkus.version}:create \
     -Dpath="/hello" \
     -Dextensions="resteasy,resteasy-jackson"
 cd quarkus-resteasy-problem-playground
-./mvnw quarkus:add-extension -Dextensions="com.tietoevry.quarkus:quarkus-resteasy-problem:${quarkus-resteasy-problem.version}"
+./mvnw quarkus:add-extension -Dextensions="com.tietoevry.quarkus:quarkus-resteasy-problem:3.9.0"
 ```
 Or add the following dependency to `pom.xml` in existing project:
 ```xml
