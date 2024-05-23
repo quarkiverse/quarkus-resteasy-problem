@@ -207,7 +207,21 @@
         <profile>
             <id>quarkus-3.8</id>
             <properties>
-                <quarkus.version>3.8.3</quarkus.version>
+                <quarkus.version>3.8.4</quarkus.version>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>quarkus-3.8</id>
+            <properties>
+                <quarkus.version>3.9.5</quarkus.version>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>quarkus-3.10</id>
+            <properties>
+                <quarkus.version>3.10.2</quarkus.version>
             </properties>
         </profile>
 
