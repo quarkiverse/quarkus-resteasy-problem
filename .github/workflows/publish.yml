@@ -21,7 +21,7 @@ jobs:
       - name: Setup Maven
         uses: whelk-io/maven-settings-xml-action@v22
         with:
-          servers: '[{ "id": "ossrh", "username": "${{ secrets.NEXUS_USERNAME }}", "password": "${{ secrets.NEXUS_PASSWORD }}" }]'
+          servers: '[{ "id": "ossrh", "username": "${{ secrets.NEXUS_USERNAME }}", "password": "${{ secrets.NEXUS_TOKEN }}" }]'
 
       - name: Package, Sign and Publish to OSSRH Nexus
         run: ./mvnw deploy -Pdeploy,quick -pl '!integration-test'
