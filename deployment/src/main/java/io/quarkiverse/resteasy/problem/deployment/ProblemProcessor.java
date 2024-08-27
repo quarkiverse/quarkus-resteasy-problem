@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 public class ProblemProcessor {
 
     private static final String FEATURE_NAME = "resteasy-problem";
-    private static final String EXTENSION_MAIN_PACKAGE = "com.tietoevry.quarkus.resteasy.problem.";
+    private static final String EXTENSION_MAIN_PACKAGE = "io.quarkiverse.resteasy.problem.";
 
     /**
      * Don't change this to constants from Capability for the sake of older Quarkus versions

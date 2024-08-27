@@ -7,7 +7,7 @@ import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
 
-@AnalyzeClasses(packages = "com.tietoevry.quarkus.resteasy.problem.postprocessing", importOptions = ImportOption.DoNotIncludeTests.class)
+@AnalyzeClasses(packages = "io.quarkiverse.resteasy.problem.postprocessing", importOptions = ImportOption.DoNotIncludeTests.class)
 public class PostProcessingArchitectureTest {
 
     @ArchTest
