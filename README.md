@@ -1,10 +1,10 @@
 # Problem Details for HTTP APIs (RFC-7807) implementation for Quarkus / RESTeasy.
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/tietoevry/quarkus-resteasy-problem/blob/master/LICENSE.txt)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/quarkiverse/quarkus-resteasy-problem/blob/main/LICENSE.txt)
 
-[![Build status](https://github.com/tietoevry/quarkus-resteasy-problem/actions/workflows/unit-tests.yaml/badge.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/unit-tests.yaml)
-[![Build status](https://github.com/tietoevry/quarkus-resteasy-problem/actions/workflows/integration-tests.yaml/badge.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/integration-tests.yaml)
-[![Build status](https://github.com/tietoevry/quarkus-resteasy-problem/actions/workflows/native-mode-tests.yaml/badge.svg)](https://github.com/TietoEVRY/quarkus-resteasy-problem/actions/workflows/native-mode-tests.yaml)
+[![Build status](https://github.com/quarkiverse/quarkus-resteasy-problem/actions/workflows/unit-tests.yaml/badge.svg)](https://github.com/quarkiverse/quarkus-resteasy-problem/actions/workflows/unit-tests.yaml)
+[![Build status](https://github.com/quarkiverse/quarkus-resteasy-problem/actions/workflows/integration-tests.yaml/badge.svg)](https://github.com/quarkiverse/quarkus-resteasy-problem/actions/workflows/integration-tests.yaml)
+[![Build status](https://github.com/quarkiverse/quarkus-resteasy-problem/actions/workflows/native-mode-tests.yaml/badge.svg)](https://github.com/quarkiverse/quarkus-resteasy-problem/actions/workflows/native-mode-tests.yaml)
 
 [RFC7807 Problem](https://tools.ietf.org/html/rfc7807) extension for Quarkus RESTeasy/JaxRS applications. It maps Exceptions to `application/problem+json` HTTP responses. Inspired by [Zalando Problem library](https://github.com/zalando/problem).
 
@@ -23,7 +23,7 @@ This extension supports:
 
 - __time-saving__ - in most cases you will not have to implement your own JaxRS `ExceptionMapper`s anymore, which makes your app smaller, and less error-prone. 
 
-See [Built-in Exception Mappers Wiki](https://github.com/tietoevry/quarkus-resteasy-problem/wiki#built-in-exception-mappers) for more details.
+See [Built-in Exception Mappers Wiki](https://github.com/quarkiverse/quarkus-resteasy-problem/wiki#built-in-exception-mappers) for more details.
 
 From [RFC7807](https://tools.ietf.org/html/rfc7807):
 ```
