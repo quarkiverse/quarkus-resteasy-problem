@@ -39,7 +39,7 @@ so-called "HTTP APIs" are usually not.
 Quarkus is now part of Quarkiverse, so simply add this to your pom.xml:
 ```xml
 <dependency>
-    <groupId>io.quarkiverse</groupId>
+    <groupId>io.quarkiverse.resteasy-problem</groupId>
     <artifactId>quarkus-resteasy-problem</artifactId>
 </depend>
 ```
