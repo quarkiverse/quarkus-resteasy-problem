@@ -28,7 +28,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import org.assertj.core.api.Assertions;
 import org.hibernate.validator.HibernateValidator;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.spi.nodenameprovider.JavaBeanProperty;
@@ -56,7 +55,7 @@ class ConstraintViolationExceptionMapperTest {
 
         List<Violation> violations = mapAndExtractViolations(exception);
 
-        Assertions.assertThat(violations).isEmpty();
+        assertThat(violations).isEmpty();
     }
 
     @Test
@@ -66,7 +65,7 @@ class ConstraintViolationExceptionMapperTest {
 
         List<Violation> violations = mapAndExtractViolations(exception);
 
-        Assertions.assertThat(violations)
+        assertThat(violations)
                 .usingRecursiveFieldByFieldElementComparator()
                 .containsExactly(Violation.In.path.field("param_name").message("length must be between 2 and 10"));
     }
@@ -78,7 +77,7 @@ class ConstraintViolationExceptionMapperTest {
 
         List<Violation> violations = mapAndExtractViolations(exception);
 
-        Assertions.assertThat(violations)
+        assertThat(violations)
                 .usingRecursiveFieldByFieldElementComparator()
                 .containsExactly(Violation.In.query.field("param_name").message("length must be between 3 and 10"));
     }
@@ -90,7 +89,7 @@ class ConstraintViolationExceptionMapperTest {
 
         List<Violation> violations = mapAndExtractViolations(exception);
 
-        Assertions.assertThat(violations)
+        assertThat(violations)
                 .usingRecursiveFieldByFieldElementComparator()
                 .containsExactly(Violation.In.header.field("param_name").message("length must be between 4 and 10"));
     }
@@ -102,7 +101,7 @@ class ConstraintViolationExceptionMapperTest {
 
         List<Violation> violations = mapAndExtractViolations(exception);
 
-        Assertions.assertThat(violations)
+        assertThat(violations)
                 .usingRecursiveFieldByFieldElementComparator()
                 .containsExactly(Violation.In.form.field("param_name").message("length must be between 5 and 10"));
     }
@@ -114,7 +113,7 @@ class ConstraintViolationExceptionMapperTest {
 
         List<Violation> violations = mapAndExtractViolations(exception);
 
-        Assertions.assertThat(violations)
+        assertThat(violations)
                 .usingRecursiveFieldByFieldElementComparator()
                 .containsExactlyInAnyOrder(
                         Violation.In.body.field("param_name")
@@ -134,7 +133,7 @@ class ConstraintViolationExceptionMapperTest {
 
         List<Violation> violations = mapAndExtractViolations(exception);
 
-        Assertions.assertThat(violations).hasSize(8);
+        assertThat(violations).hasSize(8);
     }
 
     @Test
@@ -145,7 +144,7 @@ class ConstraintViolationExceptionMapperTest {
                 RequestBody.invalid());
 
         List<Violation> violations = mapAndExtractViolations(exception);
-        Assertions.assertThat(violations)
+        assertThat(violations)
                 .usingRecursiveFieldByFieldElementComparator()
                 .contains(
                         Violation.In.body.field("param_name_from_annotation")
@@ -166,7 +165,7 @@ class ConstraintViolationExceptionMapperTest {
                 RequestBody.invalid());
 
         List<Violation> violations = mapAndExtractViolations(exception);
-        Assertions.assertThat(violations)
+        assertThat(violations)
                 .usingRecursiveFieldByFieldElementComparator()
                 .contains(
                         Violation.In.unknown.field("firstParam")

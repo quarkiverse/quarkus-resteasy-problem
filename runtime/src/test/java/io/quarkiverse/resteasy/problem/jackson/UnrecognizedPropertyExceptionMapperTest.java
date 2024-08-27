@@ -1,11 +1,11 @@
 package io.quarkiverse.resteasy.problem.jackson;
 
+import static io.quarkiverse.resteasy.problem.ExceptionMapperAssert.assertThat;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
-import io.quarkiverse.resteasy.problem.ExceptionMapperAssert;
 import io.quarkiverse.resteasy.problem.HttpProblem;
 import jakarta.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ class UnrecognizedPropertyExceptionMapperTest {
 
     @Test
     void shouldHaveHigherPriorityThanBuiltInMapper() {
-        ExceptionMapperAssert.assertThat(UnrecognizedPropertyExceptionMapper.class)
+        assertThat(UnrecognizedPropertyExceptionMapper.class)
                 .hasPrecedenceOver(org.jboss.resteasy.plugins.providers.jackson.JsonProcessingExceptionMapper.class);
     }
 

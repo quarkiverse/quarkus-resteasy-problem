@@ -1,5 +1,6 @@
 package io.quarkiverse.resteasy.problem;
 
+import static io.quarkiverse.resteasy.problem.HttpProblemMother.complexProblem;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -12,7 +13,7 @@ class HttpProblemTest {
 
     @Test
     void builderShouldPassAllFields() {
-        HttpProblem problem = HttpProblemMother.complexProblem().build();
+        HttpProblem problem = complexProblem().build();
 
         assertThat(problem.getType()).hasHost("tietoevry.com").hasPath("/problem");
         assertThat(problem.getInstance()).hasPath("/endpoint");
@@ -25,7 +26,7 @@ class HttpProblemTest {
 
     @Test
     void copyBuilderShouldCopyAllFields() {
-        HttpProblem original = HttpProblemMother.complexProblem().build();
+        HttpProblem original = complexProblem().build();
 
         HttpProblem copy = HttpProblem.builder(original).build();
 

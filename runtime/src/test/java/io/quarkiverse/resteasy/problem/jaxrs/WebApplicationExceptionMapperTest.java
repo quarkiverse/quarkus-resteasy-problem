@@ -1,5 +1,6 @@
 package io.quarkiverse.resteasy.problem.jaxrs;
 
+import static io.quarkiverse.resteasy.problem.HttpProblem.MEDIA_TYPE;
 import static jakarta.ws.rs.core.HttpHeaders.RETRY_AFTER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -27,7 +28,7 @@ class WebApplicationExceptionMapperTest {
         Response response = mapper.toResponse(exception);
 
         assertThat(response.getStatus()).isEqualTo(400);
-        assertThat(response.getMediaType()).isEqualTo(HttpProblem.MEDIA_TYPE);
+        assertThat(response.getMediaType()).isEqualTo(MEDIA_TYPE);
         assertThat(response.getEntity())
                 .isInstanceOf(HttpProblem.class)
                 .hasFieldOrPropertyWithValue("title", "Bad Request")
@@ -45,7 +46,7 @@ class WebApplicationExceptionMapperTest {
         Response response = mapper.toResponse(exception);
 
         assertThat(response.getStatus()).isEqualTo(429);
-        assertThat(response.getMediaType()).isEqualTo(HttpProblem.MEDIA_TYPE);
+        assertThat(response.getMediaType()).isEqualTo(MEDIA_TYPE);
         assertThat(response.getHeaderString(RETRY_AFTER)).isEqualTo("120");
         assertThat(response.getEntity())
                 .isInstanceOf(HttpProblem.class)
@@ -61,7 +62,7 @@ class WebApplicationExceptionMapperTest {
         Response response = mapper.toResponse(exception);
 
         assertThat(response.getStatus()).isEqualTo(301);
-        assertThat(response.getMediaType()).isEqualTo(HttpProblem.MEDIA_TYPE);
+        assertThat(response.getMediaType()).isEqualTo(MEDIA_TYPE);
         assertThat(response.getHeaderString("Location")).endsWith("/new-location");
         assertThat(response.getEntity())
                 .isInstanceOf(HttpProblem.class)
