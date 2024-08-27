@@ -50,7 +50,8 @@ public class ProblemProcessor {
                         .thatHandles("jakarta.ws.rs.WebApplicationException"),
                 ExceptionMapperDefinition.mapper(EXTENSION_MAIN_PACKAGE + "jaxrs.JaxRsForbiddenExceptionMapper")
                         .thatHandles("jakarta.ws.rs.ForbiddenException"),
-                ExceptionMapperDefinition.mapper(EXTENSION_MAIN_PACKAGE + "jaxrs.NotFoundExceptionMapper").thatHandles("jakarta.ws.rs.NotFoundException"),
+                ExceptionMapperDefinition.mapper(EXTENSION_MAIN_PACKAGE + "jaxrs.NotFoundExceptionMapper")
+                        .thatHandles("jakarta.ws.rs.NotFoundException"),
                 ExceptionMapperDefinition.mapper(EXTENSION_MAIN_PACKAGE + "jsonb.RestEasyClassicJsonbExceptionMapper")
                         .thatHandles("jakarta.ws.rs.ProcessingException"),
 
@@ -83,12 +84,15 @@ public class ProblemProcessor {
                         .thatHandles("jakarta.ws.rs.ProcessingException")
                         .onlyIf(new JsonBDetector()),
 
-                ExceptionMapperDefinition.mapper(EXTENSION_MAIN_PACKAGE + "jsonb.JsonbExceptionMapper").thatHandles("jakarta.json.bind.JsonbException")
+                ExceptionMapperDefinition.mapper(EXTENSION_MAIN_PACKAGE + "jsonb.JsonbExceptionMapper")
+                        .thatHandles("jakarta.json.bind.JsonbException")
                         .onlyIf(new JsonBDetector()),
 
-                ExceptionMapperDefinition.mapper(EXTENSION_MAIN_PACKAGE + "ZalandoProblemMapper").thatHandles("org.zalando.problem.ThrowableProblem"),
+                ExceptionMapperDefinition.mapper(EXTENSION_MAIN_PACKAGE + "ZalandoProblemMapper")
+                        .thatHandles("org.zalando.problem.ThrowableProblem"),
 
-                ExceptionMapperDefinition.mapper(EXTENSION_MAIN_PACKAGE + "DefaultExceptionMapper").thatHandles("java.lang.Exception"));
+                ExceptionMapperDefinition.mapper(EXTENSION_MAIN_PACKAGE + "DefaultExceptionMapper")
+                        .thatHandles("java.lang.Exception"));
 
         return allMappers
                 .filter(ExceptionMapperDefinition::isNeeded)

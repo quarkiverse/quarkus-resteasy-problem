@@ -28,7 +28,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-
 import org.assertj.core.api.Assertions;
 import org.hibernate.validator.HibernateValidator;
 import org.hibernate.validator.constraints.Length;
