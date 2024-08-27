@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.tietoevry.quarkus</groupId>
+        <groupId>io.quarkiverse</groupId>
         <artifactId>quarkus-resteasy-problem-parent</artifactId>
         <version>3.9.1-SNAPSHOT</version>
     </parent>

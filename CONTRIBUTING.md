@@ -42,13 +42,3 @@ Command line:\
 `./mvnw verify -pl integration-test -Pjsonb-reactive`\
 `./mvnw verify -pl integration-test -Pjackson-classic,quarkus-1.4` - checking backward compatibility with older versions of Quarkus\
 `./mvnw clean verify -Pnative,jackson-classic -pl integration-test` - running tests in native mode
-
-### Deployment and release
-Releases are managed and conducted by Tietoevry. Stable (release) artifacts are available from Maven Central.
-
-```
-./mvnw release:prepare release:perform
-```
-Now create and publish new release on Github. 
-
-This will also automatically trigger GH Action, which will deploy artifacts built from newly created version to [OSSRH staging nexus](https://s01.oss.sonatype.org/#stagingRepositories).
