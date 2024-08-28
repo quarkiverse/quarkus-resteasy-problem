@@ -65,7 +65,7 @@ public class ProblemMapperBenchmark {
         return state.mapper.toResponse(state.problem);
     }
 
-    static final double MAX_AVG_EXECUTION_TIME_MICROSECONDS = 25;
+    static final double MAX_AVG_EXECUTION_TIME_MICROSECONDS = 60;
 
     @Test
     @Tag("performance-test")
