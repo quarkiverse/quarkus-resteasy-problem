@@ -154,13 +154,13 @@ public class ProblemProcessor {
     @Record(RUNTIME_INIT)
     @BuildStep
     void setupMdc(ProblemRecorder recorder, ProblemBuildConfig config) {
-        recorder.configureMdc(config.includeMdcProperties);
+        recorder.configureMdc(config.includeMdcProperties());
     }
 
     @Record(RUNTIME_INIT)
     @BuildStep(onlyIf = QuarkusSmallryeMetricsDetector.class)
     void setupMetrics(ProblemRecorder recorder, ProblemBuildConfig config) {
-        if (config.metricsEnabled) {
+        if (config.metricsEnabled()) {
             recorder.enableMetrics();
         }
     }
