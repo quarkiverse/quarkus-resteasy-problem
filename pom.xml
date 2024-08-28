@@ -35,7 +35,7 @@
         <maven.deploy-plugin.version>3.1.3</maven.deploy-plugin.version>
         <maven.javadoc-plugin.version>3.8.0</maven.javadoc-plugin.version>
         <sign-maven-plugin.version>1.1.0</sign-maven-plugin.version>
-        <surefire-plugin.version>3.4.0</surefire-plugin.version>
+        <surefire-plugin.version>3.5.0</surefire-plugin.version>
         <failsafe-plugin.version>3.4.0</failsafe-plugin.version>
         <forbiddenapis-maven-plugin.version>3.7</forbiddenapis-maven-plugin.version>
         <formatter-maven-plugin.version>2.24.1</formatter-maven-plugin.version>
