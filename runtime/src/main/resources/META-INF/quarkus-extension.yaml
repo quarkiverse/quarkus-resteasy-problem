@@ -12,7 +12,7 @@ metadata:
   - "problem"
   - "error"
   - "exception"
-  guide: "https://github.com/tietoevry/quarkus-resteasy-problem/blob/master/README.md"
+  guide: "https://github.com/quarkiverse/quarkus-resteasy-problem/blob/main/README.md"
   categories:
   - "web"
   - "serialization"

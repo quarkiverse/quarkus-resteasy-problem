@@ -2,7 +2,7 @@ name: Quickstart Flow Tests
 
 on:
   push:
-    branches: [ master, v3.X, v2.X, v1.X ]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -43,7 +43,7 @@ jobs:
           EXTENSION_VERSION=$(mvn -f ../pom.xml -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
           echo "EXTENSION_VERSION = $EXTENSION_VERSION"
           cd quarkus-resteasy-problem-playground
-          ./mvnw quarkus:add-extension -Dextensions="com.tietoevry.quarkus:quarkus-resteasy-problem:$EXTENSION_VERSION"
+          ./mvnw quarkus:add-extension -Dextensions="io.quarkiverse:quarkus-resteasy-problem:$EXTENSION_VERSION"
 
       - name: Run tests
         working-directory: ./quickstart/quarkus-resteasy-problem-playground

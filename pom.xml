@@ -1,16 +1,21 @@
 <?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>io.quarkiverse</groupId>
+        <artifactId>quarkiverse-parent</artifactId>
+        <version>17</version>
+    </parent>
 
-    <groupId>com.tietoevry.quarkus</groupId>
+    <groupId>io.quarkiverse.resteasy-problem</groupId>
     <artifactId>quarkus-resteasy-problem-parent</artifactId>
-    <version>3.9.1-SNAPSHOT</version>
+    <version>999-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Quarkus - RESTeasy - Problem - Parent</name>
     <description>Problem Details for HTTP APIs (RFC-7807) implementation for Quarkus / RESTeasy - Parent POM.
     </description>
-    <url>https://github.com/Tietoevry/quarkus-resteasy-problem</url>
+    <url>https://github.com/quarkiverse/quarkus-resteasy-problem</url>
 
     <properties>
         <java.version>17</java.version>
@@ -315,30 +320,9 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:git@github.com:tietoevry/quarkus-resteasy-problem.git</connection>
-        <developerConnection>scm:git:git@github.com:tietoevry/quarkus-resteasy-problem.git
-        </developerConnection>
-        <url>https://github.com/tietoevry/quarkus-resteasy-problem/tree/master</url>
-        <tag>v3.0.0.Alpha2</tag>
+        <connection>scm:git:git@github.com:quarkiverse/quarkus-restreasy-problem.git</connection>
+        <developerConnection>scm:git:git@github.com:quarkiverse/quarkus-restreasy-problem.git</developerConnection>
+        <url>https://github.com/quarkiverse/quarkus-restreasy-problem</url>
+        <tag>HEAD</tag>
     </scm>
-
-    <developers>
-        <developer>
-            <name>Data Platforms</name>
-            <organization>Tietoevry</organization>
-            <organizationUrl>https://tietoevry.com</organizationUrl>
-            <timezone>UTC+01:00</timezone>
-        </developer>
-    </developers>
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
 </project>

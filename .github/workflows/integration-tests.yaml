@@ -2,9 +2,9 @@ name: Integration Tests
 
 on:
   push:
-    branches: [ master, v3.X, v2.X, v1.X ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
