@@ -36,7 +36,7 @@ so-called "HTTP APIs" are usually not.
 
 ## Usage
 ### Quarkus 3.15+
-Quarkus is now part of Quarkiverse, so simply add this to your pom.xml:
+This extension is now part of Quarkiverse, so simply add this to your pom.xml:
 ```xml
 <dependency>
     <groupId>io.quarkiverse.resteasy-problem</groupId>
