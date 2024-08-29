@@ -35,17 +35,18 @@ so-called "HTTP APIs" are usually not.
 ```
 
 ## Usage
-### Quarkus 3.15+
-This extension is now part of Quarkiverse, so simply add this to your pom.xml:
+### Quarkus 3.14
+Add this to your pom.xml:
 ```xml
 <dependency>
     <groupId>io.quarkiverse.resteasy-problem</groupId>
     <artifactId>quarkus-resteasy-problem</artifactId>
-</depend>
+    <version>3.14.0</version>
+</dependency>
 ```
 
 <details>
-    <summary>Quarkus up to 3.14 / Java 17+</summary>
+    <summary>Quarkus up to 3.13 / Java 17+</summary>
 
 ### Quarkus 3.X
  Quarkus             | Java | quarkus-resteasy-problem
