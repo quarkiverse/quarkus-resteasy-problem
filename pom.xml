@@ -320,9 +320,9 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:git@github.com:quarkiverse/quarkus-restreasy-problem.git</connection>
-        <developerConnection>scm:git:git@github.com:quarkiverse/quarkus-restreasy-problem.git</developerConnection>
-        <url>https://github.com/quarkiverse/quarkus-restreasy-problem</url>
+        <connection>scm:git:git@github.com:quarkiverse/quarkus-resteasy-problem.git</connection>
+        <developerConnection>scm:git:git@github.com:quarkiverse/quarkus-resteasy-problem.git</developerConnection>
+        <url>https://github.com/quarkiverse/quarkus-resteasy-problem</url>
         <tag>HEAD</tag>
     </scm>
 </project>
