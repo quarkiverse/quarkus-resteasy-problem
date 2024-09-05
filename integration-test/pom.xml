@@ -151,7 +151,7 @@
         <profile>
             <id>quarkus-3.13</id>
             <properties>
-                <quarkus.version>3.13.3</quarkus.version>
+                <quarkus.version>3.14.2</quarkus.version>
             </properties>
         </profile>
 
