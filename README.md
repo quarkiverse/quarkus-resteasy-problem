@@ -6,7 +6,7 @@
 [![Build status](https://github.com/quarkiverse/quarkus-resteasy-problem/actions/workflows/integration-tests.yaml/badge.svg)](https://github.com/quarkiverse/quarkus-resteasy-problem/actions/workflows/integration-tests.yaml)
 [![Build status](https://github.com/quarkiverse/quarkus-resteasy-problem/actions/workflows/native-mode-tests.yaml/badge.svg)](https://github.com/quarkiverse/quarkus-resteasy-problem/actions/workflows/native-mode-tests.yaml)
 
-[RFC7807 Problem](https://tools.ietf.org/html/rfc7807) extension for Quarkus RESTeasy/JaxRS applications. It maps Exceptions to `application/problem+json` HTTP responses. Inspired by [Zalando Problem library](https://github.com/zalando/problem).
+[RFC7807 Problem](https://tools.ietf.org/html/rfc7807) extension for Quarkus RESTeasy/JaxRS applications. It maps Exceptions to `application/problem+json` HTTP responses. Inspired by [Zalando Problem library](https://github.com/zalando/problem), originally open sourced by [Tietoevry](https://github.com/evry), now part of Quarkiverse.
 
 This extension supports:
 - Quarkus 1, 2 and 3
