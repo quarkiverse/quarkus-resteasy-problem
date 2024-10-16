@@ -4,12 +4,16 @@ import static io.quarkiverse.resteasy.problem.ExceptionMapperAssert.assertThat;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
+import java.util.ArrayList;
+
+import jakarta.ws.rs.core.Response;
+
+import org.junit.jupiter.api.Test;
+
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
+
 import io.quarkiverse.resteasy.problem.HttpProblem;
-import jakarta.ws.rs.core.Response;
-import java.util.ArrayList;
-import org.junit.jupiter.api.Test;
 
 class UnrecognizedPropertyExceptionMapperTest {
 

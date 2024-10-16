@@ -3,11 +3,12 @@ package io.quarkiverse.resteasy.problem.jsonb;
 import static jakarta.ws.rs.core.Response.Status.BAD_REQUEST;
 import static jakarta.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
 
-import io.quarkiverse.resteasy.problem.ExceptionMapperBase;
-import io.quarkiverse.resteasy.problem.HttpProblem;
 import jakarta.annotation.Priority;
 import jakarta.ws.rs.Priorities;
 import jakarta.ws.rs.ProcessingException;
+
+import io.quarkiverse.resteasy.problem.ExceptionMapperBase;
+import io.quarkiverse.resteasy.problem.HttpProblem;
 
 @Priority(Priorities.USER)
 public final class RestEasyClassicJsonbExceptionMapper extends ExceptionMapperBase<ProcessingException> {

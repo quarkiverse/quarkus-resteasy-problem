@@ -3,20 +3,23 @@ package io.quarkiverse.resteasy.problem.jsonb;
 import static jakarta.ws.rs.core.Response.Status.NOT_FOUND;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.quarkiverse.resteasy.problem.HttpProblem;
-import io.quarkiverse.resteasy.problem.HttpProblemMother;
+import java.io.ByteArrayOutputStream;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
+
 import jakarta.json.Json;
 import jakarta.json.bind.JsonbConfig;
 import jakarta.json.bind.serializer.SerializationContext;
 import jakarta.json.stream.JsonGenerator;
-import java.io.ByteArrayOutputStream;
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
+
 import org.eclipse.parsson.JsonProviderImpl;
 import org.eclipse.yasson.internal.JsonbContext;
 import org.eclipse.yasson.internal.SerializationContextImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import io.quarkiverse.resteasy.problem.HttpProblem;
+import io.quarkiverse.resteasy.problem.HttpProblemMother;
 
 class JsonbProblemSerializerTest {
 

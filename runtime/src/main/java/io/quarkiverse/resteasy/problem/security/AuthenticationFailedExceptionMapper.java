@@ -1,12 +1,13 @@
 package io.quarkiverse.resteasy.problem.security;
 
+import jakarta.annotation.Priority;
+import jakarta.enterprise.inject.spi.CDI;
+import jakarta.ws.rs.Priorities;
+
 import io.quarkiverse.resteasy.problem.ExceptionMapperBase;
 import io.quarkiverse.resteasy.problem.HttpProblem;
 import io.quarkus.security.AuthenticationFailedException;
 import io.quarkus.vertx.http.runtime.CurrentVertxRequest;
-import jakarta.annotation.Priority;
-import jakarta.enterprise.inject.spi.CDI;
-import jakarta.ws.rs.Priorities;
 
 /**
  * Mapper overriding default Quarkus exception mapper to make all error responses compliant with RFC7807.

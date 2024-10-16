@@ -1,10 +1,11 @@
 package io.quarkiverse.resteasy.problem.postprocessing;
 
-import io.quarkiverse.resteasy.problem.HttpProblem;
-import io.smallrye.metrics.MetricRegistries;
 import org.eclipse.microprofile.metrics.Metadata;
 import org.eclipse.microprofile.metrics.MetricRegistry;
 import org.eclipse.microprofile.metrics.Tag;
+
+import io.quarkiverse.resteasy.problem.HttpProblem;
+import io.smallrye.metrics.MetricRegistries;
 
 /**
  * Provides simple metrics to Microprofile Metrics Registry. Example result:

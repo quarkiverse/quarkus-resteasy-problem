@@ -1,10 +1,12 @@
 package io.quarkiverse.resteasy.problem.jackson;
 
+import jakarta.inject.Singleton;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+
 import io.quarkiverse.resteasy.problem.HttpProblem;
 import io.quarkus.jackson.ObjectMapperCustomizer;
-import jakarta.inject.Singleton;
 
 @Singleton
 public final class JacksonProblemModuleRegistrar implements ObjectMapperCustomizer {

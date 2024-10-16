@@ -6,10 +6,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import io.quarkus.deployment.Capabilities;
 import java.util.Collections;
+
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
+
+import io.quarkus.deployment.Capabilities;
 
 class ProblemProcessorTest {
 

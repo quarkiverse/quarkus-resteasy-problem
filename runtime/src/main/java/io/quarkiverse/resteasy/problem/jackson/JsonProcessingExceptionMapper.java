@@ -2,11 +2,13 @@ package io.quarkiverse.resteasy.problem.jackson;
 
 import static jakarta.ws.rs.core.Response.Status.BAD_REQUEST;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import io.quarkiverse.resteasy.problem.ExceptionMapperBase;
-import io.quarkiverse.resteasy.problem.HttpProblem;
 import jakarta.annotation.Priority;
 import jakarta.ws.rs.Priorities;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import io.quarkiverse.resteasy.problem.ExceptionMapperBase;
+import io.quarkiverse.resteasy.problem.HttpProblem;
 
 /**
  * Mapper for Jackson payload processing exceptions.

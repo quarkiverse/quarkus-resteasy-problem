@@ -2,11 +2,12 @@ package io.quarkiverse.resteasy.problem.validation;
 
 import static jakarta.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
 
-import io.quarkiverse.resteasy.problem.ExceptionMapperBase;
-import io.quarkiverse.resteasy.problem.HttpProblem;
 import jakarta.annotation.Priority;
 import jakarta.validation.ValidationException;
 import jakarta.ws.rs.Priorities;
+
+import io.quarkiverse.resteasy.problem.ExceptionMapperBase;
+import io.quarkiverse.resteasy.problem.HttpProblem;
 
 /**
  * Exception Mapper for generic ValidationException from Bean Validation API.

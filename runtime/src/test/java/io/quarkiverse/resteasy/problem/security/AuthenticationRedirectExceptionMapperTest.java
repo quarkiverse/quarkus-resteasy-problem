@@ -3,10 +3,12 @@ package io.quarkiverse.resteasy.problem.security;
 import static io.quarkiverse.resteasy.problem.ExceptionMapperAssert.assertThat;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.quarkus.security.AuthenticationRedirectException;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.Response;
+
 import org.junit.jupiter.api.Test;
+
+import io.quarkus.security.AuthenticationRedirectException;
 
 class AuthenticationRedirectExceptionMapperTest {
 

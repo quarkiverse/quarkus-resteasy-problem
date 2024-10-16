@@ -7,12 +7,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import io.quarkiverse.resteasy.problem.HttpProblem;
-import io.quarkiverse.resteasy.problem.validation.Violation;
 import java.util.Collections;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
+
+import io.quarkiverse.resteasy.problem.HttpProblem;
+import io.quarkiverse.resteasy.problem.validation.Violation;
 
 class ProblemLoggerTest {
 

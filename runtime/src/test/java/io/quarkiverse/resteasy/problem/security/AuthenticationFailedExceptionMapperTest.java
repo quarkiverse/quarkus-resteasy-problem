@@ -4,11 +4,13 @@ import static io.quarkiverse.resteasy.problem.ExceptionMapperAssert.assertThat;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
-import io.quarkus.security.AuthenticationFailedException;
-import io.quarkus.vertx.http.runtime.CurrentVertxRequest;
 import jakarta.ws.rs.core.Response;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import io.quarkus.security.AuthenticationFailedException;
+import io.quarkus.vertx.http.runtime.CurrentVertxRequest;
 
 class AuthenticationFailedExceptionMapperTest {
 
