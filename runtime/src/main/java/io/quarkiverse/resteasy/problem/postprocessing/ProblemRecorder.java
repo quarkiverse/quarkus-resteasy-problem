@@ -1,11 +1,13 @@
 package io.quarkiverse.resteasy.problem.postprocessing;
 
+import java.util.Set;
+
+import jakarta.enterprise.inject.spi.CDI;
+
 import io.quarkiverse.resteasy.problem.ExceptionMapperBase;
 import io.quarkiverse.resteasy.problem.ProblemRuntimeConfig;
 import io.quarkiverse.resteasy.problem.validation.ConstraintViolationExceptionMapper;
 import io.quarkus.runtime.annotations.Recorder;
-import jakarta.enterprise.inject.spi.CDI;
-import java.util.Set;
 
 /**
  * Quarkus Recorder that applies configuration in the runtime.

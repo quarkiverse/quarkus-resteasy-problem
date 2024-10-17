@@ -1,11 +1,12 @@
 package io.quarkiverse.resteasy.problem;
 
-import io.quarkiverse.resteasy.problem.postprocessing.PostProcessorsRegistry;
-import io.quarkiverse.resteasy.problem.postprocessing.ProblemContext;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 import jakarta.ws.rs.ext.ExceptionMapper;
+
+import io.quarkiverse.resteasy.problem.postprocessing.PostProcessorsRegistry;
+import io.quarkiverse.resteasy.problem.postprocessing.ProblemContext;
 
 /**
  * Base class for all ExceptionMappers in this extension, takes care of mapping Exceptions to Problems, triggering

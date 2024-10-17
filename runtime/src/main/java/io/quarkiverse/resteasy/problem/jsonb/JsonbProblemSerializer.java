@@ -1,10 +1,11 @@
 package io.quarkiverse.resteasy.problem.jsonb;
 
-import io.quarkiverse.resteasy.problem.HttpProblem;
-import io.quarkiverse.resteasy.problem.InstanceUtils;
 import jakarta.json.bind.serializer.JsonbSerializer;
 import jakarta.json.bind.serializer.SerializationContext;
 import jakarta.json.stream.JsonGenerator;
+
+import io.quarkiverse.resteasy.problem.HttpProblem;
+import io.quarkiverse.resteasy.problem.InstanceUtils;
 
 /**
  * Low level JsonB serializer for Problem type.

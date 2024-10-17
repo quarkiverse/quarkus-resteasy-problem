@@ -1,9 +1,11 @@
 package io.quarkiverse.resteasy.problem.postprocessing;
 
-import io.quarkiverse.resteasy.problem.HttpProblem;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+
 import org.slf4j.LoggerFactory;
+
+import io.quarkiverse.resteasy.problem.HttpProblem;
 
 /**
  * Container for prioritised list of Problem post-processors. This class is thread-safe.

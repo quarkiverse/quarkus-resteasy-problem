@@ -4,8 +4,9 @@ import static io.quarkiverse.resteasy.problem.HttpProblemMother.badRequestProble
 import static io.quarkiverse.resteasy.problem.postprocessing.ProblemContextMother.simpleContext;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.quarkiverse.resteasy.problem.HttpProblem;
 import org.junit.jupiter.api.Test;
+
+import io.quarkiverse.resteasy.problem.HttpProblem;
 
 class MicroprofileMetricsCollectorTest {
 

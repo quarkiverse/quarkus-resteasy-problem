@@ -1,9 +1,11 @@
 package io.quarkiverse.resteasy.problem;
 
+import java.util.Optional;
+
 import jakarta.annotation.Priority;
 import jakarta.ws.rs.Priorities;
 import jakarta.ws.rs.core.Response;
-import java.util.Optional;
+
 import org.zalando.problem.ThrowableProblem;
 
 /**

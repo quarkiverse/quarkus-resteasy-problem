@@ -6,12 +6,14 @@ import static io.quarkiverse.resteasy.problem.postprocessing.ProblemContextMothe
 import static jakarta.ws.rs.core.Response.Status.BAD_REQUEST;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.google.common.collect.Sets;
-import io.quarkiverse.resteasy.problem.HttpProblem;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.MDC;
+
+import com.google.common.collect.Sets;
+
+import io.quarkiverse.resteasy.problem.HttpProblem;
 
 class MdcPropertiesInjectorTest {
 

@@ -1,7 +1,8 @@
 package io.quarkiverse.resteasy.problem.postprocessing;
 
-import io.quarkiverse.resteasy.problem.HttpProblem;
 import java.util.Comparator;
+
+import io.quarkiverse.resteasy.problem.HttpProblem;
 
 /**
  * Post-processors use, change or enhance HttpProblem created by ExceptionMappers via 'apply' method, before they get

@@ -3,11 +3,11 @@ package io.quarkiverse.resteasy.problem;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.google.common.collect.Sets;
-import io.quarkiverse.resteasy.problem.postprocessing.ProblemRecorder;
-import jakarta.ws.rs.core.Response;
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
+
+import jakarta.ws.rs.core.Response;
+
 import org.jboss.resteasy.specimpl.ResteasyUriInfo;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -28,6 +28,10 @@ import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
+
+import com.google.common.collect.Sets;
+
+import io.quarkiverse.resteasy.problem.postprocessing.ProblemRecorder;
 
 /**
  * JMH benchmark for selected exception Mapper with all post-processors enabled + junit runner test for convenience.
