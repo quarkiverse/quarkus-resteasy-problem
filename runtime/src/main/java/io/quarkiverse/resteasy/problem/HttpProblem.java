@@ -12,8 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.Immutable;
+import jakarta.annotation.Nullable;
 
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -21,7 +20,6 @@ import jakarta.ws.rs.core.Response;
 /**
  * Representation of RFC7807 Problem schema.
  */
-@Immutable
 public class HttpProblem extends RuntimeException {
 
     public static final MediaType MEDIA_TYPE = new MediaType("application", "problem+json");
