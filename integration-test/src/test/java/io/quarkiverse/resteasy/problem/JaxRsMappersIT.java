@@ -6,6 +6,7 @@ import static jakarta.ws.rs.core.Response.Status.MOVED_PERMANENTLY;
 import static jakarta.ws.rs.core.Response.Status.NOT_FOUND;
 import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.hamcrest.Matchers.nullValue;
 
 import io.quarkus.test.junit.QuarkusTest;
@@ -36,6 +37,19 @@ class JaxRsMappersIT {
                 .body("title", equalTo(Response.Status.fromStatusCode(status).getReasonPhrase()))
                 .body("status", equalTo(status))
                 .body("stacktrace", nullValue());
+    }
+
+    @ParameterizedTest(name = "http status: {0}")
+    @ValueSource(ints = { 318, 499, 533 })
+    void webApplicationExceptionWithUnassignedHttpStatusCodeShouldNotFail(int status) {
+        given()
+            .queryParam("status", status)
+            .get("/throw/jax-rs/web-application-exception")
+            .then()
+            .statusCode(status)
+            .body("title", equalToIgnoringCase("Unknown Code"))
+            .body("status", equalTo(status))
+            .body("stacktrace", nullValue());
     }
 
     @Test

@@ -18,7 +18,7 @@ public final class WebApplicationExceptionMapper extends ExceptionMapperBase<Web
 
     @Override
     protected HttpProblem toProblem(WebApplicationException exception) {
-        Response.StatusType status = Response.Status.fromStatusCode(exception.getResponse().getStatus());
+        Response.StatusType status = exception.getResponse().getStatusInfo();
 
         HttpProblem.Builder problem = HttpProblem.builder()
                 .withTitle(status.getReasonPhrase())
@@ -32,5 +32,4 @@ public final class WebApplicationExceptionMapper extends ExceptionMapperBase<Web
 
         return problem.build();
     }
-
 }
