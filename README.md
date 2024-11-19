@@ -35,13 +35,13 @@ so-called "HTTP APIs" are usually not.
 ```
 
 ## Usage
-### Quarkus 3.14
+### Quarkus 3.14+
 Add this to your pom.xml:
 ```xml
 <dependency>
     <groupId>io.quarkiverse.resteasy-problem</groupId>
     <artifactId>quarkus-resteasy-problem</artifactId>
-    <version>3.14.0</version>
+    <version>3.15.0</version>
 </dependency>
 ```
 
