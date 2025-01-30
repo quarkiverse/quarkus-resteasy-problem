@@ -105,7 +105,7 @@ public class ProblemProcessor {
 
     @BuildStep
     FeatureBuildItem createFeature(Capabilities capabilities) {
-        if (RESTEASY_JSON_CAPABILITIES.stream().noneMatch(capabilities::isCapabilityPresent)) {
+        if (RESTEASY_JSON_CAPABILITIES.stream().noneMatch(capabilities::isPresent)) {
             logger().error("`quarkus-resteasy-problem` extension is useless without RESTeasy Json Provider. Please add "
                     + "`quarkus-resteasy-jackson` or `quarkus-resteasy-jsonb` (or reactive versions) to your pom.xml.");
         }
@@ -147,7 +147,11 @@ public class ProblemProcessor {
 
     @BuildStep
     ReflectiveClassBuildItem registerPojosForReflection() {
-        return new ReflectiveClassBuildItem(true, true, EXTENSION_MAIN_PACKAGE + "validation.Violation");
+        return ReflectiveClassBuildItem
+                .builder(EXTENSION_MAIN_PACKAGE + "validation.Violation")
+                .methods()
+                .fields()
+                .build();
     }
 
     @Record(STATIC_INIT)
