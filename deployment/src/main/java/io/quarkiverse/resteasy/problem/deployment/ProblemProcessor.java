@@ -9,8 +9,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import io.quarkiverse.resteasy.problem.openapi.OpenApiProblemFilter;
+import io.quarkus.deployment.Capability;
+import io.quarkus.deployment.builditem.IndexDependencyBuildItem;
+import io.quarkus.smallrye.openapi.deployment.spi.AddToOpenAPIDefinitionBuildItem;
 import jakarta.ws.rs.Priorities;
 
+import org.eclipse.microprofile.openapi.OASFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -143,6 +148,23 @@ public class ProblemProcessor {
     void registerJsonbItems(BuildProducer<JsonbSerializerBuildItem> serializers) {
         serializers.produce(
                 new JsonbSerializerBuildItem(EXTENSION_MAIN_PACKAGE + "jsonb.JsonbProblemSerializer"));
+    }
+
+    /**
+     * Force jandex indexing for runtime module classes so that @Schema annotated classes can be picked up by OpenApi
+     */
+    @BuildStep(onlyIf = OpenApiDetector.class)
+    void indexOpenApiClasses(BuildProducer<IndexDependencyBuildItem> indexDependency) {
+        indexDependency.produce(new IndexDependencyBuildItem("io.quarkiverse.resteasy-problem", "quarkus-resteasy-problem"));
+    }
+
+    @BuildStep(onlyIf = OpenApiDetector.class)
+    void registerOpenApiFilter(BuildProducer<AddToOpenAPIDefinitionBuildItem> openAPIProducer,
+                               Capabilities capabilities) {
+        if(capabilities.isPresent(Capability.SMALLRYE_OPENAPI)) {
+            OASFilter filter = new OpenApiProblemFilter();
+            openAPIProducer.produce(new AddToOpenAPIDefinitionBuildItem(filter));
+        }
     }
 
     @BuildStep

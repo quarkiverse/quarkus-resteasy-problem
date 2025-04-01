@@ -52,6 +52,11 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+          <groupId>io.quarkus</groupId>
+          <artifactId>quarkus-smallrye-openapi</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>org.zalando</groupId>
             <artifactId>problem</artifactId>
             <optional>true</optional>
