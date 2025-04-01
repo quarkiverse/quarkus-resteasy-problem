@@ -25,13 +25,25 @@ import jakarta.ws.rs.core.Context;
 import io.quarkiverse.resteasy.problem.ExceptionMapperBase;
 import io.quarkiverse.resteasy.problem.HttpProblem;
 import io.quarkiverse.resteasy.problem.ProblemRuntimeConfig.ConstraintViolationMapperConfig;
+import jakarta.ws.rs.ext.ExceptionMapper;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 
 /**
  * Exception Mapper for ConstraintViolationException from Bean Validation API. Hibernate Validator, among others throw
  * these exceptions. Adds 'violations' field into `application/problem` responses.
  */
 @Priority(Priorities.USER)
-public final class ConstraintViolationExceptionMapper extends ExceptionMapperBase<ConstraintViolationException> {
+@APIResponse(
+        responseCode = "400",
+        description = "Bad request: server would not process the request due to something the server considered to be a client error",
+        content = @Content(
+                mediaType = "application/problem+json",
+                schema = @Schema(ref = "#/components/schemas/HttpValidationProblem")
+        ))
+public final class ConstraintViolationExceptionMapper extends ExceptionMapperBase<ConstraintViolationException>
+        implements ExceptionMapper<ConstraintViolationException> {
 
     private static ConstraintViolationMapperConfig config = ConstraintViolationMapperConfig.defaults();
 

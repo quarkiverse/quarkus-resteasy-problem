@@ -37,6 +37,8 @@ class OpenApiIT {
     @Test
     void shouldDeriveApiResponseFromEndpointMethodThrowsDeclaration() {
         getOpenApi()
+                .body("paths['/openapi/throwing']['post']['responses']['400'].description", equalTo("Bad request: server would not process the request due to something the server considered to be a client error"))
+                .body("paths['/openapi/throwing']['post']['responses']['400']['content']['application/problem+json'].schema.$ref", equalTo("#/components/schemas/HttpValidationProblem"))
                 .body("paths['/openapi/throwing']['post']['responses']['401'].description", equalTo("Unauthorized: request was not successful because it lacks valid authentication credentials for the requested resource"))
                 .body("paths['/openapi/throwing']['post']['responses']['403'].description", equalTo("Forbidden: server understood the request but refused to process it"))
                 .body("paths['/openapi/throwing']['post']['responses']['403']['content']['application/problem+json'].schema.$ref", equalTo("#/components/schemas/HttpProblem"))

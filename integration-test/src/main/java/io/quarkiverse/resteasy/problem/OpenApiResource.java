@@ -2,6 +2,7 @@ package io.quarkiverse.resteasy.problem;
 
 import io.quarkus.security.ForbiddenException;
 import io.quarkus.security.UnauthorizedException;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -28,7 +29,7 @@ public class OpenApiResource {
 
     @POST
     @Path("/throwing")
-    public void throwingEndpoint() throws ForbiddenException, UnauthorizedException, NotFoundException {
+    public void throwingEndpoint() throws ConstraintViolationException, UnauthorizedException, ForbiddenException, NotFoundException {
         throw new ForbiddenException();
     }
 
