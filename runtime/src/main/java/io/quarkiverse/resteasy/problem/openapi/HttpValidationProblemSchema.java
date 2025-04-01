@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
-@Schema(name = "HttpValidationProblem", description = "HTTP Problem Response according to RFC9457 & RFC7807")
+@Schema(name = "HttpValidationProblem", description = "HTTP Validation Problem Response according to RFC9457 & RFC7807", additionalProperties = Schema.True.class)
 public class HttpValidationProblemSchema extends HttpProblemSchema {
 
     /**

@@ -159,8 +159,8 @@ public class ProblemProcessor {
     }
 
     @BuildStep(onlyIf = OpenApiDetector.class)
-    void registerOpenApiFilter(BuildProducer<AddToOpenAPIDefinitionBuildItem> openAPIProducer) {
-        OASFilter filter = new OpenApiProblemFilter();
+    void registerOpenApiFilter(BuildProducer<AddToOpenAPIDefinitionBuildItem> openAPIProducer, ProblemBuildConfig config) {
+        OASFilter filter = new OpenApiProblemFilter(config);
         openAPIProducer.produce(new AddToOpenAPIDefinitionBuildItem(filter));
     }
 

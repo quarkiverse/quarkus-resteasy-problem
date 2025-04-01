@@ -1,6 +1,7 @@
 package io.quarkiverse.resteasy.problem.deployment;
 
 import org.eclipse.microprofile.openapi.OASFilter;
+import org.eclipse.microprofile.openapi.models.OpenAPI;
 import org.eclipse.microprofile.openapi.models.responses.APIResponse;
 
 import io.quarkiverse.resteasy.problem.openapi.HttpProblemSchema;
@@ -16,10 +17,21 @@ import io.smallrye.openapi.internal.models.media.Schema;
  */
 public class OpenApiProblemFilter implements OASFilter {
 
-    private static final Content PROBLEM_CONTENT = OpenApiProblemFilter.createDefaultContent();
+    private static final Content PROBLEM_CONTENT = createDefaultContent();
+    private static final org.eclipse.microprofile.openapi.models.media.Schema MDC_PROPERTY_SCHEMA = new Schema()
+            .addType(Schema.SchemaType.STRING)
+            .set("description", "Additional context of the problem");
+
+    private final ProblemBuildConfig config;
+
+    public OpenApiProblemFilter(ProblemBuildConfig config) {
+        this.config = config;
+    }
 
     /**
-     * Filters API responses to add Problem Details schema for error responses.
+     * Filters API responses to add Problem Details schema for 4xx and 5xx error responses that don't have explicit
+     *
+     * @Content defined in @ApiResponse.
      */
     @Override
     public APIResponse filterAPIResponse(APIResponse apiResponse) {
@@ -38,16 +50,31 @@ public class OpenApiProblemFilter implements OASFilter {
 
         try {
             int httpStatus = Integer.parseInt(responseCode);
-            // Add Problem Details schema for 4xx and 5xx responses that don't have content
             if (httpStatus >= 400) {
                 apiResponse.setContent(PROBLEM_CONTENT);
             }
         } catch (NumberFormatException e) {
-            // Invalid response code, return unchanged
             return apiResponse;
         }
 
         return apiResponse;
+    }
+
+    @Override
+    public void filterOpenAPI(OpenAPI openAPI) {
+        if (config.includeMdcProperties().isEmpty()) {
+            return;
+        }
+
+        org.eclipse.microprofile.openapi.models.media.Schema httpProblemSchema = openAPI.getComponents().getSchemas()
+                .get("HttpProblem");
+        org.eclipse.microprofile.openapi.models.media.Schema httpValidationProblem = openAPI.getComponents().getSchemas()
+                .get("HttpValidationProblem");
+
+        config.includeMdcProperties().forEach(mdcProperty -> {
+            httpProblemSchema.addProperty(mdcProperty, MDC_PROPERTY_SCHEMA);
+            httpValidationProblem.addProperty(mdcProperty, MDC_PROPERTY_SCHEMA);
+        });
     }
 
     /**
