@@ -29,9 +29,7 @@ public class OpenApiProblemFilter implements OASFilter {
     }
 
     /**
-     * Filters API responses to add Problem Details schema for 4xx and 5xx error responses that don't have explicit
-     *
-     * @Content defined in @ApiResponse.
+     * Augments HttpProblem schema for 4xx and 5xx error @ApiResponses that don't have explicit @Content defined
      */
     @Override
     public APIResponse filterAPIResponse(APIResponse apiResponse) {
@@ -60,6 +58,10 @@ public class OpenApiProblemFilter implements OASFilter {
         return apiResponse;
     }
 
+    /**
+     * Augments auto-generated HttpProblem schemas with additional properties defined in
+     * `quarkus.resteasy.problem.include-mdc-properties`
+     */
     @Override
     public void filterOpenAPI(OpenAPI openAPI) {
         if (config.includeMdcProperties().isEmpty()) {

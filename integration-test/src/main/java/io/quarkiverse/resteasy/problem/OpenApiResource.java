@@ -21,15 +21,8 @@ public class OpenApiResource {
 
     @POST
     @Path("/documented")
-    // @Content intentionally not defined
-    @APIResponse(
-            responseCode = "409",
-            description = "Request received but there has been a conflict",
-            content = @Content(
-                    mediaType = "application/problem+json",
-                    schema = @Schema(implementation = HttpProblemSchema.class)
-            )
-    )
+    // @Content intentionally not defined below
+    @APIResponse(responseCode = "409", description = "Request received but there has been a conflict")
     public void documentedEndpoint() {
         throw HttpProblem.builder()
                 .withStatus(Response.Status.CONFLICT)
