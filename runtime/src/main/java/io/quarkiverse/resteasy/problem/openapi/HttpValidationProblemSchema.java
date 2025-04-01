@@ -1,8 +1,8 @@
 package io.quarkiverse.resteasy.problem.openapi;
 
-import org.eclipse.microprofile.openapi.annotations.media.Schema;
-
 import java.util.List;
+
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 @Schema(name = "HttpValidationProblem", description = "HTTP Problem Response according to RFC9457 & RFC7807")
 public class HttpValidationProblemSchema extends HttpProblemSchema {

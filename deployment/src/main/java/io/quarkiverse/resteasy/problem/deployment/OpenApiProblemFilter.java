@@ -1,11 +1,12 @@
-package io.quarkiverse.resteasy.problem.openapi;
+package io.quarkiverse.resteasy.problem.deployment;
 
-import io.quarkus.smallrye.openapi.OpenApiFilter;
+import org.eclipse.microprofile.openapi.OASFilter;
+import org.eclipse.microprofile.openapi.models.responses.APIResponse;
+
+import io.quarkiverse.resteasy.problem.openapi.HttpProblemSchema;
 import io.smallrye.openapi.internal.models.media.Content;
 import io.smallrye.openapi.internal.models.media.MediaType;
 import io.smallrye.openapi.internal.models.media.Schema;
-import org.eclipse.microprofile.openapi.OASFilter;
-import org.eclipse.microprofile.openapi.models.responses.APIResponse;
 
 /**
  * OpenAPI filter that automatically adds Problem Details schema to error responses.
@@ -13,7 +14,6 @@ import org.eclipse.microprofile.openapi.models.responses.APIResponse;
  * the HttpProblem schema reference to any 4xx or 5xx response that doesn't already
  * have content defined.
  */
-@OpenApiFilter(OpenApiFilter.RunStage.RUN)
 public class OpenApiProblemFilter implements OASFilter {
 
     private static final Content PROBLEM_CONTENT = OpenApiProblemFilter.createDefaultContent();
@@ -23,7 +23,7 @@ public class OpenApiProblemFilter implements OASFilter {
      */
     @Override
     public APIResponse filterAPIResponse(APIResponse apiResponse) {
-        if (apiResponse == null || apiResponse.getRef() != null) {
+        if (apiResponse == null || apiResponse.getRef() != null || apiResponse.getContent() != null) {
             return apiResponse;
         }
 
@@ -39,7 +39,7 @@ public class OpenApiProblemFilter implements OASFilter {
         try {
             int httpStatus = Integer.parseInt(responseCode);
             // Add Problem Details schema for 4xx and 5xx responses that don't have content
-            if (httpStatus >= 400 && apiResponse.getContent() == null) {
+            if (httpStatus >= 400) {
                 apiResponse.setContent(PROBLEM_CONTENT);
             }
         } catch (NumberFormatException e) {

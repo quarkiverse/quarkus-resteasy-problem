@@ -3,6 +3,7 @@ package io.quarkiverse.resteasy.problem.security;
 import jakarta.ws.rs.Priorities;
 import jakarta.ws.rs.core.Response;
 
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
 
 import io.quarkiverse.resteasy.problem.ExceptionMapperBase;
@@ -20,6 +21,7 @@ import io.vertx.ext.web.RoutingContext;
 public final class UnauthorizedExceptionReactiveMapper {
 
     @ServerExceptionMapper(value = UnauthorizedException.class, priority = Priorities.USER - 1)
+    @APIResponse(responseCode = "401", description = "Unauthorized: request was not successful because it lacks valid authentication credentials for the requested resource")
     public Uni<Response> handle(RoutingContext routingContext, UnauthorizedException exception) {
         return HttpUnauthorizedUtils.toProblem(routingContext, exception)
                 .map(problem -> {
