@@ -1,7 +1,5 @@
 package io.quarkiverse.resteasy.problem;
 
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import io.quarkus.security.AuthenticationRedirectException;
 import io.quarkus.security.ForbiddenException;
 import io.quarkus.security.UnauthorizedException;
 import jakarta.ws.rs.NotFoundException;

@@ -160,7 +160,6 @@ public class ProblemProcessor {
 
     @BuildStep(onlyIf = OpenApiDetector.class)
     void registerOpenApiFilter(BuildProducer<AddToOpenAPIDefinitionBuildItem> openAPIProducer) {
-        //Map<String, ClassAndMethod> classNamesMethods = Map.of(); //getClassNamesMethodReferences(indexViewBuildItem);
         OASFilter filter = new OpenApiProblemFilter();
         openAPIProducer.produce(new AddToOpenAPIDefinitionBuildItem(filter));
     }

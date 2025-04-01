@@ -12,7 +12,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
  * Default exception mapper processing all exceptions not matching any more specific mapper.
  */
 @Priority(Priorities.USER)
-@APIResponse(responseCode = "5XX", description = "Internal Server Error: the server encountered an unexpected condition that prevented it from fulfilling the request")
+@APIResponse(responseCode = "500", description = "Internal Server Error: the server encountered an unexpected condition that prevented it from fulfilling the request")
 public final class DefaultExceptionMapper extends ExceptionMapperBase<Exception>
         implements ExceptionMapper<Exception> {
 

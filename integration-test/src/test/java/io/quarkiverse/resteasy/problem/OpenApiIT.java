@@ -50,7 +50,7 @@ class OpenApiIT {
                 .body("paths['/openapi/throwing-and-documented']['post']['responses']['401']['description']", equalTo("You are unauthorized"))
                 .body("paths['/openapi/throwing-and-documented']['post']['responses']['401']['content']['application/problem+json'].schema.$ref", equalTo("#/components/schemas/HttpProblem"))
                 // derived from `throws` :
-                .body("paths['/openapi/throwing-and-documented']['post']['responses']['5XX']['description']", equalTo("Internal Server Error: the server encountered an unexpected condition that prevented it from fulfilling the request"));
+                .body("paths['/openapi/throwing-and-documented']['post']['responses']['500']['description']", equalTo("Internal Server Error: the server encountered an unexpected condition that prevented it from fulfilling the request"));
     }
 
     private static ValidatableResponse getOpenApi() {
