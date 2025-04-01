@@ -17,9 +17,9 @@ public class OpenApiResource {
 
     @POST
     @Path("/documented")
+    // @Content intentionally not defined
     @APIResponse(responseCode = "409", description = "Request received but there has been a conflict")
-    // content intentionally not defined
-    public String documentedEndpoint() {
+    public void documentedEndpoint() {
         throw HttpProblem.builder()
                 .withStatus(Response.Status.CONFLICT)
                 .withDetail("There has been a conflict")
@@ -28,14 +28,14 @@ public class OpenApiResource {
 
     @POST
     @Path("/throwing")
-    public String throwingEndpoint() throws ForbiddenException, UnauthorizedException, NotFoundException {
+    public void throwingEndpoint() throws ForbiddenException, UnauthorizedException, NotFoundException {
         throw new ForbiddenException();
     }
 
     @POST
     @Path("/throwing-and-documented")
     @APIResponse(responseCode = "401", description = "You are unauthorized")
-    public String throwingAndDocumentedEndpoint() throws Exception {
+    public void throwingAndDocumentedEndpoint() throws Exception {
         throw new RuntimeException();
     }
 
