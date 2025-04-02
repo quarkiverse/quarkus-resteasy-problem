@@ -26,15 +26,15 @@ jobs:
           distribution: temurin
           cache: 'maven'
 
-      - name: Compile
-        run: ./mvnw clean install -Pquick -pl '!integration-test'
-
       - uses: graalvm/setup-graalvm@v1
         with:
           java-version: '17'
           distribution: 'graalvm'
           components: 'native-image'
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compile
+        run: ./mvnw install -Pquick
 
       - name: Native Tests - Core (latest - classic - jackson)
         run: ./mvnw clean verify -P it,native,${{ matrix.maven_profiles }} -pl 'integration-test/core'

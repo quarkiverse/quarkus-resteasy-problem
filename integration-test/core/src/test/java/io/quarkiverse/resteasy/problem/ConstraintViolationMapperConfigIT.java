@@ -14,7 +14,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 
 @QuarkusTest
-@TestProfile(ConstraintViolationMapperConfigIT.Config.class)
+@TestProfile(ConstraintViolationMapperConfigIT.CustomHttpStatus.class)
 class ConstraintViolationMapperConfigIT {
 
     static {
@@ -34,7 +34,7 @@ class ConstraintViolationMapperConfigIT {
                 .body("violations", hasSize(1));
     }
 
-    public static class Config implements QuarkusTestProfile {
+    public static class CustomHttpStatus implements QuarkusTestProfile {
 
         @Override
         public Map<String, String> getConfigOverrides() {
