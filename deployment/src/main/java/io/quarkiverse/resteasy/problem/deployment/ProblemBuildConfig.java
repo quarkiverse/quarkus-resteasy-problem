@@ -51,9 +51,10 @@ public interface ProblemBuildConfig {
 
     /**
      * Config for OpenApi schema of HttpValidationProblem
+     *
      * @implNote This duplicates ProblemRuntimeConfig as runtime config cannot be used in build-time, and constraint
-     * violation configuration is needed to enhance OpenApi documentation. The best would be to move everything to
-     * build-time configuration, but that would be a breaking change. To be removed in 4.0.0.
+     *           violation configuration is needed to enhance OpenApi documentation. The best would be to move everything to
+     *           build-time configuration, but that would be a breaking change. To be removed in 4.0.0.
      */
     @WithName("constraint-violation")
     ProblemRuntimeConfig.ConstraintViolationMapperConfig constraintViolation();
