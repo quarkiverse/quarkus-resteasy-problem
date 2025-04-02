@@ -22,5 +22,4 @@
             <artifactId>quarkus-rest-jackson</artifactId>
         </dependency>
     </dependencies>
-
 </project>
