@@ -16,19 +16,35 @@ import jakarta.annotation.Nullable;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+
 /**
  * Representation of RFC7807 Problem schema.
  */
+@Schema(name = "HttpProblem", description = "HTTP Problem Response according to RFC9457 & RFC7807", additionalProperties = Schema.True.class)
 public class HttpProblem extends RuntimeException {
 
     public static final MediaType MEDIA_TYPE = new MediaType("application", "problem+json");
 
+    @Schema(description = "A optional URI reference that identifies the problem type", examples = "https://example.com/errors/not-found")
     private final URI type;
+
+    @Schema(description = "A optional, short, human-readable summary of the problem type", examples = "Not Found")
     private final String title;
+
+    @Schema(name = "status", description = "The HTTP status code for this occurrence of the problem", examples = "404")
     private final int statusCode;
+
+    @Schema(description = "A optional human-readable explanation specific to this occurrence of the problem", examples = "Record not found")
     private final String detail;
+
+    @Schema(description = "A URI reference that identifies the specific occurrence of the problem", examples = "https://api.example.com/errors/123")
     private final URI instance;
+
+    @Schema(hidden = true)
     private final Map<String, Object> parameters;
+
+    @Schema(hidden = true)
     private final Map<String, Object> headers;
 
     protected HttpProblem(Builder builder) {
@@ -105,6 +121,7 @@ public class HttpProblem extends RuntimeException {
      *             dependencies to JaxRS/JakartaRS classes.
      */
     @Deprecated(since = "3.1.0", forRemoval = true)
+    @Schema(hidden = true)
     public Response.StatusType getStatus() {
         return Response.Status.fromStatusCode(statusCode);
     }

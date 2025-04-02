@@ -23,12 +23,9 @@ import jakarta.ws.rs.container.ResourceInfo;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.ext.ExceptionMapper;
 
-import org.eclipse.microprofile.openapi.annotations.media.Content;
-import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 
 import io.quarkiverse.resteasy.problem.ExceptionMapperBase;
-import io.quarkiverse.resteasy.problem.HttpProblem;
 import io.quarkiverse.resteasy.problem.ProblemRuntimeConfig.ConstraintViolationMapperConfig;
 
 /**
@@ -36,9 +33,15 @@ import io.quarkiverse.resteasy.problem.ProblemRuntimeConfig.ConstraintViolationM
  * these exceptions. Adds 'violations' field into `application/problem` responses.
  */
 @Priority(Priorities.USER)
-@APIResponse(responseCode = "400", description = "Bad request: server would not process the request due to something the server considered to be a client error", content = @Content(mediaType = "application/problem+json", schema = @Schema(ref = "#/components/schemas/HttpValidationProblem")))
+@APIResponse(responseCode = ConstraintViolationExceptionMapper.HTTP_VALIDATION_PROBLEM_STATUS_CODE)
 public final class ConstraintViolationExceptionMapper extends ExceptionMapperBase<ConstraintViolationException>
         implements ExceptionMapper<ConstraintViolationException> {
+
+    /**
+     * APIResponse annotations' responseCode must be set according to the configuration, it can't be hardcoded as for
+     * other mappers. OpenApiProblemFilter handles this accordingly.
+     */
+    public static final String HTTP_VALIDATION_PROBLEM_STATUS_CODE = "[HttpValidationProblem]";
 
     private static ConstraintViolationMapperConfig config = ConstraintViolationMapperConfig.defaults();
 
@@ -50,12 +53,8 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
     }
 
     @Override
-    protected HttpProblem toProblem(ConstraintViolationException exception) {
-        return HttpProblem.builder()
-                .withStatus(config.status())
-                .withTitle(config.title())
-                .with("violations", toViolations(exception.getConstraintViolations()))
-                .build();
+    protected HttpValidationProblem toProblem(ConstraintViolationException exception) {
+        return new HttpValidationProblem(toViolations(exception.getConstraintViolations()), config.status(), config.title());
     }
 
     private List<Violation> toViolations(Set<ConstraintViolation<?>> constraintViolations) {

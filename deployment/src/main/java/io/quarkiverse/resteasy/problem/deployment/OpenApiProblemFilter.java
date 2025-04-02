@@ -1,31 +1,51 @@
 package io.quarkiverse.resteasy.problem.deployment;
 
+import static io.quarkiverse.resteasy.problem.validation.ConstraintViolationExceptionMapper.HTTP_VALIDATION_PROBLEM_STATUS_CODE;
+
 import org.eclipse.microprofile.openapi.OASFilter;
-import org.eclipse.microprofile.openapi.models.OpenAPI;
+import org.eclipse.microprofile.openapi.models.Operation;
 import org.eclipse.microprofile.openapi.models.responses.APIResponse;
 
-import io.quarkiverse.resteasy.problem.openapi.HttpProblemSchema;
+import io.quarkiverse.resteasy.problem.HttpProblem;
 import io.smallrye.openapi.internal.models.media.Content;
 import io.smallrye.openapi.internal.models.media.MediaType;
 import io.smallrye.openapi.internal.models.media.Schema;
 
 /**
- * OpenAPI filter that automatically adds Problem Details schema to error responses.
- * This filter runs at build time and enhances the OpenAPI documentation by adding
- * the HttpProblem schema reference to any 4xx or 5xx response that doesn't already
- * have content defined.
+ * OpenAPI build-time filter that automatically augments various OpenApi model parts:
+ * - error responses without explicit @Content defined in @APIResponse
+ * - updates status code and description of HttpValidationProblem according to configuration
  */
 public class OpenApiProblemFilter implements OASFilter {
 
-    private static final Content PROBLEM_CONTENT = createDefaultContent();
-    private static final org.eclipse.microprofile.openapi.models.media.Schema MDC_PROPERTY_SCHEMA = new Schema()
-            .addType(Schema.SchemaType.STRING)
-            .set("description", "Additional context of the problem");
-
     private final ProblemBuildConfig config;
+    private final Content problemContent;
+    private final Content validationProblemContent;
 
     public OpenApiProblemFilter(ProblemBuildConfig config) {
         this.config = config;
+        this.problemContent = createContent(config.openapi().defaultSchema());
+        this.validationProblemContent = createContent(config.openapi().validationProblemSchema());
+    }
+
+    /**
+     * HttpValidationProblem is configurable in regard to status code (e.g. 422 instead of default 400). But ApiResponse
+     * annotation on ConstraintViolationExceptionMapper obviously cannot use even a build time config: annotations must
+     * use pure constants. Because of this, a fake special responseCode for this specific responses is introduced:
+     * <HttpValidationProblem>. Once it is detected, it is augmented with status code and description defined in the
+     * config.
+     */
+    @Override
+    public Operation filterOperation(Operation operation) {
+        if (operation.getResponses().hasAPIResponse(HTTP_VALIDATION_PROBLEM_STATUS_CODE)) {
+            APIResponse response = operation.getResponses().getAPIResponse(HTTP_VALIDATION_PROBLEM_STATUS_CODE)
+                    .description(config.constraintViolation().description())
+                    .content(validationProblemContent);
+
+            operation.getResponses().addAPIResponse(String.valueOf(config.constraintViolation().status()), response);
+            operation.getResponses().removeAPIResponse(HTTP_VALIDATION_PROBLEM_STATUS_CODE);
+        }
+        return operation;
     }
 
     /**
@@ -49,7 +69,7 @@ public class OpenApiProblemFilter implements OASFilter {
         try {
             int httpStatus = Integer.parseInt(responseCode);
             if (httpStatus >= 400) {
-                apiResponse.setContent(PROBLEM_CONTENT);
+                apiResponse.setContent(problemContent);
             }
         } catch (NumberFormatException e) {
             return apiResponse;
@@ -58,43 +78,15 @@ public class OpenApiProblemFilter implements OASFilter {
         return apiResponse;
     }
 
-    /**
-     * Augments auto-generated HttpProblem schemas with additional properties defined in
-     * `quarkus.resteasy.problem.include-mdc-properties`
-     */
-    @Override
-    public void filterOpenAPI(OpenAPI openAPI) {
-        if (config.includeMdcProperties().isEmpty()) {
-            return;
-        }
-
-        org.eclipse.microprofile.openapi.models.media.Schema httpProblemSchema = openAPI.getComponents().getSchemas()
-                .get("HttpProblem");
-        org.eclipse.microprofile.openapi.models.media.Schema httpValidationProblem = openAPI.getComponents().getSchemas()
-                .get("HttpValidationProblem");
-
-        config.includeMdcProperties().forEach(mdcProperty -> {
-            httpProblemSchema.addProperty(mdcProperty, MDC_PROPERTY_SCHEMA);
-            httpValidationProblem.addProperty(mdcProperty, MDC_PROPERTY_SCHEMA);
-        });
-    }
-
-    /**
-     * Creates the default content for Problem Details responses.
-     * Sets up the media type and schema reference for HttpProblem.
-     *
-     * @return Content object configured for Problem Details
-     */
-    private static Content createDefaultContent() {
-        Content content = new Content();
+    private static Content createContent(String schemaName) {
+        Schema schema = new Schema();
+        schema.setRef("#/components/schemas/" + schemaName);
 
         MediaType mediaType = new MediaType();
-        content.addMediaType(HttpProblemSchema.MEDIA_TYPE, mediaType);
-
-        Schema schema = new Schema();
-        schema.setRef("#/components/schemas/HttpProblem");
         mediaType.setSchema(schema);
 
+        Content content = new Content();
+        content.addMediaType(HttpProblem.MEDIA_TYPE.toString(), mediaType);
         return content;
     }
 }

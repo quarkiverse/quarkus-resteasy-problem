@@ -1,6 +1,5 @@
 package io.quarkiverse.resteasy.problem;
 
-import io.quarkiverse.resteasy.problem.openapi.HttpProblemSchema;
 import io.quarkus.security.ForbiddenException;
 import io.quarkus.security.UnauthorizedException;
 import jakarta.validation.ConstraintViolationException;
@@ -9,8 +8,6 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Response;
-import org.eclipse.microprofile.openapi.annotations.media.Content;
-import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;

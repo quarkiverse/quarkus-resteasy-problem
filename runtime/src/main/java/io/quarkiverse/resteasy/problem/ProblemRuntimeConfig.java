@@ -6,8 +6,12 @@ import io.smallrye.config.ConfigMapping;
 import io.smallrye.config.WithDefault;
 import io.smallrye.config.WithName;
 
+/**
+ * @deprecated v4.0.0 all configuration will be evaluated in build time
+ */
 @ConfigMapping(prefix = "quarkus.resteasy.problem")
 @ConfigRoot(phase = ConfigPhase.RUN_TIME)
+@Deprecated(since = "3.20.0", forRemoval = true)
 public interface ProblemRuntimeConfig {
 
     /**
@@ -28,6 +32,11 @@ public interface ProblemRuntimeConfig {
                 public String title() {
                     return "Bad Request";
                 }
+
+                @Override
+                public String description() {
+                    return "Bad request: server would not process the request due to something the server considered to be a client error";
+                }
             };
         }
 
@@ -42,5 +51,11 @@ public interface ProblemRuntimeConfig {
          */
         @WithDefault("Bad Request")
         String title();
+
+        /**
+         * OpenApi description for ConstraintViolationExceptions.
+         */
+        @WithDefault("Bad request: server would not process the request due to something the server considered to be a client error")
+        String description();
     }
 }

@@ -1,0 +1,27 @@
+package io.quarkiverse.resteasy.problem.validation;
+
+import java.util.List;
+
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+
+import io.quarkiverse.resteasy.problem.HttpProblem;
+
+/**
+ * Representation of RFC7807 Problem schema.
+ */
+@Schema(name = "HttpValidationProblem", description = "HTTP Validation Problem Response according to RFC9457 & RFC7807", additionalProperties = Schema.True.class)
+public class HttpValidationProblem extends HttpProblem {
+
+    @Schema(description = "List of validation constraint violations that occurred")
+    List<Violation> violations;
+
+    public HttpValidationProblem(List<Violation> violations, int status, String title) {
+        super(
+                HttpProblem.builder()
+                        .withStatus(status)
+                        .withTitle(title)
+                        .with("violations", violations));
+        this.violations = violations;
+    }
+
+}

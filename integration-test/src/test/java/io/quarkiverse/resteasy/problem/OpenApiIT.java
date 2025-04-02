@@ -33,14 +33,6 @@ class OpenApiIT {
     }
 
     @Test
-    void shouldIncludeCustomMdcPropertiesInHttpProblemSchemas() {
-        getOpenApi()
-                .body("components.schemas.HttpProblem.properties.uuid.type", equalTo("string"))
-                .body("components.schemas.HttpProblem.properties.uuid.description", equalTo("Additional context of the problem"))
-                .body("components.schemas.HttpProblem.properties.field-from-configuration.type", equalTo("string"));
-    }
-
-    @Test
     void shouldAddHttpProblemApiResponseFromAnnotationIfContentIsNotDefined() {
         getOpenApi()
                 .body("paths['/openapi/documented']['post']['responses']['409']['description']", equalTo("Request received but there has been a conflict"))
