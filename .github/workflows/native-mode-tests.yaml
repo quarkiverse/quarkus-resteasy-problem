@@ -11,8 +11,10 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        paradigm: [ "classic", "reactive" ]
-        json-provider: [ "jsonb", "jackson" ]
+        maven_profiles: [
+          "jackson-classic", "jsonb-classic",
+          "jackson-reactive", "jsonb-reactive"
+        ]
 
     steps:
       - uses: actions/checkout@v4
@@ -34,5 +36,8 @@ jobs:
           components: 'native-image'
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Native Tests
-        run: ./mvnw clean verify -P it,native,${{ matrix.json-provider }}-${{ matrix.paradigm }} -pl 'integration-test/core'
+      - name: Native Tests - Core (latest - classic - jackson)
+        run: ./mvnw clean verify -P it,native,${{ matrix.maven_profiles }} -pl 'integration-test/core'
+
+      - name: Native Tests - Non-core integrations
+        run: ./mvnw clean verify -P it,native -pl 'integration-test/metrics,integration-test/zalando'
