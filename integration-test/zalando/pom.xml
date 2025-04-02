@@ -4,41 +4,26 @@
 
     <parent>
         <groupId>io.quarkiverse.resteasy-problem</groupId>
-        <artifactId>quarkus-resteasy-problem-parent</artifactId>
+        <artifactId>quarkus-resteasy-problem-integration-test</artifactId>
         <version>999-SNAPSHOT</version>
     </parent>
 
-    <artifactId>quarkus-resteasy-problem-integration-test</artifactId>
-    <name>Quarkus - RESTeasy - Problem - Integration Tests</name>
-    <packaging>pom</packaging>
+    <artifactId>quarkus-resteasy-problem-integration-test-zalando</artifactId>
+    <name>Quarkus - RESTeasy - Problem - Integration Tests - Zalando</name>
 
     <dependencies>
         <dependency>
-            <groupId>io.quarkiverse.resteasy-problem</groupId>
-            <artifactId>quarkus-resteasy-problem</artifactId>
-            <version>999-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-hibernate-validator</artifactId>
+            <groupId>org.zalando</groupId>
+            <artifactId>problem</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-junit5</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <scope>test</scope>
+            <artifactId>quarkus-rest-jackson</artifactId>
         </dependency>
     </dependencies>
+
+
 
     <build>
         <plugins>
@@ -96,15 +81,6 @@
     </build>
 
     <profiles>
-        <profile>
-            <id>it</id>
-            <modules>
-                <module>core</module>
-                <module>metrics</module>
-                <module>zalando</module>
-            </modules>
-        </profile>
-
         <profile>
             <id>native</id>
             <properties>

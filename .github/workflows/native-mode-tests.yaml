@@ -35,4 +35,4 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Native Tests
-        run: ./mvnw clean verify -Pnative,${{ matrix.json-provider }}-${{ matrix.paradigm }} -pl integration-test
+        run: ./mvnw clean verify -P it,native,${{ matrix.json-provider }}-${{ matrix.paradigm }} -pl 'integration-test/core'
