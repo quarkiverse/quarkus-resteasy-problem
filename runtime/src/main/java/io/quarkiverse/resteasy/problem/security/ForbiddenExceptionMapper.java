@@ -16,7 +16,6 @@ import io.quarkus.security.ForbiddenException;
  * Mapper overriding default Quarkus exception mapper to make all error responses compliant with RFC7807.
  */
 @Priority(Priorities.USER)
-// OpenApi annotation is actually a build time dependency, not runtime!
 @APIResponse(responseCode = "403", description = "Forbidden: server understood the request but refused to process it")
 public final class ForbiddenExceptionMapper extends ExceptionMapperBase<ForbiddenException>
         implements ExceptionMapper<ForbiddenException> {

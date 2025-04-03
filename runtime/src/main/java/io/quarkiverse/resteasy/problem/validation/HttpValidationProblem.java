@@ -15,7 +15,7 @@ public class HttpValidationProblem extends HttpProblem {
     @Schema(description = "List of validation constraint violations that occurred")
     List<Violation> violations;
 
-    public HttpValidationProblem(List<Violation> violations, int status, String title) {
+    public HttpValidationProblem(int status, String title, List<Violation> violations) {
         super(
                 HttpProblem.builder()
                         .withStatus(status)

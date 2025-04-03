@@ -7,7 +7,7 @@ import io.smallrye.config.WithDefault;
 import io.smallrye.config.WithName;
 
 /**
- * @deprecated v4.0.0 all configuration will be evaluated in build time
+ * @deprecated v4.0.0 all configuration will be evaluated in build time, Use {@link ProblemBuildConfig} instead.
  */
 @ConfigMapping(prefix = "quarkus.resteasy.problem")
 @ConfigRoot(phase = ConfigPhase.RUN_TIME)

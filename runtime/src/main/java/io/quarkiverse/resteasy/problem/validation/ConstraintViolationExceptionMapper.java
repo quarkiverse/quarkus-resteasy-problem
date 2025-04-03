@@ -54,7 +54,7 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
 
     @Override
     protected HttpValidationProblem toProblem(ConstraintViolationException exception) {
-        return new HttpValidationProblem(toViolations(exception.getConstraintViolations()), config.status(), config.title());
+        return new HttpValidationProblem(config.status(), config.title(), toViolations(exception.getConstraintViolations()));
     }
 
     private List<Violation> toViolations(Set<ConstraintViolation<?>> constraintViolations) {
