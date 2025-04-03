@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>quarkus-resteasy-problem-integration-test-zalando</artifactId>
-    <name>Quarkus - RESTeasy - Problem - Integration Tests - Zalando</name>
+    <name>Quarkus - RESTeasy - Problem - Integration Tests - Zalando Problem</name>
 
     <dependencies>
         <dependency>

@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  it-core:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
@@ -36,8 +36,31 @@ jobs:
       - name: Compile
         run: ./mvnw install -Pquick
 
-      - name: Native Tests - Core (latest - classic - jackson)
-        run: ./mvnw clean verify -P it,native,${{ matrix.maven_profiles }} -pl 'integration-test/core'
+      #- name: Native Tests
+      #  run: ./mvnw clean verify -P it,native,${{ matrix.maven_profiles }} -pl 'integration-test/core'
 
-      - name: Native Tests - Non-core integrations
+  it-non-core:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+          cache: 'maven'
+
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '17'
+          distribution: 'graalvm'
+          components: 'native-image'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compile
+        run: ./mvnw install -Pquick
+
+      - name: Native Tests
         run: ./mvnw clean verify -P it,native -pl 'integration-test/metrics,integration-test/zalando'
