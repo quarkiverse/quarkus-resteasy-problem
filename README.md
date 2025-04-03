@@ -193,7 +193,7 @@ When `quarkus-smallrye-openapi` is in the classpath, this extension provides a b
 
 - complete OpenApi schema definitions for `HttpProblem` and `HttpValidationProblem` that can be used in annotations (e.g. `@Schema(implementation = HttpProblem.class)`)
 - auto-generating documentation for endpoints declaring `throws` for few common exceptions, e.g. `NotFoundException`,`ForbiddenException` or even `Exception`
-```
+```java
 @GET
 @Path("/my-endpoint")
 @APIResponse(responseCode = "409", description = "Request received but there has been a conflict")
@@ -202,14 +202,14 @@ public void endpoint() throws NotFoundException {}
 this endpoint will automatically get both 409 (from `@APIResponse`) and 404 (derived from `throws`) responses documented in open api.
 
 - attaching `HttpProblem` schema to endpoints declaring error api responses (4XX and 5XX) without `content` field specified:
-```
+```java
 @APIResponse(
   responseCode = "409", 
   description = "Request received but there has been a conflict"
 )
 ```
 is an equivalent to this:
-```
+```java
 @APIResponse(
   responseCode = "409", 
   description = "Request received but there has been a conflict",
