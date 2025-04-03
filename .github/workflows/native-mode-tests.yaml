@@ -39,9 +39,9 @@ jobs:
   test-extensions-native:
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 2
+      max-parallel: 1
       matrix:
-        it_modules: ["openapi", "metrics"] # zalando native tests runner on CI is currently broken
+        it_modules: ["openapi", "metrics", "zalando"]
       fail-fast: false
 
     steps:
