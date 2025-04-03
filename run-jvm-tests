@@ -21,4 +21,6 @@ set -e
 ./mvnw clean verify -P it,jsonb-classic -pl 'integration-test/core'
 ./mvnw clean verify -P it,jackson-reactive -pl 'integration-test/core'
 ./mvnw clean verify -P it,jsonb-reactive -pl 'integration-test/core'
-./mvnw clean verify -P it -pl 'integration-test/openapi,integration-test/metrics,integration-test/zalando,integration-test/rest-client'
+./mvnw clean verify -P it -pl 'integration-test/openapi,integration-test/metrics,integration-test/zalando'
+./mvnw clean verify -P it,jackson -pl 'integration-test/rest-client'
+./mvnw clean verify -P it,jsonb -pl 'integration-test/rest-client'

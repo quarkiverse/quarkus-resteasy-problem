@@ -1,8 +1,10 @@
 package io.quarkiverse.resteasy.problem.client;
 
-import io.quarkiverse.resteasy.problem.HttpProblem;
 import jakarta.ws.rs.core.Response;
+
 import org.eclipse.microprofile.rest.client.ext.ResponseExceptionMapper;
+
+import io.quarkiverse.resteasy.problem.HttpProblem;
 
 /**
  * Utility which can be used as @Provider for Rest Clients along with @RegisterRestClient
