@@ -15,9 +15,10 @@ fi
 set -e
 set -x
 
-./mvnw clean install -Pquick -pl '!integration-test'
+./mvnw clean install -Pquick
 
-./mvnw clean verify -Pnative,jackson-classic -pl integration-test
-./mvnw clean verify -Pnative,jackson-reactive -pl integration-test
-./mvnw clean verify -Pnative,jsonb-classic -pl integration-test
-./mvnw clean verify -Pnative,jsonb-reactive -pl integration-test
+./mvnw clean verify -P it,native,jackson-classic -pl 'integration-test/core'
+./mvnw clean verify -P it,native,jsonb-classic -pl 'integration-test/core'
+./mvnw clean verify -P it,native,jackson-reactive -pl 'integration-test/core'
+./mvnw clean verify -P it,native,jsonb-reactive -pl 'integration-test/core'
+./mvnw clean verify -P it,native -pl 'integration-test/openapi,integration-test/metrics,integration-test/zalando'

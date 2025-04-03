@@ -24,7 +24,7 @@ jobs:
 
       - name: Compile and Install Extension
         run: |
-          ./mvnw install -Pquick -pl '!integration-test'
+          ./mvnw install -Pquick
           mkdir quickstart
 
       - name: Generate Quickstart App
