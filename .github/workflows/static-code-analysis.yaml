@@ -22,4 +22,4 @@ jobs:
           cache: 'maven'
 
       - name: Check formatting
-        run: ./mvnw formatter:validate
+        run: ./mvnw formatter:validate -P it

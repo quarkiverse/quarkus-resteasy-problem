@@ -3,7 +3,6 @@ package io.quarkiverse.resteasy.problem;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 import static jakarta.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
-import static jakarta.ws.rs.core.Response.Status.NOT_FOUND;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.nullValue;
 

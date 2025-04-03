@@ -6,13 +6,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  test-core-native:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
       matrix:
-        paradigm: [ "classic", "reactive" ]
-        json-provider: [ "jsonb", "jackson" ]
+        maven_profiles: ["jackson-classic", "jsonb-classic", "jackson-reactive", "jsonb-reactive"]
 
     steps:
       - uses: actions/checkout@v4
@@ -24,8 +23,36 @@ jobs:
           distribution: temurin
           cache: 'maven'
 
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '17'
+          distribution: 'graalvm'
+          components: 'native-image'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Compile
-        run: ./mvnw clean install -Pquick -pl '!integration-test'
+        run: ./mvnw install -Pquick
+
+      - name: Native Tests
+        run: ./mvnw clean verify -P it,native,${{ matrix.maven_profiles }} -pl 'integration-test/core'
+
+  test-extensions-native:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 2
+      matrix:
+        it_modules: ["metrics"] # zalando native tests runner on CI is currently broken
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+          cache: 'maven'
 
       - uses: graalvm/setup-graalvm@v1
         with:
@@ -34,5 +61,8 @@ jobs:
           components: 'native-image'
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Compile
+        run: ./mvnw install -Pquick
+
       - name: Native Tests
-        run: ./mvnw clean verify -Pnative,${{ matrix.json-provider }}-${{ matrix.paradigm }} -pl integration-test
+        run: ./mvnw clean verify -P it,native -pl 'integration-test/${{ matrix.it_modules }}'

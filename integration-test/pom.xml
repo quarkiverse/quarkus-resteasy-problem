@@ -10,28 +10,13 @@
 
     <artifactId>quarkus-resteasy-problem-integration-test</artifactId>
     <name>Quarkus - RESTeasy - Problem - Integration Tests</name>
+    <packaging>pom</packaging>
 
     <dependencies>
         <dependency>
             <groupId>io.quarkiverse.resteasy-problem</groupId>
             <artifactId>quarkus-resteasy-problem</artifactId>
             <version>999-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-hibernate-validator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-smallrye-jwt</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-smallrye-metrics</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.zalando</groupId>
-            <artifactId>problem</artifactId>
         </dependency>
 
         <dependency>
@@ -108,50 +93,18 @@
 
     <profiles>
         <profile>
-            <id>jackson-classic</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>io.quarkus</groupId>
-                    <artifactId>quarkus-resteasy-jackson</artifactId>
-                </dependency>
-            </dependencies>
-        </profile>
-        <profile>
-            <id>jackson-reactive</id>
-            <dependencies>
-                <dependency>
-                    <groupId>io.quarkus</groupId>
-                    <artifactId>quarkus-rest-jackson</artifactId>
-                </dependency>
-            </dependencies>
-        </profile>
-
-        <profile>
-            <id>jsonb-classic</id>
-            <dependencies>
-                <dependency>
-                    <groupId>io.quarkus</groupId>
-                    <artifactId>quarkus-resteasy-jsonb</artifactId>
-                </dependency>
-            </dependencies>
-        </profile>
-        <profile>
-            <id>jsonb-reactive</id>
-            <dependencies>
-                <dependency>
-                    <groupId>io.quarkus</groupId>
-                    <artifactId>quarkus-rest-jsonb</artifactId>
-                </dependency>
-            </dependencies>
+            <id>it</id>
+            <modules>
+                <module>core</module>
+                <module>metrics</module>
+                <module>zalando</module>
+            </modules>
         </profile>
 
         <profile>
             <id>native</id>
             <properties>
-                <quarkus.package.type>native</quarkus.package.type>
+                <quarkus.native.enabled>true</quarkus.native.enabled>
             </properties>
 
             <build>
@@ -169,5 +122,4 @@
             </build>
         </profile>
     </profiles>
-
 </project>
