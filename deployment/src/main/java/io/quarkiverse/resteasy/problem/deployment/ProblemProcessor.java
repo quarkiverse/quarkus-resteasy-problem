@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 
 import jakarta.ws.rs.Priorities;
 
+import org.eclipse.microprofile.openapi.OASFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,12 +25,14 @@ import io.quarkus.deployment.annotations.BuildProducer;
 import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.deployment.annotations.Record;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
+import io.quarkus.deployment.builditem.IndexDependencyBuildItem;
 import io.quarkus.deployment.builditem.LiveReloadBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.ReflectiveClassBuildItem;
 import io.quarkus.jsonb.spi.JsonbSerializerBuildItem;
 import io.quarkus.resteasy.common.spi.ResteasyJaxrsProviderBuildItem;
 import io.quarkus.resteasy.reactive.spi.CustomExceptionMapperBuildItem;
 import io.quarkus.resteasy.reactive.spi.ExceptionMapperBuildItem;
+import io.quarkus.smallrye.openapi.deployment.spi.AddToOpenAPIDefinitionBuildItem;
 
 public class ProblemProcessor {
 
@@ -143,6 +146,22 @@ public class ProblemProcessor {
     void registerJsonbItems(BuildProducer<JsonbSerializerBuildItem> serializers) {
         serializers.produce(
                 new JsonbSerializerBuildItem(EXTENSION_MAIN_PACKAGE + "jsonb.JsonbProblemSerializer"));
+    }
+
+    /**
+     * Force jandex indexing for runtime module classes so that @Schema annotated classes can be picked up by OpenApi.
+     * It's an equivalent to adding beans.xml to runtime's module resources, but this has advantage of being enabled
+     * conditionally: only if openapi is in the classpath.
+     */
+    @BuildStep(onlyIf = OpenApiDetector.class)
+    void indexOpenApiClasses(BuildProducer<IndexDependencyBuildItem> indexDependency) {
+        indexDependency.produce(new IndexDependencyBuildItem("io.quarkiverse.resteasy-problem", "quarkus-resteasy-problem"));
+    }
+
+    @BuildStep(onlyIf = OpenApiDetector.class)
+    void registerOpenApiFilter(BuildProducer<AddToOpenAPIDefinitionBuildItem> openAPIProducer, ProblemBuildConfig config) {
+        OASFilter filter = new OpenApiProblemFilter(config);
+        openAPIProducer.produce(new AddToOpenAPIDefinitionBuildItem(filter));
     }
 
     @BuildStep

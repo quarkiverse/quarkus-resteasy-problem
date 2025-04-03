@@ -96,6 +96,7 @@
             <id>it</id>
             <modules>
                 <module>core</module>
+                <module>openapi</module>
                 <module>metrics</module>
                 <module>zalando</module>
             </modules>

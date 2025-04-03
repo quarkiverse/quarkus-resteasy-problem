@@ -10,8 +10,9 @@
 
 This extension supports:
 - Quarkus 1, 2 and 3
-- `quarkus-resteasy-jackson` and `quarkus-resteasy-jsonb`
 - `quarkus-rest-jackson` and `quarkus-rest-jsonb`
+- `quarkus-resteasy-jackson` and `quarkus-resteasy-jsonb`
+- OpenAPI integration (via `quarkus-smallrye-openapi`)
 - JVM and native mode
 
 ## Why you should use this extension?
@@ -186,6 +187,58 @@ Exceptions transformed into http 500s (aka server errors) will be logged as `ERR
 
 You may also want to check [this article](https://dzone.com/articles/when-http-status-codes-are-not-enough-tackling-web) on RFC7807 practical usage.  
 More on throwing problems: [zalando/problem usage](https://github.com/zalando/problem#usage)
+
+## OpenAPI integration (available since <a href="https://github.com/quarkiverse/quarkus-resteasy-problem/releases/tag/3.20.0">v3.20.0</a>)
+When `quarkus-smallrye-openapi` is in the classpath, this extension provides a bunch of out-of-the-box features :
+
+- complete OpenApi schema definitions for `HttpProblem` and `HttpValidationProblem` that can be used in annotations (e.g. `@Schema(implementation = HttpProblem.class)`)
+- auto-generating documentation for endpoints declaring `throws` for few common exceptions, e.g. `NotFoundException`,`ForbiddenException` or even `Exception`
+```java
+@GET
+@Path("/my-endpoint")
+@APIResponse(responseCode = "409", description = "Request received but there has been a conflict")
+public void endpoint() throws NotFoundException {}
+```
+this endpoint will automatically get both 409 (from `@APIResponse`) and 404 (derived from `throws`) responses documented in open api.
+
+- attaching `HttpProblem` schema to endpoints declaring error api responses (4XX and 5XX) without `content` field specified:
+```java
+@APIResponse(
+  responseCode = "409", 
+  description = "Request received but there has been a conflict"
+)
+```
+is an equivalent to this:
+```java
+@APIResponse(
+  responseCode = "409", 
+  description = "Request received but there has been a conflict",
+  content = @Content(
+    mediaType = "application/problem+json",
+    schema = @Schema(implementation = HttpProblem.class)
+  )
+)
+```
+
+- if you project needs to define and document additional Problem Detail properties, you need to extend `HttpProblem`, annotate it with OpenApi annotations:
+
+```java
+@Schema(name = "MyHttpProblem", description = "HTTP Problem Response according to MyProject",
+        additionalProperties = Schema.True.class)
+public class MyHttpProblem extends HttpProblem {
+
+    @Schema(description = "Additional parameters providing more details about the problem", examples = "{\"timestamp\":\"2024-03-20T10:00:00Z\",\"traceId\":\"550e8400-e29b-41d4-a716-446655440000\"}")
+    private SortedMap<String, Object> contexts;
+
+    @Schema(description = "Original cause of error, only set when forwarding an underlying problem")
+    private MyHttpProblem cause;
+
+}
+```
+and tell this extension which schema is default for Problem Details: 
+```properties
+quarkus.resteasy.problem.openapi.default-schema=MyHttpProblem
+```
 
 ## Configuration options
 

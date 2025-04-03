@@ -3,6 +3,9 @@ package io.quarkiverse.resteasy.problem.security;
 import jakarta.annotation.Priority;
 import jakarta.enterprise.inject.spi.CDI;
 import jakarta.ws.rs.Priorities;
+import jakarta.ws.rs.ext.ExceptionMapper;
+
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 
 import io.quarkiverse.resteasy.problem.ExceptionMapperBase;
 import io.quarkiverse.resteasy.problem.HttpProblem;
@@ -15,7 +18,9 @@ import io.quarkus.vertx.http.runtime.CurrentVertxRequest;
  * @see io.quarkus.resteasy.runtime.UnauthorizedExceptionMapper
  */
 @Priority(Priorities.USER)
-public final class UnauthorizedExceptionMapper extends ExceptionMapperBase<UnauthorizedException> {
+@APIResponse(responseCode = "401", description = "Unauthorized: request was not successful because it lacks valid authentication credentials for the requested resource")
+public final class UnauthorizedExceptionMapper extends ExceptionMapperBase<UnauthorizedException>
+        implements ExceptionMapper<UnauthorizedException> {
 
     @Override
     protected HttpProblem toProblem(UnauthorizedException exception) {
