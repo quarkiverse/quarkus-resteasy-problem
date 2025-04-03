@@ -41,7 +41,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        it_modules: ["openapi", "metrics", "zalando"]
+        it_modules: ["openapi", "metrics", "zalando", "rest-client"]
       fail-fast: false
 
     steps:

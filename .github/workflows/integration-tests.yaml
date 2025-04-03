@@ -37,7 +37,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        it_modules: ["openapi", "metrics", "zalando"]
+        it_modules: ["openapi", "metrics", "zalando", "rest-client"]
 
     steps:
       - uses: actions/checkout@v4
