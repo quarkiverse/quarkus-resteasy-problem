@@ -6,15 +6,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  it-core:
+  test-core:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
       matrix:
-        maven_profiles: [
-          "jackson-classic", "jsonb-classic",
-          "jackson-reactive", "jsonb-reactive"
-        ]
+        maven_profiles: ["jackson-classic", "jsonb-classic", "jackson-reactive", "jsonb-reactive"]
 
     steps:
       - uses: actions/checkout@v4
@@ -29,7 +26,7 @@ jobs:
       - uses: graalvm/setup-graalvm@v1
         with:
           java-version: '17'
-          distribution: 'graalvm'
+          distribution: 'mandrel'
           components: 'native-image'
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -39,8 +36,12 @@ jobs:
       #- name: Native Tests
       #  run: ./mvnw clean verify -P it,native,${{ matrix.maven_profiles }} -pl 'integration-test/core'
 
-  it-non-core:
+  test-extensions:
     runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 2
+      matrix:
+        it_modules: ["metrics", "zalando"]
 
     steps:
       - uses: actions/checkout@v4
@@ -55,7 +56,7 @@ jobs:
       - uses: graalvm/setup-graalvm@v1
         with:
           java-version: '17'
-          distribution: 'graalvm'
+          distribution: 'mandrel'
           components: 'native-image'
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -63,4 +64,4 @@ jobs:
         run: ./mvnw install -Pquick
 
       - name: Native Tests
-        run: ./mvnw clean verify -P it,native -pl 'integration-test/metrics,integration-test/zalando'
+        run: ./mvnw clean verify -P it,native -pl '${{ matrix.it_modules }}'
