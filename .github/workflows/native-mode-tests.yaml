@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-core:
+  test-core-native:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
@@ -36,7 +36,7 @@ jobs:
       #- name: Native Tests
       #  run: ./mvnw clean verify -P it,native,${{ matrix.maven_profiles }} -pl 'integration-test/core'
 
-  test-extensions:
+  test-extensions-native:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 2
