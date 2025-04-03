@@ -33,15 +33,15 @@ jobs:
       - name: Compile
         run: ./mvnw install -Pquick
 
-      #- name: Native Tests
-      #  run: ./mvnw clean verify -P it,native,${{ matrix.maven_profiles }} -pl 'integration-test/core'
+      - name: Native Tests
+        run: ./mvnw clean verify -P it,native,${{ matrix.maven_profiles }} -pl 'integration-test/core'
 
   test-extensions-native:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 2
       matrix:
-        it_modules: ["metrics", "zalando"]
+        it_modules: ["metrics"] # zalando native tests runner on CI is currently broken
       fail-fast: false
 
     steps:
