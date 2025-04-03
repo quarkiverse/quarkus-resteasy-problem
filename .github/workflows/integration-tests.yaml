@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+      max-parallel: 2
       matrix:
         maven_profiles: ["jackson-classic", "jsonb-classic", "jackson-reactive", "jsonb-reactive"]
 
@@ -52,4 +53,4 @@ jobs:
         run: ./mvnw install -Pquick
 
       - name: Integration Tests - Non-core extensions
-        run: ./mvnw clean verify -P it -pl '${{ matrix.it_modules }}'
+        run: ./mvnw clean verify -P it -pl 'integration-test/${{ matrix.it_modules }}'
