@@ -8,18 +8,29 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import io.quarkiverse.resteasy.problem.HttpProblem;
 import io.quarkiverse.resteasy.problem.HttpProblemMother;
 
 class JacksonProblemDeserializerTest {
 
-    ObjectMapper mapper = JacksonProblemModuleRegistrar.registerProblemModule(new ObjectMapper());
+    ObjectMapper mapper = new ObjectMapper();
+
+    @BeforeEach
+    void setup() {
+        mapper.registerModule(
+                new SimpleModule("RFC7807 problem")
+                        .addSerializer(HttpProblem.class, new JacksonProblemSerializer())
+                        .addDeserializer(HttpProblem.class, new JacksonProblemDeserializer(mapper)));
+
+    }
 
     @Test
     void shouldDeserializeStandardFields() throws IOException {

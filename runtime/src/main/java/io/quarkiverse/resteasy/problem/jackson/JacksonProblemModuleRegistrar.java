@@ -13,15 +13,10 @@ public final class JacksonProblemModuleRegistrar implements ObjectMapperCustomiz
 
     @Override
     public void customize(ObjectMapper mapper) {
-        registerProblemModule(mapper);
-    }
-
-    public static ObjectMapper registerProblemModule(ObjectMapper mapper) {
-        mapper.registerModule(
-                new SimpleModule("RFC7807 problem")
-                        .addSerializer(HttpProblem.class, new JacksonProblemSerializer())
-                        .addDeserializer(HttpProblem.class, new JacksonProblemDeserializer(mapper)));
-        return mapper;
+        SimpleModule module = new SimpleModule("RFC7807 problem")
+                .addSerializer(HttpProblem.class, new JacksonProblemSerializer())
+                .addDeserializer(HttpProblem.class, new JacksonProblemDeserializer(mapper));
+        mapper.registerModule(module);
     }
 
 }
