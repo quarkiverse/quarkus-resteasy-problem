@@ -27,7 +27,9 @@ public final class WebApplicationExceptionMapper extends ExceptionMapperBase<Web
 
         Optional.ofNullable(exception.getResponse().getHeaders())
                 .ifPresent(headers -> {
-                    headers.forEach((header, values) -> values.forEach(value -> problem.withHeader(header, value)));
+                    headers.entrySet().stream()
+                            .filter(entry -> !"content-length".equalsIgnoreCase(entry.getKey()))
+                            .forEach(entry -> entry.getValue().forEach(value -> problem.withHeader(entry.getKey(), value)));
                 });
 
         return problem.build();

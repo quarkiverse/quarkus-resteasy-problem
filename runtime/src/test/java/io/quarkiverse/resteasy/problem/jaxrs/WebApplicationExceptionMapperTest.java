@@ -1,6 +1,7 @@
 package io.quarkiverse.resteasy.problem.jaxrs;
 
 import static io.quarkiverse.resteasy.problem.HttpProblem.MEDIA_TYPE;
+import static jakarta.ws.rs.core.HttpHeaders.CONTENT_LENGTH;
 import static jakarta.ws.rs.core.HttpHeaders.RETRY_AFTER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -70,6 +71,24 @@ class WebApplicationExceptionMapperTest {
         assertThat(response.getEntity())
                 .isInstanceOf(HttpProblem.class)
                 .hasFieldOrPropertyWithValue("detail", "HTTP 301 Moved Permanently");
+    }
+
+    /**
+     * Otherwise servlet uses content length to truncate resulting json
+     *
+     * @see <a href="https://github.com/quarkiverse/quarkus-resteasy-problem/issues/429">MAJOR: Response is truncated when
+     *      calling from one service to another and error happens on backend</a>
+     */
+    @Test
+    void shouldSkipContentLengthHeader() {
+        WebApplicationException exception = new WebApplicationException(
+                Response.status(429)
+                        .header(CONTENT_LENGTH, 9999)
+                        .build());
+
+        Response response = mapper.toResponse(exception);
+
+        assertThat(response.getHeaderString(CONTENT_LENGTH)).isNull();
     }
 
     @Test
