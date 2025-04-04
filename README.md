@@ -42,7 +42,7 @@ Add this to your pom.xml:
 <dependency>
     <groupId>io.quarkiverse.resteasy-problem</groupId>
     <artifactId>quarkus-resteasy-problem</artifactId>
-    <version>3.19.0</version>
+    <version>3.20.0</version>
 </dependency>
 ```
 
