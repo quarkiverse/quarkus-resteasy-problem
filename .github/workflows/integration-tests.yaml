@@ -37,7 +37,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        it_modules: ["openapi", "metrics", "zalando", "rest-client"]
+        it_modules: ["openapi", "metrics", "zalando"] # rest-client runs along with core as it utilizes same maven profiles
 
     steps:
       - uses: actions/checkout@v4
