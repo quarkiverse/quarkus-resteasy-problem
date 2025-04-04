@@ -12,7 +12,7 @@ or add your own suggestions and start discussion. Then create fork or branch and
 Quarkus has a strictly enforced code style, so as this extension. Code formatting is done by the Eclipse code formatter, using the config files
 found in the `ide-config` directory. By default when you run `./mvnw install` the code will be formatted automatically.
 
-If you want to run the formatting without doing a full build, you can run `./mvnw process-sources` or `./mvnw formatter:format`.
+If you want to run the formatting without doing a full build, you can run `./mvnw process-sources -P it` or `./mvnw formatter:format -P it`.
 
 More details on how to setup your ide can be found in official [Quarkus Contributing guide](https://github.com/quarkusio/quarkus/blob/main/CONTRIBUTING.md#ide-config-and-code-style)
 

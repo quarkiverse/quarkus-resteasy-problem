@@ -7,13 +7,15 @@ import org.eclipse.microprofile.rest.client.ext.ResponseExceptionMapper;
 import io.quarkiverse.resteasy.problem.HttpProblem;
 
 /**
- * Utility which can be used as @Provider for Rest Clients along with @RegisterRestClient
+ * Parses application/problem+json response types and rethrows them as `HttpProblem`.
+ * <p>
+ * Intended to be used as @Provider for RestClients via @RegisterRestClient.
  */
-public class HttpProblemClientExceptionMapper implements ResponseExceptionMapper<RuntimeException> {
+public class ThrowingHttpProblemClientExceptionMapper implements ResponseExceptionMapper<RuntimeException> {
 
     @Override
     public RuntimeException toThrowable(Response response) {
-        if (!HttpProblem.MEDIA_TYPE.equals(response.getMediaType())) {
+        if (!HttpProblem.MEDIA_TYPE.isCompatible(response.getMediaType())) { // TODO add tests here where UTF+8 is appended to respons
             return null; // Let others handle non-problem formats
         }
 

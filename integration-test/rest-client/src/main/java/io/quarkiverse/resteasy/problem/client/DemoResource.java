@@ -5,13 +5,24 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 @Path("/")
 @Produces(MediaType.APPLICATION_JSON)
 public class DemoResource {
+
+    @GET
+    @Path("/throw")
+    @Produces()
+    public Response throwProblem() {
+        throw HttpProblem.builder()
+                .withStatus(409)
+                .withTitle("Conflict from upstream service")
+                .withDetail("Nothing to add")
+                .build();
+    }
 
     @Inject
     @RestClient
@@ -20,17 +31,17 @@ public class DemoResource {
     @GET
     @Path("/throw-via-rest-client")
     public void throwViaRestClient() {
-        selfClient.doThrow(418, "I'm a teapot", "Nothing to add");
+        selfClient.doThrow();
     }
 
+    @Inject
+    @RestClient
+    SelfRestClientWithExceptionMapper selfClientWithMapper;
+
     @GET
-    @Path("/throw")
-    public void throwProblem(@QueryParam("status") int status, @QueryParam("title") String title,
-                             @QueryParam("detail") String detail) {
-        throw HttpProblem.builder()
-                .withTitle(title)
-                .withStatus(status)
-                .withDetail(detail)
-                .build();
+    @Path("/throw-via-rest-client-with-mapper")
+    public void throwViaRestClientWithMapper() {
+        selfClientWithMapper.doThrow();
     }
+
 }

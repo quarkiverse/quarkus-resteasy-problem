@@ -9,7 +9,7 @@ jobs:
   test-core-native:
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 4
+      max-parallel: 2
       matrix:
         maven_profiles: ["jackson-classic", "jsonb-classic", "jackson-reactive", "jsonb-reactive"]
 
@@ -34,12 +34,12 @@ jobs:
         run: ./mvnw install -Pquick
 
       - name: Native Tests
-        run: ./mvnw clean verify -P it,native,${{ matrix.maven_profiles }} -pl 'integration-test/core'
+        run: ./mvnw clean verify -P it,native,${{ matrix.maven_profiles }} -pl 'integration-test/core,integration-test/rest-client'
 
   test-extensions-native:
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 1
+      max-parallel: 2
       matrix:
         it_modules: ["openapi", "metrics", "zalando", "rest-client"]
       fail-fast: false

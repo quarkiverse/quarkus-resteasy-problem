@@ -14,6 +14,6 @@ public final class JsonbExceptionMapper extends ExceptionMapperBase<JsonbExcepti
 
     @Override
     protected HttpProblem toProblem(JsonbException exception) {
-        return HttpProblem.valueOf(BAD_REQUEST, exception.getCause().getMessage());
+        return HttpProblem.valueOf(BAD_REQUEST, exception.getCause() == null ? null : exception.getCause().getMessage());
     }
 }
