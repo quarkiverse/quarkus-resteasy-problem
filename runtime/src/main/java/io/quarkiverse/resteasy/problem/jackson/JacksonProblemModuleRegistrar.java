@@ -13,8 +13,9 @@ public final class JacksonProblemModuleRegistrar implements ObjectMapperCustomiz
 
     @Override
     public void customize(ObjectMapper mapper) {
-        SimpleModule module = new SimpleModule("RFC7807 problem");
-        module.addSerializer(HttpProblem.class, new JacksonProblemSerializer());
+        SimpleModule module = new SimpleModule("RFC7807 problem")
+                .addSerializer(HttpProblem.class, new JacksonProblemSerializer())
+                .addDeserializer(HttpProblem.class, new JacksonProblemDeserializer(mapper));
         mapper.registerModule(module);
     }
 

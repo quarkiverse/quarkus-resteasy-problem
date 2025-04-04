@@ -28,6 +28,7 @@ import io.quarkus.deployment.builditem.FeatureBuildItem;
 import io.quarkus.deployment.builditem.IndexDependencyBuildItem;
 import io.quarkus.deployment.builditem.LiveReloadBuildItem;
 import io.quarkus.deployment.builditem.nativeimage.ReflectiveClassBuildItem;
+import io.quarkus.jsonb.spi.JsonbDeserializerBuildItem;
 import io.quarkus.jsonb.spi.JsonbSerializerBuildItem;
 import io.quarkus.resteasy.common.spi.ResteasyJaxrsProviderBuildItem;
 import io.quarkus.resteasy.reactive.spi.CustomExceptionMapperBuildItem;
@@ -143,9 +144,12 @@ public class ProblemProcessor {
     }
 
     @BuildStep(onlyIf = JsonBDetector.class)
-    void registerJsonbItems(BuildProducer<JsonbSerializerBuildItem> serializers) {
+    void registerJsonbItems(BuildProducer<JsonbSerializerBuildItem> serializers,
+            BuildProducer<JsonbDeserializerBuildItem> deserializers) {
         serializers.produce(
                 new JsonbSerializerBuildItem(EXTENSION_MAIN_PACKAGE + "jsonb.JsonbProblemSerializer"));
+        deserializers.produce(
+                new JsonbDeserializerBuildItem(EXTENSION_MAIN_PACKAGE + "jsonb.JsonbProblemDeserializer"));
     }
 
     /**
