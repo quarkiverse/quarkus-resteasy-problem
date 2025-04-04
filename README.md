@@ -188,6 +188,19 @@ Exceptions transformed into http 500s (aka server errors) will be logged as `ERR
 You may also want to check [this article](https://dzone.com/articles/when-http-status-codes-are-not-enough-tackling-web) on RFC7807 practical usage.  
 More on throwing problems: [zalando/problem usage](https://github.com/zalando/problem#usage)
 
+## RestClients (available since <a href="https://github.com/quarkiverse/quarkus-resteasy-problem/releases/tag/3.20.0">v3.20.0</a>)
+If you use RestClients and your upstream services return `application/problem+json` responses, you can register `ThrowingHttpProblemClientExceptionMapper` for your client to get automatic deserialization and rethrowing `HttpProblem` instead of `ClientWebApplicationException` 
+
+```java
+@RegisterRestClient(configKey = "my-rest-client")
+@RegisterProvider(value = ThrowingHttpProblemClientExceptionMapper.class)
+public interface MyRestClient {
+    @GET
+    @Path("/resource")
+    void getResource();
+}
+```
+
 ## OpenAPI integration (available since <a href="https://github.com/quarkiverse/quarkus-resteasy-problem/releases/tag/3.20.0">v3.20.0</a>)
 When `quarkus-smallrye-openapi` is in the classpath, this extension provides a bunch of out-of-the-box features :
 
