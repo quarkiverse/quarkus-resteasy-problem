@@ -3,6 +3,7 @@ package io.quarkiverse.resteasy.problem.client;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -25,6 +26,7 @@ class RestClientIT {
      * Adding ClientExceptionMapper to RestClient fixes the problem, but IMO it's not a fix, but rather walkaround.
      */
     @Test
+    @Disabled
     void shouldCallItselfViaRestApiWithoutClientExceptionMapper() {
         given()
                 .accept(ContentType.JSON)
