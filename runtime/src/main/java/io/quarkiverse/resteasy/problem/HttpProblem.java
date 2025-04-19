@@ -19,9 +19,9 @@ import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 /**
- * Representation of RFC7807 Problem schema.
+ * Representation of RFC9457/RFC7807 Problem schema.
  */
-@Schema(name = "HttpProblem", description = "HTTP Problem Response according to RFC9457 & RFC7807", additionalProperties = Schema.True.class)
+@Schema(name = "HttpProblem", description = "HTTP Problem Response according to RFC9457 and RFC7807", additionalProperties = Schema.True.class)
 public class HttpProblem extends RuntimeException {
 
     public static final MediaType MEDIA_TYPE = new MediaType("application", "problem+json");
