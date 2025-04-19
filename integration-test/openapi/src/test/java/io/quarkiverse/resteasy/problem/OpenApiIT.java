@@ -23,11 +23,11 @@ class OpenApiIT {
     @Test
     void shouldIncludeHttpProblemSchema() {
         getOpenApi()
-                .body("components.schemas.HttpProblem.description", equalTo("HTTP Problem Response according to RFC9457 & RFC7807"))
+                .body("components.schemas.HttpProblem.description", equalTo("HTTP Problem Response according to RFC9457 and RFC7807"))
                 .body("components.schemas.HttpProblem.properties.title.description", equalTo("A optional, short, human-readable summary of the problem type"))
                 .body("components.schemas.HttpProblem.additionalProperties", equalTo(true))
 
-                .body("components.schemas.HttpValidationProblem.description", equalTo("HTTP Validation Problem Response according to RFC9457 & RFC7807"))
+                .body("components.schemas.HttpValidationProblem.description", equalTo("HTTP Validation Problem Response according to RFC9457 and RFC7807"))
                 .body("components.schemas.HttpValidationProblem.properties.violations.description", equalTo("List of validation constraint violations that occurred"))
                 .body("components.schemas.HttpValidationProblem.additionalProperties", equalTo(true));
     }
