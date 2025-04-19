@@ -9,7 +9,7 @@ import io.quarkiverse.resteasy.problem.HttpProblem;
 /**
  * Representation of RFC7807 Problem schema.
  */
-@Schema(name = "HttpValidationProblem", description = "HTTP Validation Problem Response according to RFC9457 & RFC7807", additionalProperties = Schema.True.class)
+@Schema(name = "HttpValidationProblem", description = "HTTP Validation Problem Response according to RFC9457 and RFC7807", additionalProperties = Schema.True.class)
 public class HttpValidationProblem extends HttpProblem {
 
     @Schema(description = "List of validation constraint violations that occurred")
