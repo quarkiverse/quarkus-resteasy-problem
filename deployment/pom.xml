@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.quarkiverse.resteasy-problem</groupId>
         <artifactId>quarkus-resteasy-problem-parent</artifactId>
-        <version>3.20.1</version>
+        <version>999-SNAPSHOT</version>
     </parent>
 
     <artifactId>quarkus-resteasy-problem-deployment</artifactId>

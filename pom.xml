@@ -9,7 +9,7 @@
 
     <groupId>io.quarkiverse.resteasy-problem</groupId>
     <artifactId>quarkus-resteasy-problem-parent</artifactId>
-    <version>3.20.1</version>
+    <version>999-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Quarkus - RESTeasy - Problem - Parent</name>
@@ -269,6 +269,6 @@
         <connection>scm:git:git@github.com:quarkiverse/quarkus-resteasy-problem.git</connection>
         <developerConnection>scm:git:git@github.com:quarkiverse/quarkus-resteasy-problem.git</developerConnection>
         <url>https://github.com/quarkiverse/quarkus-resteasy-problem</url>
-      <tag>3.20.1</tag>
+      <tag>HEAD</tag>
   </scm>
 </project>
