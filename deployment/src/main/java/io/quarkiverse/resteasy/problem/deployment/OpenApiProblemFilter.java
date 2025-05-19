@@ -86,7 +86,7 @@ public class OpenApiProblemFilter implements OASFilter {
         MediaType mediaType = OASFactory.createMediaType();
         mediaType.setSchema(schema);
 
-        org.eclipse.microprofile.openapi.models.media.Content content = OASFactory.createContent();
+        Content content = OASFactory.createContent();
         content.addMediaType(HttpProblem.MEDIA_TYPE.toString(), mediaType);
         return content;
     }
