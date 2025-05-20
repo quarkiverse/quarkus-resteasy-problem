@@ -2,14 +2,15 @@ package io.quarkiverse.resteasy.problem.deployment;
 
 import static io.quarkiverse.resteasy.problem.validation.ConstraintViolationExceptionMapper.HTTP_VALIDATION_PROBLEM_STATUS_CODE;
 
+import org.eclipse.microprofile.openapi.OASFactory;
 import org.eclipse.microprofile.openapi.OASFilter;
 import org.eclipse.microprofile.openapi.models.Operation;
+import org.eclipse.microprofile.openapi.models.media.Content;
+import org.eclipse.microprofile.openapi.models.media.MediaType;
+import org.eclipse.microprofile.openapi.models.media.Schema;
 import org.eclipse.microprofile.openapi.models.responses.APIResponse;
 
 import io.quarkiverse.resteasy.problem.HttpProblem;
-import io.smallrye.openapi.internal.models.media.Content;
-import io.smallrye.openapi.internal.models.media.MediaType;
-import io.smallrye.openapi.internal.models.media.Schema;
 
 /**
  * OpenAPI build-time filter that automatically augments various OpenApi model parts:
@@ -79,13 +80,13 @@ public class OpenApiProblemFilter implements OASFilter {
     }
 
     private static Content createContent(String schemaName) {
-        Schema schema = new Schema();
+        Schema schema = OASFactory.createSchema();
         schema.setRef("#/components/schemas/" + schemaName);
 
-        MediaType mediaType = new MediaType();
+        MediaType mediaType = OASFactory.createMediaType();
         mediaType.setSchema(schema);
 
-        Content content = new Content();
+        Content content = OASFactory.createContent();
         content.addMediaType(HttpProblem.MEDIA_TYPE.toString(), mediaType);
         return content;
     }
