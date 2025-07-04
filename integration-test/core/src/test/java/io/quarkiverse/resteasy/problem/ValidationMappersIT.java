@@ -88,4 +88,72 @@ class ValidationMappersIT {
                 .body("violations.find{it.in == 'body'}.message", equalTo("must be greater than or equal to 15"));
     }
 
+    @Test
+    void constraintViolationDeclarativeShouldStripMethodNamesFromPropertyPath() {
+        // This test ensures that declarative validation violations properly strip method names
+        // from property paths (e.g., "methodName.parameter.field" becomes "field")
+        given()
+                .contentType(APPLICATION_JSON)
+                .body("{\"phraseName\": 1}")
+                .post("/throw/validation/constraint-violation-exception")
+                .then()
+                .statusCode(BAD_REQUEST.getStatusCode())
+                .body("violations", hasSize(1))
+                // Verify that field name is clean (no method name like "throwConstraintViolationException.body.phraseName")
+                .body("violations[0].field", equalTo("phraseName"))
+                .body("violations[0].message", equalTo("must be greater than or equal to 15"))
+                .body("violations[0].in", equalTo("body"));
+    }
+
+    @Test
+    void constraintViolationProgrammaticShouldProvideErrorDetails() {
+        given()
+                .queryParam("name", "A") // Too short name
+                .contentType(APPLICATION_JSON)
+                .post("/throw/validation/constraint-violation-exception/programmatic")
+                .then()
+                .statusCode(BAD_REQUEST.getStatusCode())
+                .body("title", equalTo(BAD_REQUEST.getReasonPhrase()))
+                .body("status", equalTo(BAD_REQUEST.getStatusCode()))
+                .body("violations", hasSize(3))
+                .body("violations.find{it.field == 'name'}.message", equalTo("length must be between 2 and 50"))
+                .body("violations.find{it.field == 'email'}.message", equalTo("must be a well-formed email address"))
+                .body("violations.find{it.field == 'age'}.message", equalTo("must be greater than or equal to 18"))
+                .body("stacktrace", nullValue());
+    }
+
+    @Test
+    void constraintViolationProgrammaticNestedShouldProvideErrorDetails() {
+        given()
+                .queryParam("companyName", "AB") // Too short company name
+                .contentType(APPLICATION_JSON)
+                .post("/throw/validation/constraint-violation-exception/programmatic/nested")
+                .then()
+                .statusCode(BAD_REQUEST.getStatusCode())
+                .body("title", equalTo(BAD_REQUEST.getReasonPhrase()))
+                .body("status", equalTo(BAD_REQUEST.getStatusCode()))
+                .body("violations", hasSize(3))
+                .body("violations.find{it.field == 'companyName'}.message", equalTo("length must be between 3 and 100"))
+                .body("violations.find{it.field == 'address.street'}.message", equalTo("length must be between 5 and 200"))
+                .body("violations.find{it.field == 'address.city'}.message", equalTo("length must be between 2 and 100"))
+                .body("stacktrace", nullValue());
+    }
+
+    @Test
+    void constraintViolationProgrammaticShouldNotStripMethodNamesFromPropertyPath() {
+        // This test ensures that programmatic validation violations preserve the original property path
+        // without stripping method names (since there are no method names in programmatic validation)
+        given()
+                .queryParam("name", null) // Null name to trigger @NotNull
+                .contentType(APPLICATION_JSON)
+                .post("/throw/validation/constraint-violation-exception/programmatic")
+                .then()
+                .statusCode(BAD_REQUEST.getStatusCode())
+                .body("violations", hasSize(3))
+                // Verify that field names are simple property paths, not method.parameter.field
+                .body("violations.find{it.field == 'name'}.message", equalTo("must not be null"))
+                .body("violations.find{it.field == 'email'}.message", equalTo("must be a well-formed email address"))
+                .body("violations.find{it.field == 'age'}.message", equalTo("must be greater than or equal to 18"));
+    }
+
 }
