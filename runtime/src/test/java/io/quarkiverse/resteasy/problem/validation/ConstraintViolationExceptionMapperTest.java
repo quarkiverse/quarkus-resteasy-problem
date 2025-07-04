@@ -15,6 +15,7 @@ import jakarta.validation.ParameterNameProvider;
 import jakarta.validation.Valid;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import jakarta.ws.rs.FormParam;
 import jakarta.ws.rs.HeaderParam;
@@ -182,7 +183,87 @@ class ConstraintViolationExceptionMapperTest {
                                 .message("length must be between 8 and 10"));
     }
 
+    @Test
+    void programmaticConstraintViolationShouldNotStripMethodNames() {
+        // Create a validator to test programmatic validation
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+
+        // Create a simple bean with constraint violations
+        ProgrammaticTestBean bean = new ProgrammaticTestBean();
+        bean.name = null; // Violates @NotNull
+        bean.email = "invalid-email"; // Violates @Email
+
+        // Validate programmatically
+        Set<ConstraintViolation<ProgrammaticTestBean>> violations = validator.validate(bean);
+        ConstraintViolationException exception = new ConstraintViolationException(violations);
+
+        // Set up mapper without ResourceInfo (simulating programmatic validation context)
+        ConstraintViolationExceptionMapper mapper = new ConstraintViolationExceptionMapper();
+        mapper.resourceInfo = null; // No resource info for programmatic validation
+
+        List<Violation> mappedViolations = mapAndExtractViolations(exception, mapper);
+
+        // Verify that field names are preserved as-is for programmatic validation
+        assertThat(mappedViolations)
+                .hasSize(2)
+                .extracting(v -> v.getField())
+                .containsExactlyInAnyOrder("name", "email");
+    }
+
+    @Test
+    void programmaticNestedConstraintViolationShouldPreservePropertyPath() {
+        // Create a validator to test programmatic validation with nested objects
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+
+        // Create a nested bean with constraint violations
+        ProgrammaticNestedTestBean bean = new ProgrammaticNestedTestBean();
+        bean.companyName = "AB"; // Too short
+        bean.address = new ProgrammaticTestAddress();
+        bean.address.street = ""; // Empty street
+        bean.address.city = "A"; // Too short
+
+        // Validate programmatically
+        Set<ConstraintViolation<ProgrammaticNestedTestBean>> violations = validator.validate(bean);
+        ConstraintViolationException exception = new ConstraintViolationException(violations);
+
+        // Set up mapper without ResourceInfo (simulating programmatic validation context)
+        ConstraintViolationExceptionMapper mapper = new ConstraintViolationExceptionMapper();
+        mapper.resourceInfo = null; // No resource info for programmatic validation
+
+        List<Violation> mappedViolations = mapAndExtractViolations(exception, mapper);
+
+        // Verify that nested property paths are preserved correctly
+        assertThat(mappedViolations)
+                .hasSize(3)
+                .extracting(v -> v.getField())
+                .containsExactlyInAnyOrder("companyName", "address.street", "address.city");
+    }
+
+    @Test
+    void declarativeConstraintViolationShouldStripMethodNames() {
+        // This test uses the existing declarative validation setup
+        ConstraintViolationException exception = resourceInfo.validateParameters(VALID, VALID, VALID, VALID,
+                RequestBody.invalid());
+
+        List<Violation> violations = mapAndExtractViolations(exception);
+
+        // Verify that method names are stripped from property paths in declarative validation
+        assertThat(violations)
+                .extracting(v -> v.getField())
+                .allMatch(field -> !field.contains("validateParameters")); // Method name should be stripped
+    }
+
     private List<Violation> mapAndExtractViolations(ConstraintViolationException exception) {
+        Response response = mapper.toResponse(exception);
+
+        assertThat(response.getStatus()).isEqualTo(400);
+        assertThat(response.getMediaType()).isEqualTo(HttpProblem.MEDIA_TYPE);
+        HttpProblem problem = (HttpProblem) response.getEntity();
+        return (List<Violation>) problem.getParameters().get("violations");
+    }
+
+    private List<Violation> mapAndExtractViolations(ConstraintViolationException exception,
+            ConstraintViolationExceptionMapper mapper) {
         Response response = mapper.toResponse(exception);
 
         assertThat(response.getStatus()).isEqualTo(400);
@@ -354,5 +435,35 @@ class ConstraintViolationExceptionMapperTest {
         private String getDefaultName(Property property) {
             return property.getName();
         }
+    }
+
+    static class ProgrammaticTestBean {
+        @NotNull
+        @Length(min = 2, max = 50)
+        public String name;
+
+        @NotNull
+        @jakarta.validation.constraints.Email
+        public String email;
+    }
+
+    static class ProgrammaticNestedTestBean {
+        @NotNull
+        @Length(min = 3, max = 100)
+        public String companyName;
+
+        @jakarta.validation.Valid
+        @NotNull
+        public ProgrammaticTestAddress address;
+    }
+
+    static class ProgrammaticTestAddress {
+        @NotNull
+        @Length(min = 5, max = 200)
+        public String street;
+
+        @NotNull
+        @Length(min = 2, max = 100)
+        public String city;
     }
 }
