@@ -154,30 +154,30 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
 
     private boolean isDeclarativeValidation(ConstraintViolation<?> violation) {
         // Multiple checks to determine validation type
-        
+
         // 1. Check if we have JAX-RS context
         if (resourceInfo == null) {
             return false; // No JAX-RS context = programmatic
         }
-        
+
         // 2. Check if violation can be matched to a method parameter
         if (matchEndpointMethodParameter(violation).isPresent()) {
             return true; // Matched to JAX-RS parameter = declarative
         }
-        
+
         // 3. Check root bean type
         Object rootBean = violation.getRootBean();
         if (rootBean != null && resourceInfo.getResourceClass().isInstance(rootBean)) {
             return true; // Root bean is resource class = declarative
         }
-        
+
         // 4. Check property path structure
         String propertyPath = violation.getPropertyPath().toString();
         Method method = resourceInfo.getResourceMethod();
         if (method != null && propertyPath.startsWith(method.getName() + ".")) {
             return true; // Path starts with method name = declarative
         }
-        
+
         return false; // Default to programmatic
     }
 
