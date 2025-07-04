@@ -68,11 +68,23 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
     }
 
     private Violation toViolation(ConstraintViolation<?> constraintViolation) {
-        return matchEndpointMethodParameter(constraintViolation)
-                .map(param -> createViolation(constraintViolation, param))
-                .orElseGet(() -> Violation.In.unknown
-                        .field(dropMethodName(constraintViolation.getPropertyPath()))
-                        .message(constraintViolation.getMessage()));
+        // First try to match JAX-RS parameter (declarative case)
+        Optional<Parameter> parameter = matchEndpointMethodParameter(constraintViolation);
+        if (parameter.isPresent()) {
+            return createViolation(constraintViolation, parameter.get());
+        }
+
+        // Check if this is a declarative validation that didn't match a parameter
+        if (isDeclarativeValidation(constraintViolation)) {
+            return Violation.In.unknown
+                    .field(dropMethodName(constraintViolation.getPropertyPath()))
+                    .message(constraintViolation.getMessage());
+        }
+
+        // This is programmatic validation - use path as-is
+        return Violation.In.unknown
+                .field(constraintViolation.getPropertyPath().toString())
+                .message(constraintViolation.getMessage());
     }
 
     private Optional<Parameter> matchEndpointMethodParameter(ConstraintViolation<?> violation) {
@@ -138,6 +150,35 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
             }
         }
         return String.join(".", pathSegments);
+    }
+
+    private boolean isDeclarativeValidation(ConstraintViolation<?> violation) {
+        // Multiple checks to determine validation type
+        
+        // 1. Check if we have JAX-RS context
+        if (resourceInfo == null) {
+            return false; // No JAX-RS context = programmatic
+        }
+        
+        // 2. Check if violation can be matched to a method parameter
+        if (matchEndpointMethodParameter(violation).isPresent()) {
+            return true; // Matched to JAX-RS parameter = declarative
+        }
+        
+        // 3. Check root bean type
+        Object rootBean = violation.getRootBean();
+        if (rootBean != null && resourceInfo.getResourceClass().isInstance(rootBean)) {
+            return true; // Root bean is resource class = declarative
+        }
+        
+        // 4. Check property path structure
+        String propertyPath = violation.getPropertyPath().toString();
+        Method method = resourceInfo.getResourceMethod();
+        if (method != null && propertyPath.startsWith(method.getName() + ".")) {
+            return true; // Path starts with method name = declarative
+        }
+        
+        return false; // Default to programmatic
     }
 
 }
