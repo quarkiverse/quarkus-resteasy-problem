@@ -2,11 +2,7 @@ package io.quarkiverse.resteasy.problem.validation;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -88,6 +84,10 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
     }
 
     private Optional<Parameter> matchEndpointMethodParameter(ConstraintViolation<?> violation) {
+        if (resourceInfo == null) {
+            return Optional.empty();
+        }
+
         Iterator<Path.Node> propertyPathIterator = violation.getPropertyPath().iterator();
         if (!propertyPathIterator.hasNext()) {
             return Optional.empty();
@@ -98,6 +98,9 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
         }
         String paramName = propertyPathIterator.next().getName();
         Method method = resourceInfo.getResourceMethod();
+        if (method == null) {
+            return Optional.empty();
+        }
         return Stream.of(method.getParameters())
                 .filter(param -> param.getName().equals(paramName))
                 .findFirst();
