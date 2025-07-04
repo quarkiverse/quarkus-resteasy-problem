@@ -144,7 +144,7 @@ class ValidationMappersIT {
         // This test ensures that programmatic validation violations preserve the original property path
         // without stripping method names (since there are no method names in programmatic validation)
         given()
-                .queryParam("name", null) // Null name to trigger @NotNull
+                .queryParam("name", (Object) null) // Null name to trigger @NotNull
                 .contentType(APPLICATION_JSON)
                 .post("/throw/validation/constraint-violation-exception/programmatic")
                 .then()
