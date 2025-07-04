@@ -144,14 +144,14 @@ class ValidationMappersIT {
         // This test ensures that programmatic validation violations preserve the original property path
         // without stripping method names (since there are no method names in programmatic validation)
         given()
-                .queryParam("name", (Object) null) // Null name to trigger @NotNull
+                .queryParam("name", "A") // Short name to trigger @Length constraint (but not @NotNull)
                 .contentType(APPLICATION_JSON)
                 .post("/throw/validation/constraint-violation-exception/programmatic")
                 .then()
                 .statusCode(BAD_REQUEST.getStatusCode())
                 .body("violations", hasSize(3))
                 // Verify that field names are simple property paths, not method.parameter.field
-                .body("violations.find{it.field == 'name'}.message", equalTo("must not be null"))
+                .body("violations.find{it.field == 'name'}.message", equalTo("length must be between 2 and 50"))
                 .body("violations.find{it.field == 'email'}.message", equalTo("must be a well-formed email address"))
                 .body("violations.find{it.field == 'age'}.message", equalTo("must be greater than or equal to 18"));
     }
