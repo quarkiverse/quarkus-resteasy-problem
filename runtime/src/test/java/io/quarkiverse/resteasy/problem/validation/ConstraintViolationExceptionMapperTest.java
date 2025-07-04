@@ -206,7 +206,7 @@ class ConstraintViolationExceptionMapperTest {
         // Verify that field names are preserved as-is for programmatic validation
         assertThat(mappedViolations)
                 .hasSize(2)
-                .extracting(v -> v.getField())
+                .extracting(v -> v.field)
                 .containsExactlyInAnyOrder("name", "email");
     }
 
@@ -235,7 +235,7 @@ class ConstraintViolationExceptionMapperTest {
         // Verify that nested property paths are preserved correctly
         assertThat(mappedViolations)
                 .hasSize(3)
-                .extracting(v -> v.getField())
+                .extracting(v -> v.field)
                 .containsExactlyInAnyOrder("companyName", "address.street", "address.city");
     }
 
@@ -249,7 +249,7 @@ class ConstraintViolationExceptionMapperTest {
 
         // Verify that method names are stripped from property paths in declarative validation
         assertThat(violations)
-                .extracting(v -> v.getField())
+                .extracting(v -> v.field)
                 .allMatch(field -> !field.contains("validateParameters")); // Method name should be stripped
     }
 
