@@ -64,23 +64,17 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
     }
 
     private Violation toViolation(ConstraintViolation<?> constraintViolation) {
-        // First try to match JAX-RS parameter (declarative case)
-        Optional<Parameter> parameter = matchEndpointMethodParameter(constraintViolation);
-        if (parameter.isPresent()) {
-            return createViolation(constraintViolation, parameter.get());
-        }
+        return matchEndpointMethodParameter(constraintViolation)
+                .map(param -> createViolation(constraintViolation, param))
+                .orElseGet(() -> {
+                    String field = isDeclarativeValidation(constraintViolation)
+                            ? dropMethodName(constraintViolation.getPropertyPath())
+                            : constraintViolation.getPropertyPath().toString();
+                    return Violation.In.unknown
+                            .field(field)
+                            .message(constraintViolation.getMessage());
+                });
 
-        // Check if this is a declarative validation that didn't match a parameter
-        if (isDeclarativeValidation(constraintViolation)) {
-            return Violation.In.unknown
-                    .field(dropMethodName(constraintViolation.getPropertyPath()))
-                    .message(constraintViolation.getMessage());
-        }
-
-        // This is programmatic validation - use path as-is
-        return Violation.In.unknown
-                .field(constraintViolation.getPropertyPath().toString())
-                .message(constraintViolation.getMessage());
     }
 
     private Optional<Parameter> matchEndpointMethodParameter(ConstraintViolation<?> violation) {
@@ -97,13 +91,11 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
             return Optional.empty();
         }
         String paramName = propertyPathIterator.next().getName();
-        Method method = resourceInfo.getResourceMethod();
-        if (method == null) {
-            return Optional.empty();
-        }
-        return Stream.of(method.getParameters())
-                .filter(param -> param.getName().equals(paramName))
-                .findFirst();
+
+        return Optional.ofNullable(resourceInfo.getResourceMethod())
+                .flatMap(method -> Stream.of(method.getParameters())
+                        .filter(param -> param.getName().equals(paramName))
+                        .findFirst());
     }
 
     private Violation createViolation(ConstraintViolation<?> constraintViolation, Parameter param) {
@@ -156,32 +148,34 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
     }
 
     private boolean isDeclarativeValidation(ConstraintViolation<?> violation) {
-        // Multiple checks to determine validation type
-
-        // 1. Check if we have JAX-RS context
-        if (resourceInfo == null) {
-            return false; // No JAX-RS context = programmatic
+        if (noJaxRsContext()) {
+            return false;
         }
 
-        // 2. Check if violation can be matched to a method parameter
-        if (matchEndpointMethodParameter(violation).isPresent()) {
-            return true; // Matched to JAX-RS parameter = declarative
+        if (rootBeanResourceClassMatches(violation)) {
+            return true;
         }
 
-        // 3. Check root bean type
+        if (propertyPathStartsWithMethod(violation)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean noJaxRsContext() {
+        return resourceInfo == null;
+    }
+
+    private boolean rootBeanResourceClassMatches(ConstraintViolation<?> violation) {
         Object rootBean = violation.getRootBean();
-        if (rootBean != null && resourceInfo.getResourceClass().isInstance(rootBean)) {
-            return true; // Root bean is resource class = declarative
-        }
+        return rootBean != null && resourceInfo.getResourceClass().isInstance(rootBean);
+    }
 
-        // 4. Check property path structure
+    private boolean propertyPathStartsWithMethod(ConstraintViolation<?> violation) {
         String propertyPath = violation.getPropertyPath().toString();
         Method method = resourceInfo.getResourceMethod();
-        if (method != null && propertyPath.startsWith(method.getName() + ".")) {
-            return true; // Path starts with method name = declarative
-        }
-
-        return false; // Default to programmatic
+        return method != null && propertyPath.startsWith(method.getName() + ".");
     }
 
 }
