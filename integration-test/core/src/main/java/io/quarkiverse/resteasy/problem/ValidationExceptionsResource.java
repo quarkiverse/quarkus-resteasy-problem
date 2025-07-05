@@ -1,9 +1,16 @@
 package io.quarkiverse.resteasy.problem;
 
+import java.util.Set;
+
+import jakarta.inject.Inject;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
+import jakarta.validation.Validator;
 import jakarta.validation.constraints.AssertFalse;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.POST;
@@ -17,6 +24,9 @@ import org.hibernate.validator.constraints.Length;
 @Path("/throw/validation/")
 @Produces(MediaType.APPLICATION_JSON)
 public class ValidationExceptionsResource {
+
+    @Inject
+    Validator validator;
 
     @GET
     @Path("/validation-exception")
@@ -44,9 +54,75 @@ public class ValidationExceptionsResource {
             @Valid TestRequestBody invalidPayload) {
     }
 
+    @POST
+    @Path("/constraint-violation-exception/programmatic")
+    public void throwConstraintViolationExceptionProgrammatic(@QueryParam("name") String name) {
+        // Create an object with validation constraints
+        ProgrammaticTestBean bean = new ProgrammaticTestBean();
+        bean.name = name;
+        bean.email = "invalid-email"; // Invalid email format
+        bean.age = 5; // Below minimum age
+        
+        // Validate programmatically
+        Set<ConstraintViolation<ProgrammaticTestBean>> violations = validator.validate(bean);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
+    }
+
+    @POST
+    @Path("/constraint-violation-exception/programmatic/nested")
+    public void throwConstraintViolationExceptionProgrammaticNested(@QueryParam("companyName") String companyName) {
+        // Create nested object with validation constraints
+        ProgrammaticNestedTestBean bean = new ProgrammaticNestedTestBean();
+        bean.companyName = companyName;
+        bean.address = new ProgrammaticTestAddress();
+        bean.address.street = ""; // Empty street (invalid)
+        bean.address.city = "A"; // Too short city name
+        
+        // Validate programmatically
+        Set<ConstraintViolation<ProgrammaticNestedTestBean>> violations = validator.validate(bean);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
+    }
+
     public static final class TestRequestBody {
         @Min(15)
         public int phraseName;
+    }
+
+    public static final class ProgrammaticTestBean {
+        @NotNull
+        @Length(min = 2, max = 50)
+        public String name;
+        
+        @NotNull
+        @jakarta.validation.constraints.Email
+        public String email;
+        
+        @Min(18)
+        public int age;
+    }
+
+    public static final class ProgrammaticNestedTestBean {
+        @NotNull
+        @Length(min = 3, max = 100)
+        public String companyName;
+        
+        @Valid
+        @NotNull
+        public ProgrammaticTestAddress address;
+    }
+
+    public static final class ProgrammaticTestAddress {
+        @NotNull
+        @Length(min = 5, max = 200)
+        public String street;
+        
+        @NotNull
+        @Length(min = 2, max = 100)
+        public String city;
     }
 
 }
