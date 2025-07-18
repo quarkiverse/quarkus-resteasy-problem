@@ -16,6 +16,8 @@ import org.junit.jupiter.api.Test;
 class ValidationMappersIT {
 
     static final String SAMPLE_DETAIL = "A small one";
+    final String TOO_SHORT_NAME = "N";
+    final String TOO_SHORT_COMPANY_NAME = "CO";
 
     static {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
@@ -90,8 +92,6 @@ class ValidationMappersIT {
 
     @Test
     void constraintViolationDeclarativeShouldStripMethodNamesFromPropertyPath() {
-        // This test ensures that declarative validation violations properly strip method names
-        // from property paths (e.g., "methodName.parameter.field" becomes "field")
         given()
                 .contentType(APPLICATION_JSON)
                 .body("{\"phraseName\": 1}")
@@ -99,7 +99,6 @@ class ValidationMappersIT {
                 .then()
                 .statusCode(BAD_REQUEST.getStatusCode())
                 .body("violations", hasSize(1))
-                // Verify that field name is clean (no method name like "throwConstraintViolationException.body.phraseName")
                 .body("violations[0].field", equalTo("phraseName"))
                 .body("violations[0].message", equalTo("must be greater than or equal to 15"))
                 .body("violations[0].in", equalTo("body"));
@@ -108,7 +107,7 @@ class ValidationMappersIT {
     @Test
     void constraintViolationProgrammaticShouldProvideErrorDetails() {
         given()
-                .queryParam("name", "A") // Too short name
+                .queryParam("name", TOO_SHORT_NAME)
                 .contentType(APPLICATION_JSON)
                 .post("/throw/validation/constraint-violation-exception/programmatic")
                 .then()
@@ -125,7 +124,7 @@ class ValidationMappersIT {
     @Test
     void constraintViolationProgrammaticNestedShouldProvideErrorDetails() {
         given()
-                .queryParam("companyName", "AB") // Too short company name
+                .queryParam("companyName", TOO_SHORT_COMPANY_NAME)
                 .contentType(APPLICATION_JSON)
                 .post("/throw/validation/constraint-violation-exception/programmatic/nested")
                 .then()
@@ -141,16 +140,13 @@ class ValidationMappersIT {
 
     @Test
     void constraintViolationProgrammaticShouldNotStripMethodNamesFromPropertyPath() {
-        // This test ensures that programmatic validation violations preserve the original property path
-        // without stripping method names (since there are no method names in programmatic validation)
         given()
-                .queryParam("name", "A") // Short name to trigger @Length constraint (but not @NotNull)
+                .queryParam("name", TOO_SHORT_NAME)
                 .contentType(APPLICATION_JSON)
                 .post("/throw/validation/constraint-violation-exception/programmatic")
                 .then()
                 .statusCode(BAD_REQUEST.getStatusCode())
                 .body("violations", hasSize(3))
-                // Verify that field names are simple property paths, not method.parameter.field
                 .body("violations.find{it.field == 'name'}.message", equalTo("length must be between 2 and 50"))
                 .body("violations.find{it.field == 'email'}.message", equalTo("must be a well-formed email address"))
                 .body("violations.find{it.field == 'age'}.message", equalTo("must be greater than or equal to 18"));

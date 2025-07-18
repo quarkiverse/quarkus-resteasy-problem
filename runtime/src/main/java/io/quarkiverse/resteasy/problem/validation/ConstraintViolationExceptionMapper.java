@@ -148,23 +148,12 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
     }
 
     private boolean isDeclarativeValidation(ConstraintViolation<?> violation) {
-        if (noJaxRsContext()) {
-            return false;
-        }
-
-        if (rootBeanResourceClassMatches(violation)) {
-            return true;
-        }
-
-        if (propertyPathStartsWithMethod(violation)) {
-            return true;
-        }
-
-        return false;
+        return hasJaxRsContext() &&
+                (rootBeanResourceClassMatches(violation) || propertyPathStartsWithMethod(violation));
     }
 
-    private boolean noJaxRsContext() {
-        return resourceInfo == null;
+    private boolean hasJaxRsContext() {
+        return resourceInfo != null;
     }
 
     private boolean rootBeanResourceClassMatches(ConstraintViolation<?> violation) {

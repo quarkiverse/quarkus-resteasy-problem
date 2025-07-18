@@ -57,13 +57,11 @@ public class ValidationExceptionsResource {
     @POST
     @Path("/constraint-violation-exception/programmatic")
     public void throwConstraintViolationExceptionProgrammatic(@QueryParam("name") String name) {
-        // Create an object with validation constraints
         ProgrammaticTestBean bean = new ProgrammaticTestBean();
         bean.name = name;
-        bean.email = "invalid-email"; // Invalid email format
-        bean.age = 5; // Below minimum age
+        bean.email = "invalid-email";
+        bean.age = 5;
         
-        // Validate programmatically
         Set<ConstraintViolation<ProgrammaticTestBean>> violations = validator.validate(bean);
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(violations);
@@ -73,14 +71,12 @@ public class ValidationExceptionsResource {
     @POST
     @Path("/constraint-violation-exception/programmatic/nested")
     public void throwConstraintViolationExceptionProgrammaticNested(@QueryParam("companyName") String companyName) {
-        // Create nested object with validation constraints
         ProgrammaticNestedTestBean bean = new ProgrammaticNestedTestBean();
         bean.companyName = companyName;
         bean.address = new ProgrammaticTestAddress();
-        bean.address.street = ""; // Empty street (invalid)
+        bean.address.street = "";
         bean.address.city = "A"; // Too short city name
         
-        // Validate programmatically
         Set<ConstraintViolation<ProgrammaticNestedTestBean>> violations = validator.validate(bean);
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(violations);
