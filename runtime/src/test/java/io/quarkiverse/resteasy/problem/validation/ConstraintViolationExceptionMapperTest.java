@@ -43,8 +43,10 @@ import io.quarkiverse.resteasy.problem.HttpProblem;
 
 class ConstraintViolationExceptionMapperTest {
 
+    public static final String TOO_SHORT_CITY = "A";
     final String INVALID = "a";
     final String VALID = "aaaaaaa";
+    final String TOO_SHORT_COMPANY_NAME = "CO";
 
     final ConstraintViolationExceptionMapper mapper = new ConstraintViolationExceptionMapper();
     final StubResourceInfo resourceInfo = StubResourceInfo.withDefaultValidator();
@@ -185,25 +187,20 @@ class ConstraintViolationExceptionMapperTest {
 
     @Test
     void programmaticConstraintViolationShouldNotStripMethodNames() {
-        // Create a validator to test programmatic validation
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
-        // Create a simple bean with constraint violations
         ProgrammaticTestBean bean = new ProgrammaticTestBean();
-        bean.name = null; // Violates @NotNull
-        bean.email = "invalid-email"; // Violates @Email
+        bean.name = null;
+        bean.email = "invalid-email";
 
-        // Validate programmatically
         Set<ConstraintViolation<ProgrammaticTestBean>> violations = validator.validate(bean);
         ConstraintViolationException exception = new ConstraintViolationException(violations);
 
-        // Set up mapper without ResourceInfo (simulating programmatic validation context)
-        ConstraintViolationExceptionMapper mapper = new ConstraintViolationExceptionMapper();
-        mapper.resourceInfo = null; // No resource info for programmatic validation
+        ConstraintViolationExceptionMapper resourceInfoLessMapper = new ConstraintViolationExceptionMapper();
+        resourceInfoLessMapper.resourceInfo = null;
 
-        List<Violation> mappedViolations = mapAndExtractViolations(exception, mapper);
+        List<Violation> mappedViolations = mapAndExtractViolations(exception, resourceInfoLessMapper);
 
-        // Verify that field names are preserved as-is for programmatic validation
         assertThat(mappedViolations)
                 .hasSize(2)
                 .extracting(v -> v.field)
@@ -212,27 +209,22 @@ class ConstraintViolationExceptionMapperTest {
 
     @Test
     void programmaticNestedConstraintViolationShouldPreservePropertyPath() {
-        // Create a validator to test programmatic validation with nested objects
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
-        // Create a nested bean with constraint violations
         ProgrammaticNestedTestBean bean = new ProgrammaticNestedTestBean();
-        bean.companyName = "AB"; // Too short
+        bean.companyName = TOO_SHORT_COMPANY_NAME;
         bean.address = new ProgrammaticTestAddress();
-        bean.address.street = ""; // Empty street
-        bean.address.city = "A"; // Too short
+        bean.address.street = "";
+        bean.address.city = TOO_SHORT_CITY;
 
-        // Validate programmatically
         Set<ConstraintViolation<ProgrammaticNestedTestBean>> violations = validator.validate(bean);
         ConstraintViolationException exception = new ConstraintViolationException(violations);
 
-        // Set up mapper without ResourceInfo (simulating programmatic validation context)
-        ConstraintViolationExceptionMapper mapper = new ConstraintViolationExceptionMapper();
-        mapper.resourceInfo = null; // No resource info for programmatic validation
+        ConstraintViolationExceptionMapper resourceInfoLessMapper = new ConstraintViolationExceptionMapper();
+        resourceInfoLessMapper.resourceInfo = null;
 
-        List<Violation> mappedViolations = mapAndExtractViolations(exception, mapper);
+        List<Violation> mappedViolations = mapAndExtractViolations(exception, resourceInfoLessMapper);
 
-        // Verify that nested property paths are preserved correctly
         assertThat(mappedViolations)
                 .hasSize(3)
                 .extracting(v -> v.field)
@@ -241,25 +233,18 @@ class ConstraintViolationExceptionMapperTest {
 
     @Test
     void declarativeConstraintViolationShouldStripMethodNames() {
-        // This test uses the existing declarative validation setup
         ConstraintViolationException exception = resourceInfo.validateParameters(VALID, VALID, VALID, VALID,
                 RequestBody.invalid());
 
         List<Violation> violations = mapAndExtractViolations(exception);
 
-        // Verify that method names are stripped from property paths in declarative validation
         assertThat(violations)
                 .extracting(v -> v.field)
-                .allMatch(field -> !field.contains("validateParameters")); // Method name should be stripped
+                .allMatch(field -> !field.contains("validateParameters"));
     }
 
     private List<Violation> mapAndExtractViolations(ConstraintViolationException exception) {
-        Response response = mapper.toResponse(exception);
-
-        assertThat(response.getStatus()).isEqualTo(400);
-        assertThat(response.getMediaType()).isEqualTo(HttpProblem.MEDIA_TYPE);
-        HttpProblem problem = (HttpProblem) response.getEntity();
-        return (List<Violation>) problem.getParameters().get("violations");
+        return mapAndExtractViolations(exception, mapper);
     }
 
     private List<Violation> mapAndExtractViolations(ConstraintViolationException exception,
