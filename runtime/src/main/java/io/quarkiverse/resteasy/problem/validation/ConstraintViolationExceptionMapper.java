@@ -2,11 +2,7 @@ package io.quarkiverse.resteasy.problem.validation;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -70,12 +66,22 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
     private Violation toViolation(ConstraintViolation<?> constraintViolation) {
         return matchEndpointMethodParameter(constraintViolation)
                 .map(param -> createViolation(constraintViolation, param))
-                .orElseGet(() -> Violation.In.unknown
-                        .field(dropMethodName(constraintViolation.getPropertyPath()))
-                        .message(constraintViolation.getMessage()));
+                .orElseGet(() -> {
+                    String field = isDeclarativeValidation(constraintViolation)
+                            ? dropMethodName(constraintViolation.getPropertyPath())
+                            : constraintViolation.getPropertyPath().toString();
+                    return Violation.In.unknown
+                            .field(field)
+                            .message(constraintViolation.getMessage());
+                });
+
     }
 
     private Optional<Parameter> matchEndpointMethodParameter(ConstraintViolation<?> violation) {
+        if (resourceInfo == null) {
+            return Optional.empty();
+        }
+
         Iterator<Path.Node> propertyPathIterator = violation.getPropertyPath().iterator();
         if (!propertyPathIterator.hasNext()) {
             return Optional.empty();
@@ -85,10 +91,11 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
             return Optional.empty();
         }
         String paramName = propertyPathIterator.next().getName();
-        Method method = resourceInfo.getResourceMethod();
-        return Stream.of(method.getParameters())
-                .filter(param -> param.getName().equals(paramName))
-                .findFirst();
+
+        return Optional.ofNullable(resourceInfo.getResourceMethod())
+                .flatMap(method -> Stream.of(method.getParameters())
+                        .filter(param -> param.getName().equals(paramName))
+                        .findFirst());
     }
 
     private Violation createViolation(ConstraintViolation<?> constraintViolation, Parameter param) {
@@ -138,6 +145,26 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
             }
         }
         return String.join(".", pathSegments);
+    }
+
+    private boolean isDeclarativeValidation(ConstraintViolation<?> violation) {
+        return hasJaxRsContext() &&
+                (rootBeanResourceClassMatches(violation) || propertyPathStartsWithMethod(violation));
+    }
+
+    private boolean hasJaxRsContext() {
+        return resourceInfo != null;
+    }
+
+    private boolean rootBeanResourceClassMatches(ConstraintViolation<?> violation) {
+        Object rootBean = violation.getRootBean();
+        return rootBean != null && resourceInfo.getResourceClass().isInstance(rootBean);
+    }
+
+    private boolean propertyPathStartsWithMethod(ConstraintViolation<?> violation) {
+        String propertyPath = violation.getPropertyPath().toString();
+        Method method = resourceInfo.getResourceMethod();
+        return method != null && propertyPath.startsWith(method.getName() + ".");
     }
 
 }
