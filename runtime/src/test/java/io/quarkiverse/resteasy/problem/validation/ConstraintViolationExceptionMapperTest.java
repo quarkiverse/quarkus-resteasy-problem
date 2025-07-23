@@ -15,6 +15,7 @@ import jakarta.validation.ParameterNameProvider;
 import jakarta.validation.Valid;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import jakarta.ws.rs.FormParam;
 import jakarta.ws.rs.HeaderParam;
@@ -42,8 +43,10 @@ import io.quarkiverse.resteasy.problem.HttpProblem;
 
 class ConstraintViolationExceptionMapperTest {
 
+    public static final String TOO_SHORT_CITY = "A";
     final String INVALID = "a";
     final String VALID = "aaaaaaa";
+    final String TOO_SHORT_COMPANY_NAME = "CO";
 
     final ConstraintViolationExceptionMapper mapper = new ConstraintViolationExceptionMapper();
     final StubResourceInfo resourceInfo = StubResourceInfo.withDefaultValidator();
@@ -182,7 +185,70 @@ class ConstraintViolationExceptionMapperTest {
                                 .message("length must be between 8 and 10"));
     }
 
+    @Test
+    void programmaticConstraintViolationShouldNotStripMethodNames() {
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+
+        ProgrammaticTestBean bean = new ProgrammaticTestBean();
+        bean.name = null;
+        bean.email = "invalid-email";
+
+        Set<ConstraintViolation<ProgrammaticTestBean>> violations = validator.validate(bean);
+        ConstraintViolationException exception = new ConstraintViolationException(violations);
+
+        ConstraintViolationExceptionMapper resourceInfoLessMapper = new ConstraintViolationExceptionMapper();
+        resourceInfoLessMapper.resourceInfo = null;
+
+        List<Violation> mappedViolations = mapAndExtractViolations(exception, resourceInfoLessMapper);
+
+        assertThat(mappedViolations)
+                .hasSize(2)
+                .extracting(v -> v.field)
+                .containsExactlyInAnyOrder("name", "email");
+    }
+
+    @Test
+    void programmaticNestedConstraintViolationShouldPreservePropertyPath() {
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+
+        ProgrammaticNestedTestBean bean = new ProgrammaticNestedTestBean();
+        bean.companyName = TOO_SHORT_COMPANY_NAME;
+        bean.address = new ProgrammaticTestAddress();
+        bean.address.street = "";
+        bean.address.city = TOO_SHORT_CITY;
+
+        Set<ConstraintViolation<ProgrammaticNestedTestBean>> violations = validator.validate(bean);
+        ConstraintViolationException exception = new ConstraintViolationException(violations);
+
+        ConstraintViolationExceptionMapper resourceInfoLessMapper = new ConstraintViolationExceptionMapper();
+        resourceInfoLessMapper.resourceInfo = null;
+
+        List<Violation> mappedViolations = mapAndExtractViolations(exception, resourceInfoLessMapper);
+
+        assertThat(mappedViolations)
+                .hasSize(3)
+                .extracting(v -> v.field)
+                .containsExactlyInAnyOrder("companyName", "address.street", "address.city");
+    }
+
+    @Test
+    void declarativeConstraintViolationShouldStripMethodNames() {
+        ConstraintViolationException exception = resourceInfo.validateParameters(VALID, VALID, VALID, VALID,
+                RequestBody.invalid());
+
+        List<Violation> violations = mapAndExtractViolations(exception);
+
+        assertThat(violations)
+                .extracting(v -> v.field)
+                .allMatch(field -> !field.contains("validateParameters"));
+    }
+
     private List<Violation> mapAndExtractViolations(ConstraintViolationException exception) {
+        return mapAndExtractViolations(exception, mapper);
+    }
+
+    private List<Violation> mapAndExtractViolations(ConstraintViolationException exception,
+            ConstraintViolationExceptionMapper mapper) {
         Response response = mapper.toResponse(exception);
 
         assertThat(response.getStatus()).isEqualTo(400);
@@ -354,5 +420,35 @@ class ConstraintViolationExceptionMapperTest {
         private String getDefaultName(Property property) {
             return property.getName();
         }
+    }
+
+    static class ProgrammaticTestBean {
+        @NotNull
+        @Length(min = 2, max = 50)
+        public String name;
+
+        @NotNull
+        @jakarta.validation.constraints.Email
+        public String email;
+    }
+
+    static class ProgrammaticNestedTestBean {
+        @NotNull
+        @Length(min = 3, max = 100)
+        public String companyName;
+
+        @jakarta.validation.Valid
+        @NotNull
+        public ProgrammaticTestAddress address;
+    }
+
+    static class ProgrammaticTestAddress {
+        @NotNull
+        @Length(min = 5, max = 200)
+        public String street;
+
+        @NotNull
+        @Length(min = 2, max = 100)
+        public String city;
     }
 }
