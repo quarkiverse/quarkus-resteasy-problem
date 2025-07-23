@@ -185,7 +185,6 @@ This extension will also produce the following log message:
 ```
 Exceptions transformed into http 500s (aka server errors) will be logged as `ERROR`, including full stacktrace.
 
-You may also want to check [this article](https://dzone.com/articles/when-http-status-codes-are-not-enough-tackling-web) on RFC7807 practical usage.  
 More on throwing problems: [zalando/problem usage](https://github.com/zalando/problem#usage)
 
 ## RestClients (available since <a href="https://github.com/quarkiverse/quarkus-resteasy-problem/releases/tag/3.20.0">v3.20.0</a>)
