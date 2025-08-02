@@ -31,7 +31,7 @@ class ConstraintViolationMapperConfigIT {
     }
 
     @Test
-    void buildTimeConfigShouldWorkWithoutWarnings() {
+    void shouldUseCustomBuildTimeConfigurationForConstraintViolation() {
         given()
                 .body("{\"phraseName\": 10 }")
                 .contentType(APPLICATION_JSON)

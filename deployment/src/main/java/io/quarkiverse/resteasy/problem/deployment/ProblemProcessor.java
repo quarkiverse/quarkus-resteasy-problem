@@ -209,12 +209,6 @@ public class ProblemProcessor {
         return UnremovableBeanBuildItem.beanTypes(ProblemPostProcessor.class);
     }
 
-    @BuildStep
-    UnremovableBeanBuildItem markRuntimeConfigStartupUnremovable() {
-        return UnremovableBeanBuildItem.beanClassNames(
-                "io.quarkiverse.resteasy.problem.ProblemRuntimeConfigStartup");
-    }
-
     @Record(STATIC_INIT)
     @BuildStep
     void configureBuildTimeConstraintViolation(ProblemRecorder recorder, ProblemBuildConfig config) {
