@@ -21,8 +21,8 @@ import jakarta.ws.rs.ext.ExceptionMapper;
 
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 
+import io.quarkiverse.resteasy.problem.ConstraintViolationMapperConfig;
 import io.quarkiverse.resteasy.problem.ExceptionMapperBase;
-import io.quarkiverse.resteasy.problem.ProblemRuntimeConfig.ConstraintViolationMapperConfig;
 
 /**
  * Exception Mapper for ConstraintViolationException from Bean Validation API. Hibernate Validator, among others throw

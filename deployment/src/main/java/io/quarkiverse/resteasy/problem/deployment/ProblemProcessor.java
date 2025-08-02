@@ -15,7 +15,6 @@ import org.eclipse.microprofile.openapi.OASFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.quarkiverse.resteasy.problem.ProblemRuntimeConfig;
 import io.quarkiverse.resteasy.problem.postprocessing.ProblemPostProcessor;
 import io.quarkiverse.resteasy.problem.postprocessing.ProblemRecorder;
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
@@ -210,10 +209,19 @@ public class ProblemProcessor {
         return UnremovableBeanBuildItem.beanTypes(ProblemPostProcessor.class);
     }
 
-    @Record(RUNTIME_INIT)
     @BuildStep
-    void applyRuntimeConfig(ProblemRecorder recorder, ProblemRuntimeConfig config) {
-        recorder.applyRuntimeConfig(config);
+    UnremovableBeanBuildItem markRuntimeConfigStartupUnremovable() {
+        return UnremovableBeanBuildItem.beanClassNames(
+                "io.quarkiverse.resteasy.problem.ProblemRuntimeConfigStartup");
+    }
+
+    @Record(STATIC_INIT)
+    @BuildStep
+    void configureBuildTimeConstraintViolation(ProblemRecorder recorder, ProblemBuildConfig config) {
+        recorder.configureConstraintViolationMapping(
+                config.constraintViolation().status(),
+                config.constraintViolation().title(),
+                config.constraintViolation().description());
     }
 
     protected Logger logger() {

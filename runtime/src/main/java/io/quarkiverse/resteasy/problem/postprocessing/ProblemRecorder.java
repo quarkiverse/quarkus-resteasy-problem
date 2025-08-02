@@ -4,8 +4,8 @@ import java.util.Set;
 
 import jakarta.enterprise.inject.spi.CDI;
 
+import io.quarkiverse.resteasy.problem.ConstraintViolationMapperConfig;
 import io.quarkiverse.resteasy.problem.ExceptionMapperBase;
-import io.quarkiverse.resteasy.problem.ProblemRuntimeConfig;
 import io.quarkiverse.resteasy.problem.validation.ConstraintViolationExceptionMapper;
 import io.quarkus.runtime.annotations.Recorder;
 
@@ -34,7 +34,23 @@ public class ProblemRecorder {
                 .forEach(ExceptionMapperBase.postProcessorsRegistry::register);
     }
 
-    public void applyRuntimeConfig(ProblemRuntimeConfig config) {
-        ConstraintViolationExceptionMapper.configure(config.constraintViolation());
+    public void configureConstraintViolationMapping(int status, String title, String description) {
+        ConstraintViolationExceptionMapper.configure(new ConstraintViolationMapperConfig() {
+            @Override
+            public int status() {
+                return status;
+            }
+
+            @Override
+            public String title() {
+                return title;
+            }
+
+            @Override
+            public String description() {
+                return description;
+            }
+        });
     }
+
 }

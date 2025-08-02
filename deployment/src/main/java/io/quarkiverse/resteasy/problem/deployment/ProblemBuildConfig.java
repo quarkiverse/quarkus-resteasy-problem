@@ -2,7 +2,7 @@ package io.quarkiverse.resteasy.problem.deployment;
 
 import java.util.Set;
 
-import io.quarkiverse.resteasy.problem.ProblemRuntimeConfig;
+import io.quarkiverse.resteasy.problem.ConstraintViolationMapperConfig;
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
 import io.smallrye.config.ConfigMapping;
@@ -50,12 +50,8 @@ public interface ProblemBuildConfig {
     }
 
     /**
-     * Config for OpenApi schema of HttpValidationProblem
-     *
-     * @implNote This duplicates ProblemRuntimeConfig as runtime config cannot be used in build-time, and constraint
-     *           violation configuration is needed to enhance OpenApi documentation. The best would be to move everything to
-     *           build-time configuration, but that would be a breaking change. To be removed in 4.0.0.
+     * Config for constraint violation exception mapping and OpenApi schema of HttpValidationProblem
      */
     @WithName("constraint-violation")
-    ProblemRuntimeConfig.ConstraintViolationMapperConfig constraintViolation();
+    ConstraintViolationMapperConfig constraintViolation();
 }
