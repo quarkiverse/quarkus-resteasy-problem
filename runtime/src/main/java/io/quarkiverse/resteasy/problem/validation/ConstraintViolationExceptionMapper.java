@@ -142,7 +142,7 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
                 segmentIterator.next();
             } else {
                 String segment = segmentIterator.next().toString();
-                if (segment != null && !segment.trim().isEmpty()) {
+                if (!segment.isBlank()) {
                     pathSegments.add(segment);
                 }
             }

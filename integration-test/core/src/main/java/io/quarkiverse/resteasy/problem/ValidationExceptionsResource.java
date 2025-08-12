@@ -1,10 +1,19 @@
 package io.quarkiverse.resteasy.problem;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import jakarta.inject.Inject;
+import jakarta.validation.Constraint;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Payload;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import jakarta.validation.Validator;
@@ -138,32 +147,31 @@ public class ValidationExceptionsResource {
       public String code;
     }
 
-    @jakarta.validation.Constraint(validatedBy = CustomNameValidator.class)
-    @java.lang.annotation.Target({ java.lang.annotation.ElementType.TYPE })
-    @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
-    public static @interface ValidCustomName {
+    @Constraint(validatedBy = CustomNameValidator.class)
+    @Target({ ElementType.TYPE })
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface ValidCustomName {
       String message() default "must match regex";
 
       Class<?>[] groups() default {};
 
-      Class<? extends jakarta.validation.Payload>[] payload() default {};
+      Class<? extends Payload>[] payload() default {};
     }
 
-    public static class CustomNameValidator implements jakarta.validation.ConstraintValidator<ValidCustomName, CustomName> {
-      private java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("^[A-Z]{4}0[0-9]{6}$");
+    public static class CustomNameValidator implements ConstraintValidator<ValidCustomName, CustomName> {
+      private final Pattern pattern = Pattern.compile("^[A-Z]{4}0[0-9]{6}$");
 
       @Override
-      public boolean isValid(CustomName customName, jakarta.validation.ConstraintValidatorContext constraintValidatorContext) {
-        boolean isValid = true;
+      public boolean isValid(CustomName customName, ConstraintValidatorContext constraintValidatorContext) {
         String code = customName.code;
         constraintValidatorContext.disableDefaultConstraintViolation();
 
         if (pattern != null && !pattern.matcher(code).matches()) {
           constraintValidatorContext.buildConstraintViolationWithTemplate("must match \"" + pattern.pattern() + "\"")
               .addConstraintViolation();
-          isValid = false;
+          return false;
         }
-        return isValid;
+        return true;
       }
 }
 
