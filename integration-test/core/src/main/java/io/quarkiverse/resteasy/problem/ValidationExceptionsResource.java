@@ -1,10 +1,19 @@
 package io.quarkiverse.resteasy.problem;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import jakarta.inject.Inject;
+import jakarta.validation.Constraint;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Payload;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import jakarta.validation.Validator;
@@ -69,6 +78,12 @@ public class ValidationExceptionsResource {
     }
 
     @POST
+    @Path("/constraint-violation-exception/custom-validation")
+    public void throwConstraintViolationExceptionDeclarativeCustomValidation(@Valid CustomInputBean body) {
+        // JAX-RS will automatically trigger validation
+    }
+
+    @POST
     @Path("/constraint-violation-exception/programmatic/nested")
     public void throwConstraintViolationExceptionProgrammaticNested(@QueryParam("companyName") String companyName) {
         ProgrammaticNestedTestBean bean = new ProgrammaticNestedTestBean();
@@ -120,5 +135,43 @@ public class ValidationExceptionsResource {
         @Length(min = 2, max = 100)
         public String city;
     }
+
+    public static final class CustomInputBean {
+      @NotNull
+      @Valid
+      public CustomName name;
+    }
+
+    @ValidCustomName
+    public static final class CustomName {
+      public String code;
+    }
+
+    @Constraint(validatedBy = CustomNameValidator.class)
+    @Target({ ElementType.TYPE })
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface ValidCustomName {
+      String message() default "must match regex";
+
+      Class<?>[] groups() default {};
+
+      Class<? extends Payload>[] payload() default {};
+    }
+
+    public static class CustomNameValidator implements ConstraintValidator<ValidCustomName, CustomName> {
+      private final Pattern pattern = Pattern.compile("^[A-Z]{4}0[0-9]{6}$");
+
+      @Override
+      public boolean isValid(CustomName customName, ConstraintValidatorContext constraintValidatorContext) {
+        constraintValidatorContext.disableDefaultConstraintViolation();
+
+        if (!pattern.matcher(customName.code).matches()) {
+          constraintValidatorContext.buildConstraintViolationWithTemplate("must match \"" + pattern.pattern() + "\"")
+              .addConstraintViolation();
+          return false;
+        }
+        return true;
+      }
+}
 
 }

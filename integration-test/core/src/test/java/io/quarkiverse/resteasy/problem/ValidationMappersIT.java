@@ -152,4 +152,21 @@ class ValidationMappersIT {
                 .body("violations.find{it.field == 'age'}.message", equalTo("must be greater than or equal to 18"));
     }
 
+    @Test
+    void shouldNotIncludeTrailingDotInCustomValidationConstraintViolationPaths() {
+        given()
+                .body("{\"name\": {\"code\": \"INVALID_CODE\"}}")
+                .contentType(APPLICATION_JSON)
+                .post("/throw/validation/constraint-violation-exception/custom-validation")
+                .then()
+                .statusCode(BAD_REQUEST.getStatusCode())
+                .body("title", equalTo(BAD_REQUEST.getReasonPhrase()))
+                .body("status", equalTo(BAD_REQUEST.getStatusCode()))
+                .body("violations", hasSize(1))
+                .body("violations[0].field", equalTo("name"))
+                .body("violations[0].in", equalTo("body"))
+                .body("violations[0].message", equalTo("must match \"^[A-Z]{4}0[0-9]{6}$\""))
+                .body("stacktrace", nullValue());
+    }
+
 }
