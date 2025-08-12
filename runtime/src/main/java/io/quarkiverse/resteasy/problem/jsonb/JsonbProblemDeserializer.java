@@ -38,6 +38,10 @@ public final class JsonbProblemDeserializer implements JsonbDeserializer<HttpPro
     }
 
     private URI uriOrThrow(Object child, String fieldName) {
+        if(child == null) {
+            return null;
+        }
+
         try {
             return URI.create((String) child);
         } catch (IllegalArgumentException e) {

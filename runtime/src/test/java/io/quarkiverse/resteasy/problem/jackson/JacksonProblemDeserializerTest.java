@@ -73,6 +73,29 @@ class JacksonProblemDeserializerTest {
                 .containsEntry("custom_object", Map.of("elo", "too short"));
     }
 
+    /**
+     * Null fields are allowed by RFC, and some api servers configured with JsonInclude.Include.ALWAYS can return
+     * explicit null fields.
+     */
+    @Test
+    void shouldGracefullyHandleNullFields() throws IOException {
+        String problemWithNullFields = """
+                {
+                    "detail": null,
+                    "title": null,
+                    "type": null,
+                    "instance": null
+                }
+                """;
+
+        HttpProblem deserialized = deserialise(problemWithNullFields);
+
+        assertThat(deserialized.getType()).isNull();
+        assertThat(deserialized.getTitle()).isNull();
+        assertThat(deserialized.getDetail()).isNull();
+        assertThat(deserialized.getInstance()).isNull();
+    }
+
     @Test
     void shouldThrowWhenTypeIsNotValidUri() {
         String problem = """

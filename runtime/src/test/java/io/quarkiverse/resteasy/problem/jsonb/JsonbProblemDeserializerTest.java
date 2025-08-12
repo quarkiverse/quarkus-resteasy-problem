@@ -3,6 +3,7 @@ package io.quarkiverse.resteasy.problem.jsonb;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.util.List;
@@ -64,6 +65,25 @@ class JsonbProblemDeserializerTest {
                 .containsEntry("custom_text_field", "too short")
                 .containsEntry("custom_array", List.of("1", "b", "c"))
                 .containsEntry("custom_object", Map.of("elo", "too short"));
+    }
+
+    @Test
+    void shouldGracefullyHandleNullFields() {
+        String problemWithNullFields = """
+                {
+                    "detail": null,
+                    "title": null,
+                    "type": null,
+                    "instance": null
+                }
+                """;
+
+        HttpProblem deserialized = deserialise(problemWithNullFields);
+
+        assertThat(deserialized.getType()).isNull();
+        assertThat(deserialized.getTitle()).isNull();
+        assertThat(deserialized.getDetail()).isNull();
+        assertThat(deserialized.getInstance()).isNull();
     }
 
     @Test
