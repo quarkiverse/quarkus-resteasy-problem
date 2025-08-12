@@ -15,7 +15,6 @@ import org.eclipse.microprofile.openapi.OASFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.quarkiverse.resteasy.problem.ProblemRuntimeConfig;
 import io.quarkiverse.resteasy.problem.postprocessing.ProblemPostProcessor;
 import io.quarkiverse.resteasy.problem.postprocessing.ProblemRecorder;
 import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
@@ -212,8 +211,8 @@ public class ProblemProcessor {
 
     @Record(RUNTIME_INIT)
     @BuildStep
-    void applyRuntimeConfig(ProblemRecorder recorder, ProblemRuntimeConfig config) {
-        recorder.applyRuntimeConfig(config);
+    void applyRuntimeConfig(ProblemRecorder recorder) {
+        recorder.applyRuntimeConfig();
     }
 
     protected Logger logger() {
