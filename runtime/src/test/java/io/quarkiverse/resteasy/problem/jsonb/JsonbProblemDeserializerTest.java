@@ -67,6 +67,25 @@ class JsonbProblemDeserializerTest {
     }
 
     @Test
+    void shouldGracefullyHandleNullFields() {
+        String problemWithNullFields = """
+                {
+                    "detail": null,
+                    "title": null,
+                    "type": null,
+                    "instance": null
+                }
+                """;
+
+        HttpProblem deserialized = deserialise(problemWithNullFields);
+
+        assertThat(deserialized.getType()).isNull();
+        assertThat(deserialized.getTitle()).isNull();
+        assertThat(deserialized.getDetail()).isNull();
+        assertThat(deserialized.getInstance()).isNull();
+    }
+
+    @Test
     void shouldThrowWhenTypeIsNotValidUri() {
         String problem = """
                     {
