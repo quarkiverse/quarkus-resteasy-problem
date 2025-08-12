@@ -3,7 +3,6 @@ package io.quarkiverse.resteasy.problem.jsonb;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.util.List;

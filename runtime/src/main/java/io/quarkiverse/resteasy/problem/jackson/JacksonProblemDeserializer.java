@@ -46,7 +46,7 @@ public final class JacksonProblemDeserializer extends StdDeserializer<HttpProble
     }
 
     private URI uriOrThrow(Object child, String fieldName, JsonParser jsonParser) throws JsonMappingException {
-        if(child == null) {
+        if (child == null) {
             return null;
         }
 

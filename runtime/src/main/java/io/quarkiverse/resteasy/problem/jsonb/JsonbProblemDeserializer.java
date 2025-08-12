@@ -38,7 +38,7 @@ public final class JsonbProblemDeserializer implements JsonbDeserializer<HttpPro
     }
 
     private URI uriOrThrow(Object child, String fieldName) {
-        if(child == null) {
+        if (child == null) {
             return null;
         }
 
