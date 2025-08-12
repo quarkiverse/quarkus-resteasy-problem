@@ -69,6 +69,12 @@ public class ValidationExceptionsResource {
     }
 
     @POST
+    @Path("/constraint-violation-exception/custom-validation")
+    public void throwConstraintViolationExceptionDeclarativeCustomValidation(@Valid CustomInputBean body) {
+        // JAX-RS will automatically trigger validation
+    }
+
+    @POST
     @Path("/constraint-violation-exception/programmatic/nested")
     public void throwConstraintViolationExceptionProgrammaticNested(@QueryParam("companyName") String companyName) {
         ProgrammaticNestedTestBean bean = new ProgrammaticNestedTestBean();
@@ -120,5 +126,45 @@ public class ValidationExceptionsResource {
         @Length(min = 2, max = 100)
         public String city;
     }
+
+    public static final class CustomInputBean {
+      @NotNull
+      @Valid
+      public CustomName name;
+    }
+
+    @ValidCustomName
+    public static final class CustomName {
+      public String code;
+    }
+
+    @jakarta.validation.Constraint(validatedBy = CustomNameValidator.class)
+    @java.lang.annotation.Target({ java.lang.annotation.ElementType.TYPE })
+    @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
+    public static @interface ValidCustomName {
+      String message() default "must match regex";
+
+      Class<?>[] groups() default {};
+
+      Class<? extends jakarta.validation.Payload>[] payload() default {};
+    }
+
+    public static class CustomNameValidator implements jakarta.validation.ConstraintValidator<ValidCustomName, CustomName> {
+      private java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("^[A-Z]{4}0[0-9]{6}$");
+
+      @Override
+      public boolean isValid(CustomName customName, jakarta.validation.ConstraintValidatorContext constraintValidatorContext) {
+        boolean isValid = true;
+        String code = customName.code;
+        constraintValidatorContext.disableDefaultConstraintViolation();
+
+        if (pattern != null && !pattern.matcher(code).matches()) {
+          constraintValidatorContext.buildConstraintViolationWithTemplate("must match \"" + pattern.pattern() + "\"")
+              .addConstraintViolation();
+          isValid = false;
+        }
+        return isValid;
+      }
+}
 
 }
