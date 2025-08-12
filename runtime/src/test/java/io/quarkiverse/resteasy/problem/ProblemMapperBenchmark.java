@@ -32,6 +32,7 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 import com.google.common.collect.Sets;
 
 import io.quarkiverse.resteasy.problem.postprocessing.ProblemRecorder;
+import io.quarkus.runtime.RuntimeValue;
 
 /**
  * JMH benchmark for selected exception Mapper with all post-processors enabled + junit runner test for convenience.
@@ -56,7 +57,7 @@ public class ProblemMapperBenchmark {
 
         @Setup(Level.Trial)
         public void initMapper() {
-            ProblemRecorder recorder = new ProblemRecorder();
+            ProblemRecorder recorder = new ProblemRecorder(new RuntimeValue<>());
             recorder.enableMetrics();
             recorder.configureMdc(Sets.newHashSet("uuid"));
 
