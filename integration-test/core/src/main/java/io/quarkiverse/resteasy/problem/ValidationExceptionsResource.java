@@ -163,10 +163,9 @@ public class ValidationExceptionsResource {
 
       @Override
       public boolean isValid(CustomName customName, ConstraintValidatorContext constraintValidatorContext) {
-        String code = customName.code;
         constraintValidatorContext.disableDefaultConstraintViolation();
 
-        if (pattern != null && !pattern.matcher(code).matches()) {
+        if (!pattern.matcher(customName.code).matches()) {
           constraintValidatorContext.buildConstraintViolationWithTemplate("must match \"" + pattern.pattern() + "\"")
               .addConstraintViolation();
           return false;
