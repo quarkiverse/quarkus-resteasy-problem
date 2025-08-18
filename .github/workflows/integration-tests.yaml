@@ -17,7 +17,7 @@ jobs:
         maven_profiles: ["jackson-classic", "jsonb-classic", "jackson-reactive", "jsonb-reactive"]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -40,7 +40,7 @@ jobs:
         it_modules: ["openapi", "metrics", "zalando"] # rest-client runs along with core as it utilizes same maven profiles
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up JDK
         uses: actions/setup-java@v4
