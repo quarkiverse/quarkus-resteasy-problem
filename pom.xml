@@ -36,7 +36,7 @@
         <maven.compiler-plugin.version>3.14.1</maven.compiler-plugin.version>
         <surefire-plugin.version>3.5.4</surefire-plugin.version>
         <failsafe-plugin.version>3.5.4</failsafe-plugin.version>
-        <forbiddenapis-maven-plugin.version>3.9</forbiddenapis-maven-plugin.version>
+        <forbiddenapis-maven-plugin.version>3.10</forbiddenapis-maven-plugin.version>
         <formatter-maven-plugin.version>2.29.0</formatter-maven-plugin.version>
         <impsort-maven-plugin.version>1.12.0</impsort-maven-plugin.version>
     </properties>
