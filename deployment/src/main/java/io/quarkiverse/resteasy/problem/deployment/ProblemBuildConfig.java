@@ -20,13 +20,6 @@ public interface ProblemBuildConfig {
     Set<String> includeMdcProperties();
 
     /**
-     * Whether metrics should be enabled if quarkus-smallrye-metrics is used.
-     */
-    @WithName("metrics.enabled")
-    @WithDefault("false")
-    boolean metricsEnabled();
-
-    /**
      * OpenApi related configuration
      */
     @WithName("openapi")

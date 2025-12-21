@@ -97,7 +97,6 @@
             <modules>
                 <module>core</module>
                 <module>openapi</module>
-                <module>metrics</module>
                 <module>zalando</module>
                 <module>rest-client</module>
             </modules>
