@@ -58,7 +58,6 @@ public class ProblemMapperBenchmark {
         @Setup(Level.Trial)
         public void initMapper() {
             ProblemRecorder recorder = new ProblemRecorder(new RuntimeValue<>());
-            recorder.enableMetrics();
             recorder.configureMdc(Sets.newHashSet("uuid"));
 
             mapper.uriInfo = new ResteasyUriInfo("http://localhost/endpoint", "endpoint");

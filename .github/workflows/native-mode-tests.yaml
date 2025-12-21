@@ -41,7 +41,7 @@ jobs:
     strategy:
       max-parallel: 2
       matrix:
-        it_modules: ["openapi", "metrics", "zalando"] # rest-client runs along with core as it utilizes same maven profiles
+        it_modules: ["openapi", "zalando"] # rest-client runs along with core as it utilizes same maven profiles
       fail-fast: false
 
     steps:

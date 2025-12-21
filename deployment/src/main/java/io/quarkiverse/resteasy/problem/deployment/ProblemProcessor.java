@@ -191,14 +191,6 @@ public class ProblemProcessor {
     }
 
     @Record(RUNTIME_INIT)
-    @BuildStep(onlyIf = QuarkusSmallryeMetricsDetector.class)
-    void setupMetrics(ProblemRecorder recorder, ProblemBuildConfig config) {
-        if (config.metricsEnabled()) {
-            recorder.enableMetrics();
-        }
-    }
-
-    @Record(RUNTIME_INIT)
     @BuildStep
     void registerCustomPostProcessors(ProblemRecorder recorder) {
         recorder.registerCustomPostProcessors();

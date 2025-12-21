@@ -286,20 +286,6 @@ Content-Type: application/problem+json
 }
 ```
 
-- (Build time) Enable Smallrye (Microprofile) metrics for http error counters. Requires `quarkus-smallrye-metrics` in the classpath.
-
-Please note that if you use `quarkus-micrometer-registry-prometheus` you don't need this feature - http error metrics will be produced regardless of this setting or presence of this extension.
-
-```
-quarkus.resteasy.problem.metrics.enabled=true
-```
-Result:
-```
-GET /metrics
-application_http_error_total{status="401"} 3.0
-application_http_error_total{status="500"} 5.0
-```
-
 - (Runtime) Tuning logging
 ```
 quarkus.log.category.http-problem.level=INFO # default: all problems are logged

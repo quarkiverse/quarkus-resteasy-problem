@@ -34,10 +34,6 @@ public class ProblemRecorder {
         }
     }
 
-    public void enableMetrics() {
-        ExceptionMapperBase.postProcessorsRegistry.register(new MicroprofileMetricsCollector());
-    }
-
     public void registerCustomPostProcessors() {
         CDI.current().select(ProblemPostProcessor.class)
                 .forEach(ExceptionMapperBase.postProcessorsRegistry::register);
