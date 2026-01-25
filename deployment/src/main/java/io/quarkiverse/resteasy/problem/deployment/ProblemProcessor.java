@@ -110,7 +110,7 @@ public class ProblemProcessor {
     FeatureBuildItem createFeature(Capabilities capabilities) {
         if (RESTEASY_JSON_CAPABILITIES.stream().noneMatch(capabilities::isPresent)) {
             logger().error("`quarkus-resteasy-problem` extension is useless without RESTeasy Json Provider. Please add "
-                    + "`quarkus-resteasy-jackson` or `quarkus-resteasy-jsonb` (or reactive versions) to your pom.xml.");
+                    + "`quarkus-rest-jackson` or `quarkus-rest-jsonb` (or classic equivalent) extension to your pom.xml.");
         }
         return new FeatureBuildItem(FEATURE_NAME);
     }
