@@ -48,7 +48,7 @@ class ProblemProcessorTest {
         problemProcessor.createFeature(CAPABILITIES_WITHOUT_JSON);
 
         verify(logger).error("`quarkus-resteasy-problem` extension is useless without RESTeasy Json Provider. "
-                + "Please add `quarkus-resteasy-jackson` or `quarkus-resteasy-jsonb` (or reactive versions) to your pom.xml.");
+                + "Please add `quarkus-rest-jackson` or `quarkus-rest-jsonb` (or classic equivalent) extension to your pom.xml.");
     }
 
 }
