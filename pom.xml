@@ -4,7 +4,7 @@
     <parent>
         <groupId>io.quarkiverse</groupId>
         <artifactId>quarkiverse-parent</artifactId>
-        <version>17</version>
+        <version>20</version>
     </parent>
 
     <groupId>io.quarkiverse.resteasy-problem</groupId>
@@ -256,6 +256,36 @@
                 </plugins>
             </build>
         </profile>
+
+        <profile>
+            <id>quarkus-snapshots</id>
+            <repositories>
+                <repository>
+                    <id>quarkus-snapshots-repository</id>
+                    <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+                    <releases>
+                        <enabled>false</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>quarkus-snapshots-plugin-repository</id>
+                    <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+                    <releases>
+                        <enabled>false</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+
+
     </profiles>
 
     <licenses>
