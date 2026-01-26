@@ -28,8 +28,10 @@ final class HttpUnauthorizedUtils {
                     HttpProblem.Builder builder = HttpProblem.builder()
                             .withStatus(status)
                             .withTitle(status.getReasonPhrase());
-                    if (challenge.headerName != null) {
-                        builder = builder.withHeader(challenge.headerName.toString(), challenge.headerContent);
+                    if (challenge.getHeaders() != null) {
+                        for (CharSequence headerName : challenge.getHeaders().keySet()) {
+                            builder = builder.withHeader(headerName.toString(), challenge.getHeaders().get(headerName));
+                        }
                     }
                     return builder.build();
                 });
