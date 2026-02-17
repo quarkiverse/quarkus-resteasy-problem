@@ -97,32 +97,32 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
     }
 
     private Optional<Parameter> findParameterInHierarchy(Method method, String paramName) {
-        Optional<Parameter> fromMethod = findParameterByName(method, paramName);
-        if (fromMethod.map(this::hasJaxRsParamAnnotation).orElse(false)) {
-            return fromMethod;
+        return Stream.concat(Stream.of(method), interfaceMethods(method))
+                .flatMap(m -> Stream.of(m.getParameters()))
+                .filter(p -> p.getName().equals(paramName))
+                .filter(this::hasJaxRsParamAnnotation)
+                .findFirst()
+                .or(() -> findParameterByName(method, paramName));
+    }
+
+    private Stream<Method> interfaceMethods(Method method) {
+        return Stream.of(method.getDeclaringClass().getInterfaces())
+                .map(iface -> findMethodInInterface(iface, method))
+                .flatMap(Optional::stream);
+    }
+
+    private Optional<Method> findMethodInInterface(Class<?> iface, Method method) {
+        try {
+            return Optional.of(iface.getMethod(method.getName(), method.getParameterTypes()));
+        } catch (NoSuchMethodException ignored) {
+            return Optional.empty();
         }
-        Optional<Parameter> fromInterface = findParameterInInterfaces(method.getDeclaringClass(), method, paramName);
-        return fromInterface.isPresent() ? fromInterface : fromMethod;
     }
 
     private Optional<Parameter> findParameterByName(Method method, String paramName) {
         return Stream.of(method.getParameters())
                 .filter(param -> param.getName().equals(paramName))
                 .findFirst();
-    }
-
-    private Optional<Parameter> findParameterInInterfaces(Class<?> clazz, Method method, String paramName) {
-        for (Class<?> iface : clazz.getInterfaces()) {
-            try {
-                Method ifaceMethod = iface.getMethod(method.getName(), method.getParameterTypes());
-                Optional<Parameter> param = findParameterByName(ifaceMethod, paramName);
-                if (param.isPresent()) {
-                    return param;
-                }
-            } catch (NoSuchMethodException ignored) {
-            }
-        }
-        return Optional.empty();
     }
 
     private boolean hasJaxRsParamAnnotation(Parameter param) {
