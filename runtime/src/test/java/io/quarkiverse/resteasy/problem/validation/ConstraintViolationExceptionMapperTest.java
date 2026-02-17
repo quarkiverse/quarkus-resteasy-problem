@@ -257,6 +257,40 @@ class ConstraintViolationExceptionMapperTest {
         return (List<Violation>) problem.getParameters().get("violations");
     }
 
+    @Test
+    void shouldReportCorrectFieldAndLocationWhenConstraintsDefinedOnInterface() throws NoSuchMethodException {
+        Validator validator = Validation.byProvider(HibernateValidator.class)
+                .configure()
+                .buildValidatorFactory()
+                .getValidator();
+
+        SearchServiceImpl impl = new SearchServiceImpl();
+        Method implMethod = SearchServiceImpl.class.getMethod("search", String.class);
+
+        Set<ConstraintViolation<SearchServiceImpl>> constraintViolations = validator.forExecutables()
+                .validateParameters(impl, implMethod, new Object[] { "short" });
+        ConstraintViolationException exception = new ConstraintViolationException(constraintViolations);
+
+        ConstraintViolationExceptionMapper testMapper = new ConstraintViolationExceptionMapper();
+        testMapper.resourceInfo = new ResourceInfo() {
+            @Override
+            public Method getResourceMethod() {
+                return implMethod;
+            }
+
+            @Override
+            public Class<?> getResourceClass() {
+                return SearchServiceImpl.class;
+            }
+        };
+
+        List<Violation> violations = mapAndExtractViolations(exception, testMapper);
+
+        assertThat(violations)
+                .usingRecursiveFieldByFieldElementComparator()
+                .containsExactly(Violation.In.query.field("query").message("size must be between 10 and 128"));
+    }
+
     static class StubResourceInfo implements ResourceInfo {
 
         private final Validator validator;
@@ -450,5 +484,15 @@ class ConstraintViolationExceptionMapperTest {
         @NotNull
         @Length(min = 2, max = 100)
         public String city;
+    }
+
+    interface SearchResource {
+        void search(@QueryParam("query") @Size(min = 10, max = 128) String query);
+    }
+
+    static class SearchServiceImpl implements SearchResource {
+        @Override
+        public void search(String query) {
+        }
     }
 }
