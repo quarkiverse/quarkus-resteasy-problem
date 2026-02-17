@@ -93,9 +93,43 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
         String paramName = propertyPathIterator.next().getName();
 
         return Optional.ofNullable(resourceInfo.getResourceMethod())
-                .flatMap(method -> Stream.of(method.getParameters())
-                        .filter(param -> param.getName().equals(paramName))
-                        .findFirst());
+                .flatMap(method -> findParameterInHierarchy(method, paramName));
+    }
+
+    private Optional<Parameter> findParameterInHierarchy(Method method, String paramName) {
+        return Stream.concat(Stream.of(method), interfaceMethods(method))
+                .flatMap(m -> Stream.of(m.getParameters()))
+                .filter(p -> p.getName().equals(paramName))
+                .filter(this::hasJaxRsParamAnnotation)
+                .findFirst()
+                .or(() -> findParameterByName(method, paramName));
+    }
+
+    private Stream<Method> interfaceMethods(Method method) {
+        return Stream.of(method.getDeclaringClass().getInterfaces())
+                .map(iface -> findMethodInInterface(iface, method))
+                .flatMap(Optional::stream);
+    }
+
+    private Optional<Method> findMethodInInterface(Class<?> iface, Method method) {
+        try {
+            return Optional.of(iface.getMethod(method.getName(), method.getParameterTypes()));
+        } catch (NoSuchMethodException ignored) {
+            return Optional.empty();
+        }
+    }
+
+    private Optional<Parameter> findParameterByName(Method method, String paramName) {
+        return Stream.of(method.getParameters())
+                .filter(param -> param.getName().equals(paramName))
+                .findFirst();
+    }
+
+    private boolean hasJaxRsParamAnnotation(Parameter param) {
+        return param.getAnnotation(QueryParam.class) != null
+                || param.getAnnotation(PathParam.class) != null
+                || param.getAnnotation(HeaderParam.class) != null
+                || param.getAnnotation(FormParam.class) != null;
     }
 
     private Violation createViolation(ConstraintViolation<?> constraintViolation, Parameter param) {
