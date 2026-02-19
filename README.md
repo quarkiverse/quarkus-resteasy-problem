@@ -42,7 +42,7 @@ Add this to your pom.xml:
 <dependency>
     <groupId>io.quarkiverse.resteasy-problem</groupId>
     <artifactId>quarkus-resteasy-problem</artifactId>
-    <version>3.21.1</version>
+    <version>3.32.0</version>
 </dependency>
 ```
 
@@ -52,9 +52,10 @@ Add this to your pom.xml:
 ### Quarkus 3.X
  Quarkus             | Java | quarkus-resteasy-problem
 ---------------------|------|-------------------------
- < 3.7.0             | 11+  | 3.1.0
-\>= 3.7.0 && < 3.9.0 | 17+  | 3.7.0
-\>= 3.9.0            | 17+  | 3.9.0
+\>= 3.32            | 17+  | 3.32.0
+\>= 3.9 | 17+  | 3.21.1
+\>= 3.7  | 17+  | 3.7.0
+< 3.7             | 11+  | 3.1.0
 
 Make sure proper version of JDK (look for the table above), then run:
 ```shell
