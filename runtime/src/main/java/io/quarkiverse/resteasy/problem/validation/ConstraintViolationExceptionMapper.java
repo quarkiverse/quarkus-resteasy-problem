@@ -12,20 +12,12 @@ import jakarta.annotation.Priority;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Path;
-import jakarta.ws.rs.FormParam;
-import jakarta.ws.rs.HeaderParam;
-import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Priorities;
-import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.container.ResourceInfo;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.ext.ExceptionMapper;
 
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
-import org.jboss.resteasy.reactive.RestForm;
-import org.jboss.resteasy.reactive.RestHeader;
-import org.jboss.resteasy.reactive.RestPath;
-import org.jboss.resteasy.reactive.RestQuery;
 
 import io.quarkiverse.resteasy.problem.ExceptionMapperBase;
 import io.quarkiverse.resteasy.problem.ProblemRuntimeConfig.ConstraintViolationMapperConfig;
@@ -45,15 +37,17 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
      */
     public static final String HTTP_VALIDATION_PROBLEM_STATUS_CODE = "[HttpValidationProblem]";
 
-    private static final List<ParamSpec<?>> PARAM_SPECS = List.of(
-            new ParamSpec<>(QueryParam.class, Violation.In.query, ann -> ann.value()),
-            new ParamSpec<>(PathParam.class, Violation.In.path, ann -> ann.value()),
-            new ParamSpec<>(HeaderParam.class, Violation.In.header, ann -> ann.value()),
-            new ParamSpec<>(FormParam.class, Violation.In.form, ann -> ann.value()),
-            new ParamSpec<>(RestQuery.class, Violation.In.query, ann -> ann.value()),
-            new ParamSpec<>(RestPath.class, Violation.In.path, ann -> ann.value()),
-            new ParamSpec<>(RestHeader.class, Violation.In.header, ann -> ann.value()),
-            new ParamSpec<>(RestForm.class, Violation.In.form, ann -> ann.value()));
+    private static final List<ParamSpec<?>> PARAM_SPECS = Stream.of(
+            ParamSpec.of("jakarta.ws.rs.QueryParam", Violation.In.query),
+            ParamSpec.of("jakarta.ws.rs.PathParam", Violation.In.path),
+            ParamSpec.of("jakarta.ws.rs.HeaderParam", Violation.In.header),
+            ParamSpec.of("jakarta.ws.rs.FormParam", Violation.In.form),
+            ParamSpec.of("org.jboss.resteasy.reactive.RestQuery", Violation.In.query),
+            ParamSpec.of("org.jboss.resteasy.reactive.RestPath", Violation.In.path),
+            ParamSpec.of("org.jboss.resteasy.reactive.RestHeader", Violation.In.header),
+            ParamSpec.of("org.jboss.resteasy.reactive.RestForm", Violation.In.form))
+            .flatMap(Optional::stream)
+            .toList();
 
     private static ConstraintViolationMapperConfig config = ConstraintViolationMapperConfig.defaults();
 
@@ -208,10 +202,28 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
         private final Violation.In location;
         private final Function<A, String> fieldExtractor;
 
-        ParamSpec(Class<A> annotationType, Violation.In location, Function<A, String> fieldExtractor) {
+        private ParamSpec(Class<A> annotationType, Violation.In location, Function<A, String> fieldExtractor) {
             this.annotationType = annotationType;
             this.location = location;
             this.fieldExtractor = fieldExtractor;
+        }
+
+        @SuppressWarnings("unchecked")
+        static <A extends Annotation> Optional<ParamSpec<?>> of(String className, Violation.In location) {
+            try {
+                Class<A> annotationType = (Class<A>) Class.forName(className);
+                java.lang.reflect.Method valueMethod = annotationType.getMethod("value");
+                Function<A, String> fieldExtractor = ann -> {
+                    try {
+                        return (String) valueMethod.invoke(ann);
+                    } catch (Exception e) {
+                        return "";
+                    }
+                };
+                return Optional.of(new ParamSpec<>(annotationType, location, fieldExtractor));
+            } catch (ClassNotFoundException | NoSuchMethodException ignored) {
+                return Optional.empty();
+            }
         }
 
         boolean isPresent(Parameter param) {
