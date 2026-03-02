@@ -30,6 +30,10 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.spi.nodenameprovider.JavaBeanProperty;
 import org.hibernate.validator.spi.nodenameprovider.Property;
 import org.hibernate.validator.spi.nodenameprovider.PropertyNodeNameProvider;
+import org.jboss.resteasy.reactive.RestForm;
+import org.jboss.resteasy.reactive.RestHeader;
+import org.jboss.resteasy.reactive.RestPath;
+import org.jboss.resteasy.reactive.RestQuery;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -493,6 +497,47 @@ class ConstraintViolationExceptionMapperTest {
     static class SearchServiceImpl implements SearchResource {
         @Override
         public void search(String query) {
+        }
+    }
+
+    @Test
+    void shouldReportQueryViolationForRestQueryAnnotation() throws NoSuchMethodException {
+        Validator validator = Validation.byProvider(HibernateValidator.class).configure().buildValidatorFactory()
+                .getValidator();
+        ReactiveParamResource resource = new ReactiveParamResource();
+        Method method = ReactiveParamResource.class.getMethod("list", String.class, String.class, String.class, String.class);
+        Set<ConstraintViolation<ReactiveParamResource>> violations = validator.forExecutables()
+                .validateParameters(resource, method, new Object[] { null, "valid-header", "valid-path", null });
+        ConstraintViolationException exception = new ConstraintViolationException(violations);
+
+        ConstraintViolationExceptionMapper testMapper = new ConstraintViolationExceptionMapper();
+        testMapper.resourceInfo = new ResourceInfo() {
+            @Override
+            public Method getResourceMethod() {
+                return method;
+            }
+
+            @Override
+            public Class<?> getResourceClass() {
+                return ReactiveParamResource.class;
+            }
+        };
+
+        List<Violation> mappedViolations = mapAndExtractViolations(exception, testMapper);
+
+        assertThat(mappedViolations)
+                .usingRecursiveFieldByFieldElementComparator()
+                .containsExactlyInAnyOrder(
+                        Violation.In.query.field("name").message("must not be null"),
+                        Violation.In.form.field("formField").message("must not be null"));
+    }
+
+    static class ReactiveParamResource {
+        public void list(
+                @NotNull @RestQuery String name,
+                @NotNull @RestHeader String header,
+                @NotNull @RestPath String id,
+                @NotNull @RestForm String formField) {
         }
     }
 }

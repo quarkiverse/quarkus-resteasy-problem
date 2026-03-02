@@ -1,8 +1,10 @@
 package io.quarkiverse.resteasy.problem.validation;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -20,6 +22,10 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.ext.ExceptionMapper;
 
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.jboss.resteasy.reactive.RestForm;
+import org.jboss.resteasy.reactive.RestHeader;
+import org.jboss.resteasy.reactive.RestPath;
+import org.jboss.resteasy.reactive.RestQuery;
 
 import io.quarkiverse.resteasy.problem.ExceptionMapperBase;
 import io.quarkiverse.resteasy.problem.ProblemRuntimeConfig.ConstraintViolationMapperConfig;
@@ -38,6 +44,16 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
      * other mappers. OpenApiProblemFilter handles this accordingly.
      */
     public static final String HTTP_VALIDATION_PROBLEM_STATUS_CODE = "[HttpValidationProblem]";
+
+    private static final List<ParamSpec<?>> PARAM_SPECS = List.of(
+            new ParamSpec<>(QueryParam.class, Violation.In.query, ann -> ann.value()),
+            new ParamSpec<>(PathParam.class, Violation.In.path, ann -> ann.value()),
+            new ParamSpec<>(HeaderParam.class, Violation.In.header, ann -> ann.value()),
+            new ParamSpec<>(FormParam.class, Violation.In.form, ann -> ann.value()),
+            new ParamSpec<>(RestQuery.class, Violation.In.query, ann -> ann.value()),
+            new ParamSpec<>(RestPath.class, Violation.In.path, ann -> ann.value()),
+            new ParamSpec<>(RestHeader.class, Violation.In.header, ann -> ann.value()),
+            new ParamSpec<>(RestForm.class, Violation.In.form, ann -> ann.value()));
 
     private static ConstraintViolationMapperConfig config = ConstraintViolationMapperConfig.defaults();
 
@@ -100,7 +116,7 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
         return Stream.concat(Stream.of(method), interfaceMethods(method))
                 .flatMap(m -> Stream.of(m.getParameters()))
                 .filter(p -> p.getName().equals(paramName))
-                .filter(this::hasJaxRsParamAnnotation)
+                .filter(this::hasKnownParamAnnotation)
                 .findFirst()
                 .or(() -> findParameterByName(method, paramName));
     }
@@ -125,37 +141,19 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
                 .findFirst();
     }
 
-    private boolean hasJaxRsParamAnnotation(Parameter param) {
-        return param.getAnnotation(QueryParam.class) != null
-                || param.getAnnotation(PathParam.class) != null
-                || param.getAnnotation(HeaderParam.class) != null
-                || param.getAnnotation(FormParam.class) != null;
+    private boolean hasKnownParamAnnotation(Parameter param) {
+        return PARAM_SPECS.stream().anyMatch(spec -> spec.isPresent(param));
     }
 
     private Violation createViolation(ConstraintViolation<?> constraintViolation, Parameter param) {
         final String message = constraintViolation.getMessage();
-        if (param.getAnnotation(QueryParam.class) != null) {
-            String field = param.getAnnotation(QueryParam.class).value();
-            return Violation.In.query.field(field).message(message);
-        }
-
-        if (param.getAnnotation(PathParam.class) != null) {
-            String field = param.getAnnotation(PathParam.class).value();
-            return Violation.In.path.field(field).message(message);
-        }
-
-        if (param.getAnnotation(HeaderParam.class) != null) {
-            String field = param.getAnnotation(HeaderParam.class).value();
-            return Violation.In.header.field(field).message(message);
-        }
-
-        if (param.getAnnotation(FormParam.class) != null) {
-            String field = param.getAnnotation(FormParam.class).value();
-            return Violation.In.form.field(field).message(message);
-        }
-
-        String field = dropMethodNameAndArgumentPositionFromPath(constraintViolation.getPropertyPath());
-        return Violation.In.body.field(field).message(message);
+        return PARAM_SPECS.stream()
+                .flatMap(spec -> spec.toViolation(param, message).stream())
+                .findFirst()
+                .orElseGet(() -> {
+                    String field = dropMethodNameAndArgumentPositionFromPath(constraintViolation.getPropertyPath());
+                    return Violation.In.body.field(field).message(message);
+                });
     }
 
     private String dropMethodNameAndArgumentPositionFromPath(Path propertyPath) {
@@ -202,6 +200,35 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
         String propertyPath = violation.getPropertyPath().toString();
         Method method = resourceInfo.getResourceMethod();
         return method != null && propertyPath.startsWith(method.getName() + ".");
+    }
+
+    private static final class ParamSpec<A extends Annotation> {
+
+        private final Class<A> annotationType;
+        private final Violation.In location;
+        private final Function<A, String> fieldExtractor;
+
+        ParamSpec(Class<A> annotationType, Violation.In location, Function<A, String> fieldExtractor) {
+            this.annotationType = annotationType;
+            this.location = location;
+            this.fieldExtractor = fieldExtractor;
+        }
+
+        boolean isPresent(Parameter param) {
+            return param.getAnnotation(annotationType) != null;
+        }
+
+        Optional<Violation> toViolation(Parameter param, String message) {
+            A annotation = param.getAnnotation(annotationType);
+            if (annotation == null) {
+                return Optional.empty();
+            }
+            String field = fieldExtractor.apply(annotation);
+            if (field.isEmpty()) {
+                field = param.getName();
+            }
+            return Optional.of(location.field(field).message(message));
+        }
     }
 
 }
