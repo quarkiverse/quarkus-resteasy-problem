@@ -142,8 +142,9 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
     private Violation createViolation(ConstraintViolation<?> constraintViolation, Parameter param) {
         final String message = constraintViolation.getMessage();
         return PARAM_SPECS.stream()
-                .flatMap(spec -> spec.toViolation(param, message).stream())
+                .filter(spec -> spec.isPresent(param))
                 .findFirst()
+                .map(spec -> spec.toViolation(param, message))
                 .orElseGet(() -> {
                     String field = dropMethodNameAndArgumentPositionFromPath(constraintViolation.getPropertyPath());
                     return Violation.In.body.field(field).message(message);
@@ -230,16 +231,12 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
             return param.getAnnotation(annotationType) != null;
         }
 
-        Optional<Violation> toViolation(Parameter param, String message) {
-            A annotation = param.getAnnotation(annotationType);
-            if (annotation == null) {
-                return Optional.empty();
-            }
-            String field = fieldExtractor.apply(annotation);
+        Violation toViolation(Parameter param, String message) {
+            String field = fieldExtractor.apply(param.getAnnotation(annotationType));
             if (field.isEmpty()) {
                 field = param.getName();
             }
-            return Optional.of(location.field(field).message(message));
+            return location.field(field).message(message);
         }
     }
 

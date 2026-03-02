@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -36,6 +37,9 @@ import org.jboss.resteasy.reactive.RestPath;
 import org.jboss.resteasy.reactive.RestQuery;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.BeanDescription;
@@ -500,14 +504,25 @@ class ConstraintViolationExceptionMapperTest {
         }
     }
 
-    @Test
-    void shouldReportQueryViolationForRestQueryAnnotation() throws NoSuchMethodException {
+    static Stream<Arguments> reactiveParamViolations() {
+        return Stream.of(
+                Arguments.of(new Object[] { "x", "valid", "valid", "valid" }, Violation.In.query, "name"),
+                Arguments.of(new Object[] { "valid", "x", "valid", "valid" }, Violation.In.header, "header"),
+                Arguments.of(new Object[] { "valid", "valid", "x", "valid" }, Violation.In.path, "id"),
+                Arguments.of(new Object[] { "valid", "valid", "valid", "x" }, Violation.In.form, "formField"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("reactiveParamViolations")
+    void shouldReportCorrectLocationForRestAnnotations(Object[] args, Violation.In expectedIn,
+            String expectedField) throws NoSuchMethodException {
         Validator validator = Validation.byProvider(HibernateValidator.class).configure().buildValidatorFactory()
                 .getValidator();
         ReactiveParamResource resource = new ReactiveParamResource();
-        Method method = ReactiveParamResource.class.getMethod("list", String.class, String.class, String.class, String.class);
+        Method method = ReactiveParamResource.class.getMethod("list", String.class, String.class, String.class,
+                String.class);
         Set<ConstraintViolation<ReactiveParamResource>> violations = validator.forExecutables()
-                .validateParameters(resource, method, new Object[] { null, "valid-header", "valid-path", null });
+                .validateParameters(resource, method, args);
         ConstraintViolationException exception = new ConstraintViolationException(violations);
 
         ConstraintViolationExceptionMapper testMapper = new ConstraintViolationExceptionMapper();
@@ -527,17 +542,15 @@ class ConstraintViolationExceptionMapperTest {
 
         assertThat(mappedViolations)
                 .usingRecursiveFieldByFieldElementComparator()
-                .containsExactlyInAnyOrder(
-                        Violation.In.query.field("name").message("must not be null"),
-                        Violation.In.form.field("formField").message("must not be null"));
+                .containsExactly(expectedIn.field(expectedField).message("size must be between 5 and 2147483647"));
     }
 
     static class ReactiveParamResource {
         public void list(
-                @NotNull @RestQuery String name,
-                @NotNull @RestHeader String header,
-                @NotNull @RestPath String id,
-                @NotNull @RestForm String formField) {
+                @Size(min = 5) @RestQuery String name,
+                @Size(min = 5) @RestHeader String header,
+                @Size(min = 5) @RestPath String id,
+                @Size(min = 5) @RestForm String formField) {
         }
     }
 }
