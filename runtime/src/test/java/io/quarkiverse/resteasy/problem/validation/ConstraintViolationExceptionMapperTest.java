@@ -18,6 +18,7 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import jakarta.ws.rs.BeanParam;
 import jakarta.ws.rs.FormParam;
 import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.Path;
@@ -551,6 +552,76 @@ class ConstraintViolationExceptionMapperTest {
                 @Size(min = 5) @RestHeader String header,
                 @Size(min = 5) @RestPath String id,
                 @Size(min = 5) @RestForm String formField) {
+        }
+    }
+
+    static Stream<Arguments> beanParamViolations() {
+        return Stream.of(
+                Arguments.of(new MixedBeanParam("x", "valid", "valid", "valid"), Violation.In.query, "page_size"),
+                Arguments.of(new MixedBeanParam("valid", "x", "valid", "valid"), Violation.In.path, "resource_id"),
+                Arguments.of(new MixedBeanParam("valid", "valid", "x", "valid"), Violation.In.header, "x_token"),
+                Arguments.of(new MixedBeanParam("valid", "valid", "valid", "x"), Violation.In.form, "form_data"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("beanParamViolations")
+    void shouldReportCorrectLocationForParamInsideBeanParam(MixedBeanParam beanParam, Violation.In expectedIn,
+            String expectedField) throws NoSuchMethodException {
+        Validator validator = Validation.byProvider(HibernateValidator.class).configure().buildValidatorFactory()
+                .getValidator();
+        BeanParamResource resource = new BeanParamResource();
+        Method method = BeanParamResource.class.getMethod("list", MixedBeanParam.class);
+        Set<ConstraintViolation<BeanParamResource>> violations = validator.forExecutables()
+                .validateParameters(resource, method, new Object[] { beanParam });
+        ConstraintViolationException exception = new ConstraintViolationException(violations);
+
+        ConstraintViolationExceptionMapper testMapper = new ConstraintViolationExceptionMapper();
+        testMapper.resourceInfo = new ResourceInfo() {
+            @Override
+            public Method getResourceMethod() {
+                return method;
+            }
+
+            @Override
+            public Class<?> getResourceClass() {
+                return BeanParamResource.class;
+            }
+        };
+
+        List<Violation> mappedViolations = mapAndExtractViolations(exception, testMapper);
+
+        assertThat(mappedViolations)
+                .usingRecursiveFieldByFieldElementComparator()
+                .containsExactly(expectedIn.field(expectedField).message("size must be between 5 and 2147483647"));
+    }
+
+    static class BeanParamResource {
+        public void list(@Valid @BeanParam MixedBeanParam params) {
+        }
+    }
+
+    static class MixedBeanParam {
+        @Size(min = 5)
+        @QueryParam("page_size")
+        String size;
+
+        @Size(min = 5)
+        @PathParam("resource_id")
+        String id;
+
+        @Size(min = 5)
+        @HeaderParam("x_token")
+        String token;
+
+        @Size(min = 5)
+        @FormParam("form_data")
+        String data;
+
+        MixedBeanParam(String size, String id, String token, String data) {
+            this.size = size;
+            this.id = id;
+            this.token = token;
+            this.data = data;
         }
     }
 }
