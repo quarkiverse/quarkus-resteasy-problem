@@ -1,8 +1,10 @@
 package io.quarkiverse.resteasy.problem.validation;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -10,11 +12,7 @@ import jakarta.annotation.Priority;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Path;
-import jakarta.ws.rs.FormParam;
-import jakarta.ws.rs.HeaderParam;
-import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Priorities;
-import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.container.ResourceInfo;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.ext.ExceptionMapper;
@@ -38,6 +36,18 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
      * other mappers. OpenApiProblemFilter handles this accordingly.
      */
     public static final String HTTP_VALIDATION_PROBLEM_STATUS_CODE = "[HttpValidationProblem]";
+
+    private static final List<ParamSpec<?>> PARAM_SPECS = Stream.of(
+            ParamSpec.of("jakarta.ws.rs.QueryParam", Violation.In.query),
+            ParamSpec.of("jakarta.ws.rs.PathParam", Violation.In.path),
+            ParamSpec.of("jakarta.ws.rs.HeaderParam", Violation.In.header),
+            ParamSpec.of("jakarta.ws.rs.FormParam", Violation.In.form),
+            ParamSpec.of("org.jboss.resteasy.reactive.RestQuery", Violation.In.query),
+            ParamSpec.of("org.jboss.resteasy.reactive.RestPath", Violation.In.path),
+            ParamSpec.of("org.jboss.resteasy.reactive.RestHeader", Violation.In.header),
+            ParamSpec.of("org.jboss.resteasy.reactive.RestForm", Violation.In.form))
+            .flatMap(Optional::stream)
+            .toList();
 
     private static ConstraintViolationMapperConfig config = ConstraintViolationMapperConfig.defaults();
 
@@ -100,7 +110,7 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
         return Stream.concat(Stream.of(method), interfaceMethods(method))
                 .flatMap(m -> Stream.of(m.getParameters()))
                 .filter(p -> p.getName().equals(paramName))
-                .filter(this::hasJaxRsParamAnnotation)
+                .filter(this::hasKnownParamAnnotation)
                 .findFirst()
                 .or(() -> findParameterByName(method, paramName));
     }
@@ -125,37 +135,20 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
                 .findFirst();
     }
 
-    private boolean hasJaxRsParamAnnotation(Parameter param) {
-        return param.getAnnotation(QueryParam.class) != null
-                || param.getAnnotation(PathParam.class) != null
-                || param.getAnnotation(HeaderParam.class) != null
-                || param.getAnnotation(FormParam.class) != null;
+    private boolean hasKnownParamAnnotation(Parameter param) {
+        return PARAM_SPECS.stream().anyMatch(spec -> spec.isPresent(param));
     }
 
     private Violation createViolation(ConstraintViolation<?> constraintViolation, Parameter param) {
         final String message = constraintViolation.getMessage();
-        if (param.getAnnotation(QueryParam.class) != null) {
-            String field = param.getAnnotation(QueryParam.class).value();
-            return Violation.In.query.field(field).message(message);
-        }
-
-        if (param.getAnnotation(PathParam.class) != null) {
-            String field = param.getAnnotation(PathParam.class).value();
-            return Violation.In.path.field(field).message(message);
-        }
-
-        if (param.getAnnotation(HeaderParam.class) != null) {
-            String field = param.getAnnotation(HeaderParam.class).value();
-            return Violation.In.header.field(field).message(message);
-        }
-
-        if (param.getAnnotation(FormParam.class) != null) {
-            String field = param.getAnnotation(FormParam.class).value();
-            return Violation.In.form.field(field).message(message);
-        }
-
-        String field = dropMethodNameAndArgumentPositionFromPath(constraintViolation.getPropertyPath());
-        return Violation.In.body.field(field).message(message);
+        return PARAM_SPECS.stream()
+                .filter(spec -> spec.isPresent(param))
+                .findFirst()
+                .map(spec -> spec.toViolation(param, message))
+                .orElseGet(() -> {
+                    String field = dropMethodNameAndArgumentPositionFromPath(constraintViolation.getPropertyPath());
+                    return Violation.In.body.field(field).message(message);
+                });
     }
 
     private String dropMethodNameAndArgumentPositionFromPath(Path propertyPath) {
@@ -202,6 +195,49 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
         String propertyPath = violation.getPropertyPath().toString();
         Method method = resourceInfo.getResourceMethod();
         return method != null && propertyPath.startsWith(method.getName() + ".");
+    }
+
+    private static final class ParamSpec<A extends Annotation> {
+
+        private final Class<A> annotationType;
+        private final Violation.In location;
+        private final Function<A, String> fieldExtractor;
+
+        private ParamSpec(Class<A> annotationType, Violation.In location, Function<A, String> fieldExtractor) {
+            this.annotationType = annotationType;
+            this.location = location;
+            this.fieldExtractor = fieldExtractor;
+        }
+
+        @SuppressWarnings("unchecked")
+        static <A extends Annotation> Optional<ParamSpec<?>> of(String className, Violation.In location) {
+            try {
+                Class<A> annotationType = (Class<A>) Class.forName(className);
+                java.lang.reflect.Method valueMethod = annotationType.getMethod("value");
+                Function<A, String> fieldExtractor = ann -> {
+                    try {
+                        return (String) valueMethod.invoke(ann);
+                    } catch (Exception e) {
+                        return "";
+                    }
+                };
+                return Optional.of(new ParamSpec<>(annotationType, location, fieldExtractor));
+            } catch (ClassNotFoundException | NoSuchMethodException ignored) {
+                return Optional.empty();
+            }
+        }
+
+        boolean isPresent(Parameter param) {
+            return param.getAnnotation(annotationType) != null;
+        }
+
+        Violation toViolation(Parameter param, String message) {
+            String field = fieldExtractor.apply(param.getAnnotation(annotationType));
+            if (field.isEmpty()) {
+                field = param.getName();
+            }
+            return location.field(field).message(message);
+        }
     }
 
 }
