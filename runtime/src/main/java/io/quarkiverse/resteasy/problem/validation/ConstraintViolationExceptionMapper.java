@@ -1,9 +1,15 @@
 package io.quarkiverse.resteasy.problem.validation;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -141,14 +147,28 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
 
     private Violation createViolation(ConstraintViolation<?> constraintViolation, Parameter param) {
         final String message = constraintViolation.getMessage();
-        return PARAM_SPECS.stream()
-                .filter(spec -> spec.isPresent(param))
-                .findFirst()
-                .map(spec -> spec.toViolation(param, message))
-                .orElseGet(() -> {
-                    String field = dropMethodNameAndArgumentPositionFromPath(constraintViolation.getPropertyPath());
-                    return Violation.In.body.field(field).message(message);
-                });
+        final String fieldName = dropMethodNameAndArgumentPositionFromPath(constraintViolation.getPropertyPath());
+        final AnnotatedElement element = isBeanParam(param)
+                ? findField(param.getType(), fieldName).orElse(null)
+                : param;
+        return Optional.ofNullable(element)
+                .flatMap(e -> PARAM_SPECS.stream()
+                        .filter(spec -> spec.isPresent(e))
+                        .findFirst()
+                        .map(spec -> spec.toViolation(e, message)))
+                .orElseGet(() -> Violation.In.body.field(fieldName).message(message));
+    }
+
+    private boolean isBeanParam(Parameter param) {
+        return param.isAnnotationPresent(jakarta.ws.rs.BeanParam.class);
+    }
+
+    private Optional<Field> findField(Class<?> beanClass, String fieldName) {
+        try {
+            return Optional.of(beanClass.getDeclaredField(fieldName));
+        } catch (NoSuchFieldException ignored) {
+            return Optional.empty();
+        }
     }
 
     private String dropMethodNameAndArgumentPositionFromPath(Path propertyPath) {
@@ -227,14 +247,15 @@ public final class ConstraintViolationExceptionMapper extends ExceptionMapperBas
             }
         }
 
-        boolean isPresent(Parameter param) {
-            return param.getAnnotation(annotationType) != null;
+        boolean isPresent(AnnotatedElement element) {
+            return element.getAnnotation(annotationType) != null;
         }
 
-        Violation toViolation(Parameter param, String message) {
-            String field = fieldExtractor.apply(param.getAnnotation(annotationType));
+        Violation toViolation(AnnotatedElement element, String message) {
+            String field = fieldExtractor.apply(element.getAnnotation(annotationType));
             if (field.isEmpty()) {
-                field = param.getName();
+                field = element instanceof Parameter ? ((Parameter) element).getName()
+                        : ((Field) element).getName();
             }
             return location.field(field).message(message);
         }
