@@ -43,4 +43,15 @@ class RestClientIT {
                 .body("instance", equalTo("/throw-via-rest-client-with-mapper"));
     }
 
+    @Test
+    void shouldDeserializeHttpProblemWhenInstanceContainsEncodedCharacters() {
+        given()
+                .accept(ContentType.JSON)
+                .get("/throw-via-rest-client-with-encoded-segment")
+                .then()
+                .statusCode(404)
+                .body("title", equalTo("Not Found"))
+                .body("instance", equalTo("/throw-via-rest-client-with-encoded-segment"));
+    }
+
 }

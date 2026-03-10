@@ -4,6 +4,7 @@ import io.quarkiverse.resteasy.problem.HttpProblem;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -42,6 +43,21 @@ public class DemoResource {
     @Path("/throw-via-rest-client-with-mapper")
     public void throwViaRestClientWithMapper() {
         selfClientWithMapper.doThrow();
+    }
+
+    @GET
+    @Path("/upstream/{segment}/throw")
+    public Response throwAtPathWithSegment(@PathParam("segment") String segment) {
+        throw HttpProblem.builder()
+                .withStatus(404)
+                .withTitle("Not Found")
+                .build();
+    }
+
+    @GET
+    @Path("/throw-via-rest-client-with-encoded-segment")
+    public void throwViaRestClientWithEncodedSegment() {
+        selfClientWithMapper.doThrowAtPathWithSegment("X 1");
     }
 
 }
