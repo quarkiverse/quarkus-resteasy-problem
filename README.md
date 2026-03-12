@@ -1,6 +1,7 @@
 # Problem Details for HTTP APIs (RFC-7807) implementation for Quarkus / RESTeasy.
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/quarkiverse/quarkus-resteasy-problem/blob/main/LICENSE.txt)
+[![Documentation](https://img.shields.io/badge/docs-quarkus.io-0A6EBD)](https://quarkus.io/extensions/io.quarkiverse.resteasy-problem/quarkus-resteasy-problem/)
 
 [![Build status](https://github.com/quarkiverse/quarkus-resteasy-problem/actions/workflows/unit-tests.yaml/badge.svg)](https://github.com/quarkiverse/quarkus-resteasy-problem/actions/workflows/unit-tests.yaml)
 [![Build status](https://github.com/quarkiverse/quarkus-resteasy-problem/actions/workflows/integration-tests.yaml/badge.svg)](https://github.com/quarkiverse/quarkus-resteasy-problem/actions/workflows/integration-tests.yaml)
